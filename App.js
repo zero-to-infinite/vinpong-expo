@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>빈티지 핑퐁 0308 개발 시작!</Text>
+      <Text>vintage Pingpong</Text>
       <StatusBar style="auto" />
     </View>
   );
