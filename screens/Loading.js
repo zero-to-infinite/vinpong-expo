@@ -8,11 +8,13 @@ export default function Loading() {
       <StatusBar style="auto" />
 
       <View>
-        <Text>로딩 화면(지원이가 작업할 곳)</Text>
+        <Text style={vvp.container}> Vintage Ping Pong </Text>
       </View>
+      
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -20,5 +22,13 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
-  },
+  }
+});
+
+const vvp = StyleSheet.create({
+  container: {
+    color:"#91B391",
+    fontSize: 30, 
+	  fontWeight: "600", // 폰트 두께는 600
+  }
 });
