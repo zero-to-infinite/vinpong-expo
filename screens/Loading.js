@@ -17,6 +17,8 @@ export default function Loading() {
 		      login
 	      </Text>
 
+        
+
       </TouchableOpacity>
 
       
@@ -24,6 +26,16 @@ export default function Loading() {
     </View>
   );
 }
+
+const hhgy = StyleSheet.create({
+  container: {
+    color:"black",
+    fontSize: 15, 
+	  fontWeight: "600",
+    marginTop: 1 
+  }
+});
+
 
 const content = StyleSheet.create({
   container: {
@@ -34,6 +46,7 @@ const content = StyleSheet.create({
 	  paddingHorizontal: 40, //좌우 길이
 	  paddingVertical: 10, 
 	  alignItems: "center", 
+    marginTop: 300
   }
 });
 
@@ -41,7 +54,8 @@ const login = StyleSheet.create({
   container: {
     color:"white",
     fontSize: 15, 
-	  fontWeight: "600", 
+	  fontWeight: "600",
+    marginTop: 1 
   }
 });
 
@@ -58,6 +72,7 @@ const vvp = StyleSheet.create({
   container: {
     color:"#91B391",
     fontSize: 40, 
-	  fontWeight: "600", 
+	  fontWeight: "600",
+    marginTop: 200
   }
 });
