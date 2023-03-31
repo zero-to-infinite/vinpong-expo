@@ -14,25 +14,36 @@ export default function Loading() {
 
       <TouchableOpacity style={content.container}>
 	      <Text style={login.container}>
-		      login
+		      로그인
 	      </Text>
-
-        
 
       </TouchableOpacity>
 
+      <TouchableOpacity >
+        <Text style={stylesud.underline}>
+		      회원가입
+	      </Text>
+
+      </TouchableOpacity>
       
       
     </View>
   );
 }
 
+const stylesud = StyleSheet.create({
+  ///
+  underline: {
+    textDecorationLine: 'underline',
+  },
+});
+
 const hhgy = StyleSheet.create({
   container: {
     color:"black",
     fontSize: 15, 
 	  fontWeight: "600",
-    marginTop: 1 
+    
   }
 });
 
@@ -40,15 +51,17 @@ const hhgy = StyleSheet.create({
 const content = StyleSheet.create({
   container: {
     backgroundColor: '#91B391', 
-	  borderRadius: 25, // 테두리를 둥글게 만드는 속성(숫자가 클수록 타원에 가까워짐)
+	  borderRadius: 25, 
 	  marginHorizontal: 20, 
 	  marginBottom: 12, 
-	  paddingHorizontal: 40, //좌우 길이
+	  paddingHorizontal: 40, 
 	  paddingVertical: 10, 
 	  alignItems: "center", 
-    marginTop: 300
+    marginTop: 250
   }
 });
+
+
 
 const login = StyleSheet.create({
   container: {
