@@ -9,18 +9,18 @@ export default function Loading() {
       <StatusBar style="auto" />
 
       <View>
-        <Text style={vvp.container}> Vintage Ping Pong </Text>
+        <Text style={styles.vvp}> Vintage Ping Pong </Text>
       </View>
 
-      <TouchableOpacity style={content.container}>
-	      <Text style={login.container}>
+      <TouchableOpacity style={styles.content}>
+	      <Text style={styles.login}>
 		      로그인
 	      </Text>
 
       </TouchableOpacity>
 
       <TouchableOpacity >
-        <Text style={stylesud.underline}>
+        <Text style={styles.underline}>
 		      회원가입
 	      </Text>
 
@@ -31,25 +31,23 @@ export default function Loading() {
   );
 }
 
-const stylesud = StyleSheet.create({
-  ///
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   underline: {
     textDecorationLine: 'underline',
   },
-});
-
-const hhgy = StyleSheet.create({
-  container: {
+  hhgy: {
     color:"black",
     fontSize: 15, 
 	  fontWeight: "600",
     
-  }
-});
-
-
-const content = StyleSheet.create({
-  container: {
+  },
+  content: {
     backgroundColor: '#91B391', 
 	  borderRadius: 25, 
 	  marginHorizontal: 20, 
@@ -58,34 +56,27 @@ const content = StyleSheet.create({
 	  paddingVertical: 10, 
 	  alignItems: "center", 
     marginTop: 250
-  }
-});
-
-
-
-const login = StyleSheet.create({
-  container: {
+  },
+  login: {
     color:"white",
     fontSize: 15, 
 	  fontWeight: "600",
     marginTop: 1 
-  }
-});
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
-  }
-});
-
-const vvp = StyleSheet.create({
-  container: {
+  },
+  vvp: {
     color:"#91B391",
     fontSize: 40, 
 	  fontWeight: "600",
     marginTop: 200
   }
+
+
 });
+
+
+
+
+
+
+
+
