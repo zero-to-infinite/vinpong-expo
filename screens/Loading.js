@@ -1,32 +1,28 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-export default function Loading({navigation}) {
+export default function Loading({ navigation }) {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
 
-      <View>
-        <Text style={styles.vvp}> Vintage Ping Pong </Text>
+      <View style={styles.title}>
+        <Text style={styles.titleText}>Vintage Ping Pong</Text>
       </View>
 
-      <TouchableOpacity onPress={() => navigation.navigate("Home")} style={styles.content}>
-	      <Text style={styles.login}>
-		      로그인
-	      </Text>
+      <View style={styles.footer}>
+        <TouchableOpacity
+          style={styles.login}
+          onPress={() => navigation.navigate("Home")}
+        >
+          <Text style={styles.loginText}>로그인</Text>
+        </TouchableOpacity>
 
-      </TouchableOpacity>
-
-      <TouchableOpacity >
-        <Text style={styles.underline}>
-		      회원가입
-	      </Text>
-
-      </TouchableOpacity>
-      
-      
+        <TouchableOpacity>
+          <Text style={styles.signUpText}>회원가입</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -38,45 +34,39 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  underline: {
-    textDecorationLine: 'underline',
+
+  title: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  hhgy: {
-    color:"black",
-    fontSize: 15, 
-	  fontWeight: "600",
-    
+
+  titleText: {
+    color: "#91B391",
+    fontSize: 40,
+    fontWeight: "600",
   },
-  content: {
-    backgroundColor: '#91B391', 
-	  borderRadius: 25, 
-	  marginHorizontal: 20, 
-	  marginBottom: 12, 
-	  paddingHorizontal: 40, 
-	  paddingVertical: 10, 
-	  alignItems: "center", 
-    marginTop: 250
+
+  footer: {
+    marginBottom: 30,
+    alignItems: "center",
   },
+
   login: {
-    color:"white",
-    fontSize: 15, 
-	  fontWeight: "600",
-    marginTop: 1 
+    backgroundColor: "#91B391",
+    paddingHorizontal: 35,
+    paddingVertical: 15,
+    borderRadius: 25,
   },
-  vvp: {
-    color:"#91B391",
-    fontSize: 40, 
-	  fontWeight: "600",
-    marginTop: 200
-  }
 
+  loginText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "600",
+  },
 
+  signUpText: {
+    textDecorationLine: "underline",
+    marginTop: 5,
+  },
 });
-
-
-
-
-
-
-
-
