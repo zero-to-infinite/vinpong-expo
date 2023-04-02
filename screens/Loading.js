@@ -3,7 +3,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function Loading() {
+export default function Loading({navigation}) {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -12,7 +12,7 @@ export default function Loading() {
         <Text style={styles.vvp}> Vintage Ping Pong </Text>
       </View>
 
-      <TouchableOpacity style={styles.content}>
+      <TouchableOpacity onPress={() => navigation.navigate("Home")} style={styles.content}>
 	      <Text style={styles.login}>
 		      로그인
 	      </Text>
