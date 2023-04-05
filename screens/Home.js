@@ -14,7 +14,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
-export default function Home(navigation ) {
+export default function Home({navigation} ) {
   // 임시 상품 데이터
   const [products, setProducts] = useState([
     "상품 1",
