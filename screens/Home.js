@@ -12,9 +12,10 @@ import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 
+
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
-export default function Home() {
+export default function Home({ navigation} ) {
   // 임시 상품 데이터
   const [products, setProducts] = useState([
     "상품 1",
@@ -87,9 +88,15 @@ export default function Home() {
         <TouchableOpacity style={styles.menuIcon}>
           <Feather name="home" size={28} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
+
+        <TouchableOpacity
+            style={styles.menuIcon}
+            onPress={() => navigation.navigate("Search")}>
           <Feather name="search" size={28} color="white" />
         </TouchableOpacity>
+
+
+
         <TouchableOpacity style={styles.menuIcon}>
           <Feather name="plus-circle" size={28} color="white" />
         </TouchableOpacity>
