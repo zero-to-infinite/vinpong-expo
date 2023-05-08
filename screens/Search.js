@@ -7,8 +7,17 @@ export default function Search() {
   const [isStyleOpen, setIsStyleOpen] = useState(true); // 스타일 버튼이 선택된 상태로 시작
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
-  const stylesList = ["Casual", "Formal", "Sports", "Vintage"];
-  const categoryList = ["전체", "상의", "하의", "신발", "악세사리"];
+  const stylesList = ["Casual", "Formal", "Sports", "Vintage", "Sportswear", "Classic", "Travel"];
+
+  const categoryList = ["전체", "상의", "하의", "신발", "악세사리","아우터"];
+
+  const popularList = [
+    { id: 1, name: "운동화" },
+    { id: 2, name: "후드티" },
+    { id: 3, name: "반팔티" },
+    { id: 4, name: "나이키" },
+    { id: 5, name: "아디다스" },
+  ];
 
   const handleStylePress = () => {
     setIsStyleOpen(true);
@@ -40,7 +49,7 @@ export default function Search() {
       </View>
 
       {isStyleOpen && (
-        <View style={styles.options}>
+        <View style={[styles.options, styles.styleOptions]}>
           {stylesList.map((style, index) => (
             <TouchableOpacity key={index} style={styles.option}>
               <Text>{style}</Text>
@@ -50,7 +59,7 @@ export default function Search() {
       )}
 
       {isCategoryOpen && (
-        <View style={styles.options}>
+        <View style={[styles.options, styles.categoryOptions]}>
           {categoryList.map((category, index) => (
             <TouchableOpacity key={index} style={styles.option}>
               <Text>{category}</Text>
@@ -58,11 +67,19 @@ export default function Search() {
           ))}
         </View>
       )}
+
+      <View style={styles.popularContainer}>
+        <Text style={styles.popularTitle}>인기 검색어</Text>
+        {popularList.map((keyword, index) => (
+          <View key={index} style={styles.popularItem}>
+            <Text style={styles.popularRank}>{index + 1}</Text>
+            <Text style={styles.popularName}>{keyword.name}</Text>
+          </View>
+        ))}
+      </View>
     </View>
   );
 }
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -111,11 +128,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
     paddingVertical: 5,
     paddingHorizontal: 10,
-    width: "40%",
+    flex: 1, // 1:1 비율로 화면 차지
     alignItems: "flex-start",
     marginLeft: 5,
     marginTop: 10,
   },
+  
   option: {
     flexDirection: "row",
     alignItems: "center",
@@ -127,5 +145,56 @@ const styles = StyleSheet.create({
   },
   checkbox: {
     marginRight: 10,
+  },
+  selectedButton: {
+    backgroundColor: "#91B391",
+  },
+  chartContainer: {
+    backgroundColor: "#eee",
+    borderRadius: 5,
+    margin: 5,
+    padding: 10,
+  },
+  chartTitle: {
+    fontWeight: "bold",
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  chartItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 5,
+  },
+  chartRank: {
+    fontWeight: "bold",
+    marginRight: 10,
+  },
+  chartText: {
+    fontSize: 16,
+  },
+
+  popularContainer: {
+    flex: 1,
+    backgroundColor: '#f2f2f2',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  popularTitle: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  popularItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  popularRank: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    marginRight: 8,
+  },
+  popularName: {
+    fontSize: 14,
   },
 });
