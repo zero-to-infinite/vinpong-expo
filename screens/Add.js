@@ -6,7 +6,6 @@ import {
   View,
   TouchableOpacity,
   Image,
-  ScrollView,
   Dimensions,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
@@ -29,31 +28,54 @@ export default function Add({ navigation }) {
     textStyle: {
       textDecorationLine: "none",
     },
-    width: "50%",
-    //paddingBottom: 5,
   };
 
   const condition = [
     {
       id: 0,
       text: "최상",
-      paddingBottom: 5,
+      width: "50%",
+      paddingBottom: 10,
       ...checkboxStyles,
     },
     {
       id: 1,
       text: "상",
-      paddingBottom: 5,
+      width: "50%",
+      paddingBottom: 10,
       ...checkboxStyles,
     },
     {
       id: 2,
       text: "중",
+      width: "50%",
       ...checkboxStyles,
     },
     {
       id: 3,
       text: "하",
+      width: "50%",
+      ...checkboxStyles,
+    },
+  ];
+
+  const size = [
+    {
+      id: 0,
+      text: "L",
+      width: "33%",
+      ...checkboxStyles,
+    },
+    {
+      id: 1,
+      text: "M",
+      width: "33%",
+      ...checkboxStyles,
+    },
+    {
+      id: 2,
+      text: "S",
+      width: "33%",
       ...checkboxStyles,
     },
   ];
@@ -110,12 +132,16 @@ export default function Add({ navigation }) {
 
         <View style={styles.inputBox}>
           <Text style={styles.label}>상품명</Text>
-          <TextInput style={styles.input} />
+          <TextInput returnKeyType="done" style={styles.input} />
         </View>
 
         <View style={styles.inputBox}>
           <Text style={styles.label}>가격</Text>
-          <TextInput keyboardType="number-pad" style={styles.input} />
+          <TextInput
+            keyboardType="number-pad"
+            returnKeyType="done"
+            style={styles.input}
+          />
         </View>
 
         <View style={styles.inputBox}>
@@ -125,9 +151,10 @@ export default function Add({ navigation }) {
 
         <View style={styles.inputBox}>
           <Text style={styles.label}>사이즈</Text>
-          <TextInput style={styles.input} />
+          <BouncyCheckboxGroup data={size} style={styles.checkbox} />
         </View>
 
+        {/*키보드가 input을 가리는 버그 해결 필요!*/}
         <View style={styles.inputAreaBox}>
           <Text style={styles.label}>상세 설명</Text>
           <TextInput
