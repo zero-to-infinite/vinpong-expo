@@ -14,7 +14,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
-export default function Home() {
+export default function Home({ navigation }) {
   // 임시 상품 데이터
   const [products, setProducts] = useState([
     "상품 1",
@@ -55,7 +55,7 @@ export default function Home() {
         </TouchableOpacity>
 
         <Text style={styles.bodyText}>추천 상품</Text>
-        <View style={styles.productContainer}>
+        <View style={styles.productBox}>
           <ScrollView pagingEnabled horizontal>
             {products.map((value, key) => (
               <TouchableOpacity style={styles.product} key={key}>
@@ -69,7 +69,7 @@ export default function Home() {
         </View>
 
         <Text style={styles.bodyText}>인기 상점</Text>
-        <View style={styles.productContainer}>
+        <View style={styles.productBox}>
           <ScrollView pagingEnabled horizontal>
             {stores.map((value, key) => (
               <TouchableOpacity style={styles.product} key={key}>
@@ -90,7 +90,10 @@ export default function Home() {
         <TouchableOpacity style={styles.menuIcon}>
           <Feather name="search" size={28} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Add")}
+          style={styles.menuIcon}
+        >
           <Feather name="plus-circle" size={28} color="white" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.menuIcon}>
@@ -142,7 +145,7 @@ const styles = StyleSheet.create({
     paddingVertical: 60,
   },
 
-  productContainer: {
+  productBox: {
     flexDirection: "row",
     alignItems: "center",
   },
