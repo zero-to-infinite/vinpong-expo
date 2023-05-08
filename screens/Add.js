@@ -10,6 +10,9 @@ import {
   Dimensions,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import BouncyCheckboxGroup, {
+  ICheckboxButton,
+} from "react-native-bouncy-checkbox-group";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
@@ -19,6 +22,41 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function Add({ navigation }) {
   const [image, setImage] = useState(null);
+
+  const checkboxStyles = {
+    fillColor: "#91B391",
+    unfillColor: "white",
+    textStyle: {
+      textDecorationLine: "none",
+    },
+    width: "50%",
+    //paddingBottom: 5,
+  };
+
+  const condition = [
+    {
+      id: 0,
+      text: "최상",
+      paddingBottom: 5,
+      ...checkboxStyles,
+    },
+    {
+      id: 1,
+      text: "상",
+      paddingBottom: 5,
+      ...checkboxStyles,
+    },
+    {
+      id: 2,
+      text: "중",
+      ...checkboxStyles,
+    },
+    {
+      id: 3,
+      text: "하",
+      ...checkboxStyles,
+    },
+  ];
 
   // 이미지 추가하는 함수
   const pickImage = async () => {
@@ -64,7 +102,7 @@ export default function Add({ navigation }) {
         ) : (
           <View>
             {image && <Image source={{ uri: image }} style={styles.pic} />}
-            <TouchableOpacity onPress={deleteImage} style={styles.edit}>
+            <TouchableOpacity onPress={deleteImage} style={styles.deletePic}>
               <AntDesign name="close" size={18} color="white" />
             </TouchableOpacity>
           </View>
@@ -77,12 +115,12 @@ export default function Add({ navigation }) {
 
         <View style={styles.inputBox}>
           <Text style={styles.label}>가격</Text>
-          <TextInput style={styles.input} />
+          <TextInput keyboardType="number-pad" style={styles.input} />
         </View>
 
         <View style={styles.inputBox}>
           <Text style={styles.label}>상태</Text>
-          <TextInput style={styles.input} />
+          <BouncyCheckboxGroup data={condition} style={styles.checkbox} />
         </View>
 
         <View style={styles.inputBox}>
@@ -166,7 +204,7 @@ const styles = StyleSheet.create({
     height: 200,
   },
 
-  edit: {
+  deletePic: {
     backgroundColor: "#91B391",
     borderColor: "#91B391",
     borderWidth: 1,
@@ -208,6 +246,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 5,
+  },
+
+  checkbox: {
+    width: "70%",
+    flexWrap: "wrap",
   },
 
   footer: {
