@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, TextInput, TouchableOpacity, Text } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { FontAwesome } from '@expo/vector-icons';
 
 export default function Search() {
   const [isStyleOpen, setIsStyleOpen] = useState(true); // 스타일 버튼이 선택된 상태로 시작
@@ -77,6 +78,30 @@ export default function Search() {
           </View>
         ))}
       </View>
+
+      <View style={styles.footer}>
+        <TouchableOpacity style={styles.menuIcon}>
+          <Feather name="home" size={28} color="white" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+            style={styles.menuIcon}
+            onPress={() => navigation.navigate("Search")}>
+          <Feather name="search" size={28} color="white" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.menuIcon}>
+          <Feather name="plus-circle" size={28} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.menuIcon}>
+          <Feather name="message-square" size={28} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.menuIcon}>
+          <FontAwesome name="user-circle-o" size={28} color="white" />
+        </TouchableOpacity>
+      </View>
+
+      
     </View>
   );
 }
@@ -196,5 +221,13 @@ const styles = StyleSheet.create({
   },
   popularName: {
     fontSize: 14,
+  },
+  footer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-evenly",
+    backgroundColor: "#91B391",
+    paddingBottom: 35,
+    paddingTop: 15,
   },
 });
