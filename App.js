@@ -4,6 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Loading from "./screens/Loading";
 import Home from "./screens/Home";
+import ChatRoom from "./screens/ChatRoom";
+import Search from "./screens/Search";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -13,6 +15,9 @@ export default function App() {
       <Stack.Navigator initialRouteName="Loading" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Loading" component={Loading} />
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="ChatRoom" component={ChatRoom} />
+        <Stack.Screen name="Search" component={Search} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

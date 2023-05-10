@@ -7,7 +7,8 @@ import { FontAwesome } from '@expo/vector-icons';
 export default function Search() {
   const [isStyleOpen, setIsStyleOpen] = useState(true); // 스타일 버튼이 선택된 상태로 시작
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-
+  const [selectedStyles, setSelectedStyles] = useState([]); // 선택된 스타일 목록
+  const [selectedCategories, setSelectedCategories] = useState([]); // 선택된 카테고리 목록
   const stylesList = ["Casual", "Formal", "Sports", "Vintage", "Sportswear", "Classic", "Travel"];
 
   const categoryList = ["전체", "상의", "하의", "신발", "악세사리","아우터"];
@@ -29,6 +30,62 @@ export default function Search() {
     setIsCategoryOpen(true);
     setIsStyleOpen(false);
   };
+
+  const handleStyleOptionPress = (style) => {
+    if (selectedStyles.includes(style)) {
+      setSelectedStyles(selectedStyles.filter((selectedStyle) => selectedStyle !== style));
+    } else {
+      setSelectedStyles([...selectedStyles, style]);
+    }
+  };
+  
+  const handleCategoryOptionPress = (category) => {
+    if (selectedCategories.includes(category)) {
+      setSelectedCategories(selectedCategories.filter((selectedCategory) => selectedCategory !== category));
+    } else {
+      setSelectedCategories([...selectedCategories, category]);
+    }
+  };
+
+  {isStyleOpen && (
+  <View style={[styles.options, styles.styleOptions]}>
+    {stylesList.map((style, index) => (
+      <TouchableOpacity
+        key={index}
+        style={[
+          styles.option,
+          selectedStyles.includes(style) ? styles.selectedOption : null,
+        ]}
+        onPress={() => handleStyleOptionPress(style)}
+      >
+        <Text>{style}</Text>
+        {selectedStyles.includes(style) && (
+          <Feather name="x" size={16} color="#777" style={styles.icon} />
+        )}
+      </TouchableOpacity>
+    ))}
+  </View>
+)}
+
+{isCategoryOpen && (
+  <View style={[styles.options, styles.categoryOptions]}>
+    {categoryList.map((category, index) => (
+      <TouchableOpacity
+        key={index}
+        style={[
+          styles.option,
+          selectedCategories.includes(category) ? styles.selectedOption : null,
+        ]}
+        onPress={() => handleCategoryOptionPress(category)}
+      >
+        <Text>{category}</Text>
+        {selectedCategories.includes(category) && (
+          <Feather name="x" size={16} color="#777" style={styles.icon} />
+        )}
+      </TouchableOpacity>
+    ))}
+  </View>
+)}
 
   return (
     <View style={styles.container}>
@@ -100,6 +157,7 @@ export default function Search() {
           <FontAwesome name="user-circle-o" size={28} color="white" />
         </TouchableOpacity>
       </View>
+
 
       
     </View>
