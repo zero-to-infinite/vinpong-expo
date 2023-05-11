@@ -183,7 +183,10 @@ export default function Add({ navigation }) {
         <TouchableOpacity style={styles.menuIcon}>
           <Feather name="message-square" size={28} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Store")}
+          style={styles.menuIcon}
+        >
           <FontAwesome name="user-circle-o" size={28} color="white" />
         </TouchableOpacity>
       </View>
