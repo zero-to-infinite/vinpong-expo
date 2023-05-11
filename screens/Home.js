@@ -55,7 +55,7 @@ export default function Home({ navigation }) {
         </TouchableOpacity>
 
         <Text style={styles.bodyText}>추천 상품</Text>
-        <View style={styles.productBox}>
+        <View style={styles.productContainer}>
           <ScrollView pagingEnabled horizontal>
             {products.map((value, key) => (
               <TouchableOpacity style={styles.product} key={key}>
@@ -69,7 +69,7 @@ export default function Home({ navigation }) {
         </View>
 
         <Text style={styles.bodyText}>인기 상점</Text>
-        <View style={styles.productBox}>
+        <View style={styles.productContainer}>
           <ScrollView pagingEnabled horizontal>
             {stores.map((value, key) => (
               <TouchableOpacity style={styles.product} key={key}>
@@ -87,18 +87,25 @@ export default function Home({ navigation }) {
         <TouchableOpacity style={styles.menuIcon}>
           <Feather name="home" size={28} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
+
+        <TouchableOpacity
+          style={styles.menuIcon}
+          onPress={() => navigation.navigate("Search")}
+        >
           <Feather name="search" size={28} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Add")}
-          style={styles.menuIcon}
-        >
+
+        <TouchableOpacity style={styles.menuIcon}>
           <Feather name="plus-circle" size={28} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
+
+        <TouchableOpacity
+          style={styles.menuIcon}
+          onPress={() => navigation.navigate("ChatRoom")}
+        >
           <Feather name="message-square" size={28} color="white" />
         </TouchableOpacity>
+
         <TouchableOpacity
           onPress={() => navigation.navigate("Store")}
           style={styles.menuIcon}
@@ -148,7 +155,7 @@ const styles = StyleSheet.create({
     paddingVertical: 60,
   },
 
-  productBox: {
+  productContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
