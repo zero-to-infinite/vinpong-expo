@@ -6,7 +6,7 @@ import Loading from "./screens/Loading";
 import Home from "./screens/Home";
 import ChatRoom from "./screens/ChatRoom";
 import Search from "./screens/Search";
-import ChatRoom from "./screens/ChatRoom";
+
 
 export default function App() {
   const Stack = createStackNavigator();
