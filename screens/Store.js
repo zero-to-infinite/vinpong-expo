@@ -7,17 +7,15 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  TextInput,
 } from "react-native";
+import BottomNav from "../components/BottomNav";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { TextInput } from "react-native-gesture-handler";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function Store({ navigation }) {
-
-
   // 판매 중인 상품 데이터
   const [products, setProducts] = useState([
     "판매 중 1",
@@ -115,26 +113,7 @@ export default function Store({ navigation }) {
         </View>
       </View>
 
-      <View style={styles.footer}>
-        <TouchableOpacity onPress={() => navigation.navigate("Home")} style={styles.menuIcon}>
-          <Feather name="home" size={28} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
-          <Feather name="search" size={28} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Add")}
-          style={styles.menuIcon}
-        >
-          <Feather name="plus-circle" size={28} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
-          <Feather name="message-square" size={28} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
-          <FontAwesome name="user-circle-o" size={28} color="white" />
-        </TouchableOpacity>
-      </View>
+      <BottomNav navigation={navigation} />
     </View>
   );
 }
