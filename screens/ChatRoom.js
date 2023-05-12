@@ -2,6 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { FlatList, Image } from 'react-native';
+import io from 'socket.io-client';
+import  { useEffect } from 'react';
+
 
 const DATA = [
   {
@@ -49,10 +52,31 @@ const DATA = [
 ];
 
 
-const ChatRoom = () => {
+const ChatRoom = ({ navigation }) => {
+    useEffect(() => {
+        // 소켓 연결 설정
+        const socket = io('YOUR_BACKEND_SERVER_URL');
+    
+        // 메시지 수신 이벤트 핸들러
+        socket.on('chatMessage', (message) => {
+          console.log('Received message:', message);
+          // TODO: 받은 메시지를 적절히 처리하는 로직을 구현
+        });
+    
+        // 컴포넌트 언마운트 시 소켓 연결 해제
+        return () => {
+          socket.disconnect();
+        };
+      }, []);
+
+
+
+
+
   const renderItem = ({ item }) => {
     return (
-      <TouchableOpacity style={styles.itemContainer}>
+      <TouchableOpacity style={styles.itemContainer}
+      onPress={() => navigation.navigate("Chat")}>
         <Image style={styles.itemImage} //source={require('./Images/product1.png')} 
         />
         <View style={styles.itemInfoContainer}>
