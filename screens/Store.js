@@ -16,8 +16,11 @@ import { FontAwesome } from "@expo/vector-icons";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function Store({ navigation }) {
+  // true이면 판매 중, false이면 판매 완료인 상품
+  const [isSelling, setIsSelling] = useState(true);
+
   // 판매 중인 상품 데이터
-  const [products, setProducts] = useState([
+  const [sellingItem, setSellingItem] = useState([
     "판매 중 1",
     "판매 중 2",
     "판매 중 3",
@@ -31,7 +34,7 @@ export default function Store({ navigation }) {
   ]);
 
   // 판매 완료한 상품 데이터
-  const [stores, setStores] = useState([
+  const [soldItem, setSoldItem] = useState([
     "판매 완료 1",
     "판매 완료 2",
     "판매 완료 3",
@@ -60,7 +63,7 @@ export default function Store({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.body}>
+      <ScrollView style={styles.body}>
         <View style={styles.infoBox}>
           <View style={styles.userInfo}>
             <View style={styles.userImage}></View>
@@ -97,21 +100,45 @@ export default function Store({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.post}>
-          <View>
-            <TouchableOpacity>
-              <Text></Text>
+        <View>
+          <View style={styles.buttonBox}>
+            <TouchableOpacity
+              onPress={() => setIsSelling(true)}
+              style={
+                isSelling == true
+                  ? styles.clickedButton
+                  : styles.nonClickedButton
+              }
+            >
+              <Text style={styles.btnText}>Selling</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
-              <Text></Text>
+            <TouchableOpacity
+              onPress={() => setIsSelling(false)}
+              style={
+                isSelling == false
+                  ? styles.clickedButton
+                  : styles.nonClickedButton
+              }
+            >
+              <Text style={styles.btnText}>Sold</Text>
             </TouchableOpacity>
           </View>
 
-          <View style={styles.post}>
-            <TouchableOpacity></TouchableOpacity>
+          <View style={styles.itemBox}>
+            {isSelling == true
+              ? sellingItem.map((value, index) => (
+                  <TouchableOpacity key={index} style={styles.item}>
+                    <Text>{value}</Text>
+                  </TouchableOpacity>
+                ))
+              : soldItem.map((value, index) => (
+                  <TouchableOpacity key={index} style={styles.item}>
+                    <Text>{value}</Text>
+                  </TouchableOpacity>
+                ))}
           </View>
         </View>
-      </View>
+      </ScrollView>
 
       <BottomNav navigation={navigation} />
     </View>
@@ -137,12 +164,12 @@ const styles = StyleSheet.create({
 
   body: {
     flex: 1,
-    marginHorizontal: 10,
-    marginVertical: 20,
   },
 
   infoBox: {
     flexDirection: "row",
+    marginTop: 15,
+    marginBottom: 10,
   },
 
   userImage: {
@@ -184,7 +211,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
-    marginVertical: 10,
+    marginTop: 20,
+    marginBottom: 25,
   },
 
   follow: {
@@ -196,12 +224,46 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
 
-  footer: {
+  buttonBox: {
     flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-evenly",
+  },
+
+  nonClickedButton: {
+    alignItems: "center",
+    width: "50%",
+    padding: 15,
     backgroundColor: "#91B391",
-    paddingBottom: 35,
-    paddingTop: 15,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+  },
+
+  clickedButton: {
+    alignItems: "center",
+    width: "50%",
+    padding: 15,
+    backgroundColor: "#669066",
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+  },
+
+  btnText: {
+    fontWeight: "bold",
+    color: "white",
+  },
+
+  itemBox: {
+    flexWrap: "wrap",
+    flexDirection: "row",
+  },
+
+  item: {
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "white",
+    borderBottomColor: "black",
+    borderRightColor: "black",
+    width: (SCREEN_WIDTH * 1) / 3,
+    height: (SCREEN_WIDTH * 1) / 3,
   },
 });
