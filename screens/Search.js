@@ -1,16 +1,55 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
-import { Feather, FontAwesome } from '@expo/vector-icons';
-import { ScrollView } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
+import BottomNav from "../components/BottomNav";
+import { Feather } from "@expo/vector-icons";
 
-export default function Search() {
+export default function Search({ navigation }) {
   const [isStyleOpen, setIsStyleOpen] = useState(true); // 스타일 버튼이 선택된 상태로 시작
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [selectedStyles, setSelectedStyles] = useState([]); // 선택된 스타일 목록
   const [selectedCategories, setSelectedCategories] = useState([]); // 선택된 카테고리 목록
-  const stylesList = ["Casual", "Formal", "Sports", "Vintage", "Sportswear", "Classic", "Travel","Bohemian","Streetwear","Preppy","Chic","Minimalist",
-"Tomboy","Rocker","Classsic","Safari"];
-  const categoryList = ["전체", "상의", "바지","원피스/치마", "신발", "악세사리", "아우터","언더웨어","스포츠/레저","라이프","뷰티"];
+  
+  // 스타일 태그
+  const stylesList = [
+    "Casual",
+    "Formal",
+    "Sports",
+    "Vintage",
+    "Sportswear",
+    "Classic",
+    "Travel",
+    "Bohemian",
+    "Streetwear",
+    "Preppy",
+    "Chic",
+    "Minimalist",
+    "Tomboy",
+    "Rocker",
+    "Safari",
+  ];
+  //카테고리 태그
+  const categoryList = [
+    "전체",
+    "상의",
+    "바지",
+    "원피스/치마",
+    "신발",
+    "악세사리",
+    "아우터",
+    "언더웨어",
+    "스포츠/레저",
+    "라이프",
+    "뷰티",
+  ];
+  // 임시 인기 검색어 데이터
   const popularList = [
     { id: 1, name: "운동화" },
     { id: 2, name: "후드티" },
@@ -18,311 +57,287 @@ export default function Search() {
     { id: 4, name: "나이키" },
     { id: 5, name: "아디다스" },
   ];
-
+  // 스타일 탭 눌렀을 때 동작하는 함수
   const handleStylePress = () => {
     setIsStyleOpen(true);
     setIsCategoryOpen(false);
   };
-
+  // 카테고리 탭 눌렀을 때 동작하는 함수
   const handleCategoryPress = () => {
     setIsCategoryOpen(true);
     setIsStyleOpen(false);
   };
-
+  // 스타일 옵션 눌렀을 때 동작하는 함수
   const handleStyleOptionPress = (style) => {
     if (selectedStyles.includes(style)) {
-      setSelectedStyles(selectedStyles.filter((selectedStyle) => selectedStyle !== style));
+      // 이미 클릭된 스타일이었으면 selectedStyles 리스트에서 제거
+      setSelectedStyles(
+        selectedStyles.filter((selectedStyle) => selectedStyle !== style)
+      );
     } else {
+      // 클릭되지 않은 스타일이었으면 selectedStyles 리스트에 추가
       setSelectedStyles([...selectedStyles, style]);
     }
   };
-
+  // 카테고리 옵션 눌렀을 때 동작하는 함수
   const handleCategoryOptionPress = (category) => {
     if (selectedCategories.includes(category)) {
-      setSelectedCategories(selectedCategories.filter((selectedCategory) => selectedCategory !== category));
+      setSelectedCategories(
+        selectedCategories.filter(
+          (selectedCategory) => selectedCategory !== category
+        )
+      );
     } else {
       setSelectedCategories([...selectedCategories, category]);
     }
   };
-
+  // 선택된 검색 태그를 검색창 밑에 보여주는 컴포넌트
   const renderSelectedItems = () => {
-    const selectedItems = [...selectedStyles, ...selectedCategories];
+    const selectedItems = [...selectedStyles, ...selectedCategories]; // 선택된 스타일 + 카테고리를 담은 리스트
 
     return (
-      <View style={styles.selectedItemsContainer}>
+      <ScrollView horizontal style={styles.selectedItemsContainer}>
         {selectedItems.map((item, index) => (
+          <View key={index} style={styles.selectedItem}>
+            <Text style={styles.selectedItemText}>{item}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                // X 버튼 누르면 리스트에서 삭제
+                if (selectedStyles.includes(item)) {
+                  handleStyleOptionPress(item);
+                } else {
+                  handleCategoryOptionPress(item);
+                }
+              }}
+            >
+              <Feather name="x" size={16} color="white" style={styles.icon} />
+            </TouchableOpacity>
+          </View>
+        ))}
+      </ScrollView>
+    );
+  };
+  // 스타일 탭 안에서 스타일 옵션을 보여줌
+  const renderStyleOptions = () => {
+    return (
+      <View style={styles.optionsContainer}>
+        {stylesList.map((style, index) => (
           <TouchableOpacity
             key={index}
-            style={styles.selectedItem}
-            onPress={() => {
-              if (selectedStyles.includes(item)) {
-                handleStyleOptionPress(item);
-              } else {
-                handleCategoryOptionPress(item);
-              }
-            }}
+            style={[
+              styles.option,
+              selectedStyles.includes(style) ? styles.selectedOption : null, // 선택됐으면 옵션 색깔 변경
+            ]}
+            onPress={() => handleStyleOptionPress(style)}
           >
-            <Text style={styles.selectedItemText}>{item}</Text>
-            <Feather name="x" size={16} color="#777" style={styles.icon} />
+            <Text>{style}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    );
+  };
+  // 카테고리 탭 안에서 카테고리 옵션을 보여줌
+  const renderCategoryOptions = () => {
+    return (
+      <View style={styles.optionsContainer}>
+        {categoryList.map((category, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[
+              styles.option,
+              selectedCategories.includes(category) ? styles.selectedOption : null, // 선택됐으면 옵션 색깔 변경
+            ]}
+            onPress={() => handleCategoryOptionPress(category)}
+          >
+            <Text>{category}</Text>
           </TouchableOpacity>
         ))}
       </View>
     );
   };
 
-  const renderStyleOptions = () => {
-    return (
-      <ScrollView contentContainerStyle={styles.optionsContainer}>
-        {renderSelectedItems()}
-        <View style={styles.optionsRow}>
-          {stylesList.map((style, index) => (
-            <TouchableOpacity
-              key={index}
-              style={[
-                styles.option,
-                selectedStyles.includes(style) ? styles.selectedOption : null,
-              ]}
-              onPress={() => handleStyleOptionPress(style)}
-            >
-              <Text>{style}</Text>
-              {selectedStyles.includes(style) && (
-                <Feather name="x" size={16} color="#777" style={styles.icon} />
-              )}
-            </TouchableOpacity>
-                        ))}
-                        </View>
-                      </ScrollView>
-                    );
-                  };
-                
-                  const renderCategoryOptions = () => {
-                    return (
-                      <ScrollView contentContainerStyle={styles.optionsContainer}>
-                        {renderSelectedItems()}
-                        <View style={styles.optionsRow}>
-                          {categoryList.map((category, index) => (
-                            <TouchableOpacity
-                              key={index}
-                              style={[
-                                styles.option,
-                                selectedCategories.includes(category) ? styles.selectedOption : null,
-                              ]}
-                              onPress={() => handleCategoryOptionPress(category)}
-                            >
-                              <Text>{category}</Text>
-                              {selectedCategories.includes(category) && (
-                                <Feather name="x" size={16} color="#777" style={styles.icon} />
-                              )}
-                            </TouchableOpacity>
-                          ))}
-                        </View>
-                      </ScrollView>
-                    );
-                  };
-                
-                  return (
-                    <View style={styles.container}>
-                      <StatusBar backgroundColor="transparent" translucent={true} />
-                
-                      <View style={styles.searchContainer}>
-                        <TextInput style={styles.searchInput} placeholder="검색어를 입력하세요" />
-                        <Feather name="search" size={24} color="#777" style={styles.icon} />
-                      </View>
-                
-                      <View style={styles.buttonContainer}>
-                        <TouchableOpacity
-                          style={[styles.button, isStyleOpen && styles.selectedButton]}
-                          onPress={handleStylePress}
-                        >
-                          <Text style={styles.buttonText}>Style</Text>
-                        </TouchableOpacity>
-                
-                        <TouchableOpacity
-                          style={[styles.button, isCategoryOpen && styles.selectedButton]}
-                          onPress={handleCategoryPress}
-                        >
-                          <Text style={styles.buttonText}>Category</Text>
-                        </TouchableOpacity>
-                      </View>
-                
-                      {isStyleOpen && (
-                        <View style={styles.optionsContainer}>
-                          {renderStyleOptions()}
-                        </View>
-                      )}
-                
-                      {isCategoryOpen && (
-                        <View style={styles.optionsContainer}>
-                          {renderCategoryOptions()}
-                        </View>
-                      )}
-                
-                      <View style={styles.popularContainer}>
-                        <Text style={styles.popularTitle}>인기 검색어</Text>
-                        {popularList.map((keyword, index) => (
-                          <View key={index} style={styles.popularItem}>
-                            <Text style={styles.popularRank}>{index + 1}</Text>
-                            <Text style={styles.popularName}>{keyword.name}</Text>
-                          </View>
-                        ))}
-                      </View>
-                
-                      <View style={styles.footer}>
-                        <TouchableOpacity style={styles.menuIcon}>
-                          <Feather name="home" size={28} color="white" />
-                        </TouchableOpacity>
-                
-                        <TouchableOpacity style={styles.menuIcon} onPress={() => navigation.navigate("Search")}>
-                          <Feather name="search" size={28} color="white" />
-                        </TouchableOpacity>
-                
-                        <TouchableOpacity style={styles.menuIcon}>
-                          <Feather name="plus-circle" size={28} color="white" />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.menuIcon}>
-                          <Feather name="message-square" size={28} color="white" />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.menuIcon}>
-                          <FontAwesome name="user-circle-o" size={28} color="white" />
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  );
-                }
-                
-                const styles = StyleSheet.create({
-                  container: {
-                    flex: 1,
-                    backgroundColor: "white",
-                    justifyContent: "space-between", // 수정된 부분
-                  },
-                  searchContainer: {
-                    flexDirection: "row",
-                    alignItems: "center",
-                    backgroundColor: "#91B391",
-                    borderRadius: 30,
-                    paddingVertical: 5,
-                    paddingHorizontal: 10,
-                    marginHorizontal: 20,
-                    marginTop: 50,
-                  },
-                  searchInput:{
-                  flex: 1,
-                  fontSize: 16,
-                  color: "#777",
-                  marginLeft: 10,
-                },
-                icon: {
-                  marginLeft: 10,
-                },
-                buttonContainer: {
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 20,
-                },
-                button: {
-                  paddingHorizontal: 20,
-                  paddingVertical: 10,
-                  borderRadius: 20,
-                  backgroundColor: "#91B391",
-                  marginRight: 10,
-                },
-                selectedButton: {
-                  backgroundColor: "#5A8C5A",
-                },
-                buttonText: {
-                  color: "white",
-                  fontSize: 16,
-                },
-                optionsContainer: {
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  justifyContent: "center",
-                  marginTop: 20,
-                  paddingHorizontal: 20,
-                },
-                optionsRow: {
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                  justifyContent: "center",
-                },
-                option: {
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
-                  borderRadius: 15,
-                  borderWidth: 1,
-                  borderColor: "#777",
-                  marginRight: 10,
-                  marginBottom: 10,
-                },
-                selectedOption: {
-                  backgroundColor: "#91B391",
-                  borderColor: "#91B391",
-                },
-                selectedItemsContainer: {
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  marginBottom: 10,
-                },
-                selectedItem: {
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
-                  borderRadius: 15,
-                  backgroundColor: "#91B391",
-                  marginRight: 10,
-                  marginBottom: 10,
-                },
-                selectedItemText: {
-                  color: "white",
-                  marginRight: 5,
-                },
-                popularContainer: {
-                  paddingHorizontal: 20,
-                  marginBottom: 20,
-                  position: 'sticky', // 인기 검색어를 상단에 고정
-                  top: 0, // 인기 검색어가 상단에 붙도록 위치 조정
-                  zIndex: 1, // 인기 검색어가 다른 요소 위에 표시되도록 zIndex 설정
-                },
-                popularTitle: {
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  marginBottom: 10,
-                },
-                popularItem: {
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginBottom: 5,
-                },
-                popularRank: {
-                  marginRight: 10,
-                  color: "#777",
-                },
-                popularName: {
-                  color: "#777",
-                },
-                footer: {
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-evenly",
-    backgroundColor: "#91B391",
-    paddingBottom: 35,
-    paddingTop: 15,
-    position: "fixed", // 수정된 부분
-    bottom: 0, // 수정된 부분
+  return (
+    <View style={styles.container}>
+      <StatusBar backgroundColor="auto" />
+
+      {/* 검색창 */}
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="검색어를 입력하세요"
+        />
+        <TouchableOpacity>
+          <Feather name="search" size={24} color="white" style={styles.icon} />
+        </TouchableOpacity>
+      </View>
+
+      {/* 검색창 밑에 선택된 태그들 보여줌! */}
+      <View>{renderSelectedItems()}</View>
+
+      {/* 스타일-카테고리 탭 전환 버튼 (이 아래로 스크롤 뷰) */}
+      <ScrollView>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={[styles.button, isStyleOpen && styles.selectedButton]}
+            onPress={handleStylePress}
+          >
+            <Text style={styles.buttonText}>Style</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.button, isCategoryOpen && styles.selectedButton]}
+            onPress={handleCategoryPress}
+          >
+            <Text style={styles.buttonText}>Category</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* 스타일-카테고리 탭 내부에서 보여주는 옵션들 */}
+        {isStyleOpen && renderStyleOptions()}
+        {isCategoryOpen && renderCategoryOptions()}
+
+        {/* 인기 검색어 */}
+        <View style={styles.popularContainer}>
+          <Text style={styles.popularTitle}>인기 검색어</Text>
+          {popularList.map((keyword, index) => (
+            <View key={index} style={styles.popularItem}>
+              <Text style={styles.popularRank}>{index + 1}</Text>
+              <Text style={styles.popularName}>{keyword.name}</Text>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+
+      <BottomNav navigation={navigation} />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
   },
-                menuIcon: {
-                  justifyContent: "center",
-                  alignItems: "center",
-                },
-              });
-              
-                
-         
+
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#91B391",
+    borderRadius: 30,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginHorizontal: 20,
+    marginTop: 60,
+    marginBottom: 15,
+  },
+
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: "white",
+    marginLeft: 10,
+  },
+
+  icon: {
+    marginLeft: 5,
+  },
+
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 20,
+  },
+
+  button: {
+    alignItems: "center",
+    width: "50%",
+    padding: 15,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    backgroundColor: "#91B391",
+  },
+
+  selectedButton: {
+    backgroundColor: "#669066",
+  },
+
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+
+  optionsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    borderWidth: 1.5,
+    borderColor: "#91B391",
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    marginHorizontal: 20,
+    marginBottom: 10,
+    padding: 20,
+  },
+
+  option: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: "#777",
+    margin: 5,
+  },
+
+  selectedOption: {
+    backgroundColor: "#91B391",
+    borderColor: "#91B391",
+  },
+
+  selectedItemsContainer: {
+    marginLeft: 20,
+    marginBottom: 20,
+  },
+
+  selectedItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 15,
+    backgroundColor: "#91B391",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginHorizontal: 5,
+  },
+
+  selectedItemText: {
+    color: "black",
+  },
+
+  popularContainer: {
+    margin: 20,
+  },
+
+  popularTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+
+  popularItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 5,
+  },
+
+  popularRank: {
+    marginRight: 10,
+    color: "#777",
+  },
+
+  popularName: {
+    color: "#777",
+  },
+});

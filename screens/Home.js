@@ -38,7 +38,10 @@ export default function Home({ navigation }) {
       <StatusBar style="auto" />
 
       <View style={styles.menuBar}>
-        <TouchableOpacity style={styles.menuIcon}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Search")}
+          style={styles.menuIcon}
+        >
           <Feather name="search" size={28} color="black" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.menuIcon}>

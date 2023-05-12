@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import BottomNav from "../components/BottomNav";
 import { Feather } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
