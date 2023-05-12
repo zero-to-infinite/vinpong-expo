@@ -8,6 +8,7 @@ import Search from "./screens/Search";
 import Add from "./screens/Add";
 import ChatRoom from "./screens/ChatRoom";
 import Store from "./screens/Store";
+import Chat from "./screens/Chat";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -20,6 +21,7 @@ export default function App() {
         <Stack.Screen name="Search" component={Search} />
         <Stack.Screen name="Add" component={Add} />
         <Stack.Screen name="ChatRoom" component={ChatRoom} />
+        <Stack.Screen name="Chat" component={Chat} />
         <Stack.Screen name="Store" component={Store} />
       </Stack.Navigator>
     </NavigationContainer>

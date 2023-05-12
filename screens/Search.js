@@ -286,7 +286,10 @@ export default function Search() {
                 },
                 popularContainer: {
                   paddingHorizontal: 20,
-                  marginTop: 20,
+                  marginBottom: 20,
+                  position: 'sticky', // 인기 검색어를 상단에 고정
+                  top: 0, // 인기 검색어가 상단에 붙도록 위치 조정
+                  zIndex: 1, // 인기 검색어가 다른 요소 위에 표시되도록 zIndex 설정
                 },
                 popularTitle: {
                   fontSize: 16,
