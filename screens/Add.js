@@ -7,15 +7,16 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  TextInput,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import BouncyCheckboxGroup, {
   ICheckboxButton,
 } from "react-native-bouncy-checkbox-group";
+import BottomNav from "../components/BottomNav";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import { TextInput } from "react-native-gesture-handler";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -167,26 +168,7 @@ export default function Add({ navigation }) {
         </View>
       </View>
 
-      <View style={styles.footer}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Home")}
-          style={styles.menuIcon}
-        >
-          <Feather name="home" size={28} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
-          <Feather name="search" size={28} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
-          <Feather name="plus-circle" size={28} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
-          <Feather name="message-square" size={28} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
-          <FontAwesome name="user-circle-o" size={28} color="white" />
-        </TouchableOpacity>
-      </View>
+      <BottomNav navigation={navigation} />
     </View>
   );
 }
