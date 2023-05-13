@@ -7,6 +7,8 @@ import {
   StyleSheet,
   TextInput,
 } from "react-native";
+import { FIRESTORE_DB } from "../firebaseConfig";
+import { addDoc, collection } from "firebase/firestore";
 import { Feather } from "@expo/vector-icons";
 
 export default function SignUp({ navigation }) {
@@ -16,13 +18,17 @@ export default function SignUp({ navigation }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+
   /*
   const [emailMessage, setEmailMessage] = useState("");
   const [pwMessage, setPwMessage] = useState("");
   const [pwCheckMessage, setPwCheckMessage] = useState("");
   const [nameMessage, setNameMessage] = useState("");
   */
-  const signUp = () => {
+ 
+ // 회원가입 버튼을 누르면 동작하는 함수
+ // Firebase에 유저 정보를 삽입
+  const signUp = async () => {
     if (email == "") {
       alert("이메일은 필수 입력입니다!");
     } else if (pw == "") {
@@ -32,6 +38,13 @@ export default function SignUp({ navigation }) {
     } else if (name == "") {
       alert("닉네임은 필수 입력입니다!");
     } else {
+      await addDoc(collection(FIRESTORE_DB, 'User'), {
+        email: {email},
+        pw: {pw},
+        name: {name},
+        phone: {phone},
+        address: {address}
+      });
       alert(
         `가입을 축하드립니다!\n이메일: ${email}\n비밀번호: ${pw}\n닉네임: ${name}`
       );

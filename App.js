@@ -2,6 +2,7 @@ import React from "react";
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+// screens
 import Loading from "./screens/Loading";
 import Home from "./screens/Home";
 import Search from "./screens/Search";
