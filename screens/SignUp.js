@@ -7,9 +7,9 @@ import {
   StyleSheet,
   TextInput,
 } from "react-native";
+import { Feather } from "@expo/vector-icons";
 
 export default function SignUp({ navigation }) {
-    
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [pwCheck, setPwCheck] = useState("");
@@ -24,7 +24,9 @@ export default function SignUp({ navigation }) {
     if (pw !== pwCheck) {
       alert("비밀번호가 일치하지 않습니다.");
     } else {
-      alert(`가입을 축하드립니다!\n이메일: ${email}\n비밀번호: ${pw}\n닉네임: ${name}`);
+      alert(
+        `가입을 축하드립니다!\n이메일: ${email}\n비밀번호: ${pw}\n닉네임: ${name}`
+      );
       navigation.navigate("Home");
     }
   };
@@ -33,64 +35,96 @@ export default function SignUp({ navigation }) {
     <View style={styles.container}>
       <StatusBar style="auto" />
 
-      <View style={styles.email}>
-        <Text style={styles.text}>이메일</Text>
-        <TextInput
-          placeholder="이메일을 입력하세요."
-          onChangeText={setEmail}
-          value={email}
-          style={styles.input}
-        />
-        <TouchableOpacity style={styles.btn}>
-          <Text style={styles.text}>인증 요청</Text>
-        </TouchableOpacity>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Sign Up</Text>
       </View>
 
-      <View style={styles.auth}>
-        <TextInput style={styles.input} />
-        <Text style={styles.text}>4:39</Text>
-        <TouchableOpacity style={styles.btn}>
-          <Text style={styles.text}>인증 확인</Text>
-        </TouchableOpacity>
-      </View>
+      <View style={styles.body}>
+        <View style={styles.email}>
+          <Text style={styles.text}>이메일</Text>
+          <TextInput
+            placeholder="이메일을 입력하세요."
+            onChangeText={setEmail}
+            value={email}
+            style={styles.input}
+          />
+          <TouchableOpacity style={styles.btn}>
+            <Text style={styles.text}>인증 요청</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.hr} />
+        <View style={styles.auth}>
+          <TextInput style={styles.input} />
+          <Text style={styles.text}>4:39</Text>
+          <TouchableOpacity style={styles.btn}>
+            <Text style={styles.text}>인증 확인</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.pw}>
-        <Text style={styles.text}>비밀번호</Text>
-        <TextInput
-          placeholder="비밀번호를 입력하세요."
-          secureTextEntry={true}
-          onChangeText={setPw}
-          value={pw}
-          style={styles.input}
-        />
-      </View>
+        <View style={styles.hr} />
 
-      <View style={styles.pw}>
-        <Text style={styles.text}>비밀번호 확인</Text>
-        <TextInput
-          placeholder="비밀번호를 입력하세요."
-          secureTextEntry={true}
-          onChangeText={setPwCheck}
-          value={pwCheck}
-          style={styles.input}
-        />
-      </View>
+        <View style={styles.pw}>
+          <Text style={styles.text}>비밀번호</Text>
+          <TextInput
+            placeholder="비밀번호를 입력하세요."
+            secureTextEntry={true}
+            onChangeText={setPw}
+            value={pw}
+            style={styles.input}
+          />
+        </View>
 
-      <View style={styles.hr} />
+        <View style={styles.pw}>
+          <Text style={styles.text}>비밀번호 확인</Text>
+          <TextInput
+            placeholder="비밀번호를 입력하세요."
+            secureTextEntry={true}
+            onChangeText={setPwCheck}
+            value={pwCheck}
+            style={styles.input}
+          />
+        </View>
 
-      <View style={styles.name}>
-        <Text style={styles.text}>닉네임</Text>
-        <TextInput
-          placeholder="닉네임을 입력하세요."
-          onChangeText={setName}
-          value={name}
-          style={styles.input}
-        />
-        <TouchableOpacity style={styles.btn}>
-          <Text style={styles.text}>중복 확인</Text>
-        </TouchableOpacity>
+        <View style={styles.hr} />
+
+        <View style={styles.name}>
+          <Text style={styles.text}>닉네임</Text>
+          <TextInput
+            placeholder="닉네임을 입력하세요."
+            onChangeText={setName}
+            value={name}
+            style={styles.input}
+          />
+          <TouchableOpacity style={styles.btn}>
+            <Text style={styles.text}>중복 확인</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.pw}>
+          <Text style={styles.text}>연락처</Text>
+          <TextInput
+            placeholder="비밀번호를 입력하세요."
+            secureTextEntry={true}
+            onChangeText={setPw}
+            value={pw}
+            style={styles.input}
+          />
+          <TouchableOpacity style={styles.btn}>
+            <Text style={styles.text}>인증 요청</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.pw}>
+          <Text style={styles.text}>주소</Text>
+          <TextInput
+            placeholder="비밀번호를 입력하세요."
+            secureTextEntry={true}
+            onChangeText={setPw}
+            value={pw}
+            style={styles.input}
+          />
+          <Feather name="search" size={24} color="#bbb" style={styles.icon} />
+        </View>
       </View>
 
       <TouchableOpacity onPress={signUp} style={styles.signUp}>
@@ -103,9 +137,30 @@ export default function SignUp({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "white",
+  },
+
+  header: {
+    backgroundColor: "#91B391",
+    height: 100,
+    width: "100%",
+    justifyContent: "flex-end",
+  },
+
+  headerText: {
+    color: "white",
+    fontSize: 22,
+    fontWeight: "bold",
+    marginLeft: 20,
+    marginBottom: 15,
+  },
+
+  body: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center"
   },
 
   email: {
@@ -149,7 +204,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#91B391",
     borderColor: "#91B391",
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 20,
     padding: 10,
     marginHorizontal: 5,
   },
@@ -162,9 +217,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#91B391",
     borderColor: "#91B391",
     borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
+    borderRadius: 20,
+    padding: 12,
     marginTop: 20,
+    marginBottom: 50,
+  },
+
+  icon: {
+    marginLeft: 5,
   },
 
   hr: {
