@@ -47,8 +47,6 @@ export default function BottomNav({ navigation }) {
 
 const styles = StyleSheet.create({
   footer: {
-    //position: "fixed",
-    //bottom: 0,
     flexDirection: "row",
     width: "100%",
     justifyContent: "space-evenly",

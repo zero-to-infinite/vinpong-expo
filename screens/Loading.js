@@ -27,7 +27,7 @@ export default function Loading({ navigation }) {
           <Text style={styles.loginText}>로그인</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
           <Text style={styles.signUpText}>회원가입</Text>
         </TouchableOpacity>
       </View>
@@ -75,6 +75,6 @@ const styles = StyleSheet.create({
 
   signUpText: {
     textDecorationLine: "underline",
-    marginTop: 5,
+    marginTop: 10,
   },
 });
