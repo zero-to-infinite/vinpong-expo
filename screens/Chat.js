@@ -1,25 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { io } from 'socket.io-client';
 
 const Chat = () => {
   const [messages, setMessages] = useState([]); // 채팅 메시지 배열
   const [inputText, setInputText] = useState(''); // 입력 필드의 텍스트
   const navigation = useNavigation();
 
+  // 웹소켓 클라이언트 생성 및 서버에 연결
+  useEffect(() => {
+    const socket = io('http://localhost:3000'); // 서버의 주소로 수정해야 함
+
+    // 메시지 수신 이벤트 핸들러
+    socket.on('message', (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    // 컴포넌트 언마운트 시 웹소켓 연결 종료
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   // 메시지 전송 함수
   const sendMessage = () => {
-    if (inputText.trim() === '') return; // 빈 메시지는 전송하지 않음
+    if (inputText.trim() === '') return;
 
     const message = {
-      id: Date.now().toString(), // 메시지 고유 ID 생성
+      id: Date.now().toString(),
       content: inputText,
-      sender: 'user', // 사용자 구분 값
+      sender: 'user',
     };
 
-    setMessages((prevMessages) => [...prevMessages, message]); // 메시지 배열에 새 메시지 추가
-    setInputText(''); // 입력 필드 초기화
+    // 메시지 서버로 전송
+    socket.emit('message', message);
+
+    setMessages((prevMessages) => [...prevMessages, message]);
+    setInputText('');
   };
 
   // 메시지 아이템 렌더링 함수
@@ -41,8 +60,7 @@ const Chat = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        
-        <Text style={styles.headerText}>상대방 이름 </Text>
+        <Text style={styles.headerText}>상대방 이름</Text>
         <TouchableOpacity style={styles.goBackButton} onPress={handleGoBack}>
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
@@ -63,12 +81,14 @@ const Chat = () => {
           placeholder="메시지를 입력하세요..."
         />
         <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-          <Text style={styles.sendButtonText}>전송</Text>
+        <Text style={styles.sendButtonText}>전송</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
