@@ -10,7 +10,7 @@ import {
   TextInput,
 } from "react-native";
 import BottomNav from "../components/BottomNav";
-import { Feather } from "@expo/vector-icons";
+import TopBar from "../components/TopBar";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -50,17 +50,7 @@ export default function Store({ navigation }) {
     <View style={styles.container}>
       <StatusBar style="auto" />
 
-      <View style={styles.menuBar}>
-        <TouchableOpacity style={styles.menuIcon}>
-          <Feather name="search" size={28} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
-          <Feather name="bell" size={28} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
-          <Feather name="shopping-cart" size={28} color="black" />
-        </TouchableOpacity>
-      </View>
+      <TopBar navigation={navigation} />
 
       <ScrollView style={styles.body}>
         <View style={styles.infoBox}>
@@ -211,7 +201,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     alignItems: "center",
     marginTop: 20,
-    marginBottom: 25,
+    marginBottom: 30,
   },
 
   follow: {

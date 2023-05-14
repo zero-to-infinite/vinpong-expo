@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
 import BottomNav from "../components/BottomNav";
-import { Feather } from "@expo/vector-icons";
+import TopBar from "../components/TopBar";
 import { AntDesign } from "@expo/vector-icons";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -43,20 +43,7 @@ export default function Home({ navigation }) {
     <View style={styles.container}>
       <StatusBar style="auto" />
 
-      <View style={styles.menuBar}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Search")}
-          style={styles.menuIcon}
-        >
-          <Feather name="search" size={28} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
-          <Feather name="bell" size={28} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
-          <Feather name="shopping-cart" size={28} color="black" />
-        </TouchableOpacity>
-      </View>
+      <TopBar navigation={navigation} />
 
       <View style={styles.body}>
         <TouchableOpacity onPress={signOut} style={styles.banner}>

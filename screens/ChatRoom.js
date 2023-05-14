@@ -1,9 +1,15 @@
-import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { FlatList, Image } from "react-native";
+import React, { useEffect } from "react";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  FlatList,
+  Image,
+} from "react-native";
 import io from "socket.io-client";
-import { useEffect } from "react";
+import BottomNav from "../components/BottomNav";
+import TopBar from "../components/TopBar";
 
 const DATA = [
   {
@@ -12,7 +18,6 @@ const DATA = [
     product: {
       id: "p1",
       //image: require('/Images/product1.png'),
-
       title: "초코파이 팝니다.",
     },
     lastMessage: "배송 언제 해주나요?",
@@ -49,7 +54,8 @@ const DATA = [
   },
 ];
 
-const ChatRoom = ({ navigation }) => {
+export default function ChatRoom({ navigation }) {
+  /** 채팅 기능 구현 부분 */
   useEffect(() => {
     // 소켓 연결 설정
     const socket = io("YOUR_BACKEND_SERVER_URL");
@@ -65,31 +71,33 @@ const ChatRoom = ({ navigation }) => {
       socket.disconnect();
     };
   }, []);
+  /** 지원 담당 */
 
+  // 채팅 목록을 보여주는 함수
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity
-        style={styles.itemContainer}
+        style={styles.chatContainer}
         onPress={() => navigation.navigate("Chat")}
       >
         <Image
-          style={styles.itemImage} //source={require('./Images/product1.png')}
+          style={styles.chatImage} //source={require('./Images/product1.png')}
         />
-        <View style={styles.itemInfoContainer}>
-          <View style={styles.itemTitleContainer}>
+        <View style={styles.chatInfoContainer}>
+          <View style={styles.chatTitleContainer}>
             <Text
-              style={styles.itemTitle}
-              numberOfLines={1}
-              ellipsizeMode="tail"
+              style={styles.chatTitle}
+              numberOfLines={1} // 보여질 최대 줄 수
+              ellipsizeMode="tail" // 텍스트가 길어지면 ...으로 표시
             >
               {item.product.title}
             </Text>
-            <Text style={styles.itemName}>{item.name}</Text>
+            <Text style={styles.chatName}>{item.name}</Text>
           </View>
           <Text
-            style={styles.itemLastMessage}
-            numberOfLines={1}
-            ellipsizeMode="tail"
+            style={styles.chatLastMessage}
+            numberOfLines={1} // 보여질 최대 줄 수
+            ellipsizeMode="tail" // 텍스트가 길어지면 ...으로 표시
           >
             {item.lastMessage}
           </Text>
@@ -101,77 +109,83 @@ const ChatRoom = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Icon name="search" size={24} color="#fff" />
-        <Icon name="bell" size={24} color="#fff" />
-        <Icon name="shopping-basket" size={24} color="#fff" />
+        <TopBar navigation={navigation} />
       </View>
-      <View style={styles.chatList}>
+
+      <View style={styles.body}>
         <FlatList
           data={DATA}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
         />
       </View>
+
+      <BottomNav navigation={navigation} />
     </View>
   );
-};
-
-export default ChatRoom;
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
   },
+
   header: {
-    height: 60,
-    backgroundColor: "#91B391",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    paddingHorizontal: 16,
-    marginTop: 30,
+    alignItems: "flex-end",
+    borderBottomWidth: 1,
+    borderBottomColor: "lightgray",
+    marginHorizontal: 10,
+    paddingBottom: 12,
   },
-  chatList: {
+
+  body: {
     flex: 1,
-    backgroundColor: "##91B391",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    backgroundColor: "white",
+    marginHorizontal: 10,
   },
-  itemContainer: {
+
+  chatContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 12,
-    borderBottomColor: "#d9d9d9",
+    paddingVertical: 16,
+    borderBottomColor: "lightgray",
     borderBottomWidth: 1,
   },
-  itemImage: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    marginRight: 16,
+
+  chatImage: {
+    backgroundColor: "#91B391", // 이미지 위치 확인 위해 임시로 배경색 지정
+    width: 50,
+    height: 50,
+    borderRadius: 20,
+    marginHorizontal: 16,
   },
-  itemInfoContainer: {
+
+  chatInfoContainer: {
     flex: 1,
     justifyContent: "center",
-    marginRight: 16,
+    marginLeft: 5,
   },
-  itemTitleContainer: {
+
+  chatTitleContainer: {
     flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
     marginBottom: 4,
   },
-  itemTitle: {
+
+  chatTitle: {
+    flex: 1,
     fontWeight: "bold",
     fontSize: 16,
-    marginRight: 4,
-    flex: 1,
   },
-  itemName: {
-    fontSize: 14,
+
+  chatName: {
     color: "#999",
+    marginRight: 18,
   },
-  itemLastMessage: {
+
+  chatLastMessage: {
     color: "#666",
   },
 });
