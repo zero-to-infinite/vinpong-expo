@@ -15,7 +15,6 @@ import BouncyCheckboxGroup, {
 } from "react-native-bouncy-checkbox-group";
 import BottomNav from "../components/BottomNav";
 import { Feather } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -35,27 +34,21 @@ export default function Add({ navigation }) {
     {
       id: 0,
       text: "최상",
-      width: "50%",
-      paddingBottom: 10,
       ...checkboxStyles,
     },
     {
       id: 1,
       text: "상",
-      width: "50%",
-      paddingBottom: 10,
       ...checkboxStyles,
     },
     {
       id: 2,
       text: "중",
-      width: "50%",
       ...checkboxStyles,
     },
     {
       id: 3,
       text: "하",
-      width: "50%",
       ...checkboxStyles,
     },
   ];
@@ -64,19 +57,16 @@ export default function Add({ navigation }) {
     {
       id: 0,
       text: "L",
-      width: "33%",
       ...checkboxStyles,
     },
     {
       id: 1,
       text: "M",
-      width: "33%",
       ...checkboxStyles,
     },
     {
       id: 2,
       text: "S",
-      width: "33%",
       ...checkboxStyles,
     },
   ];
@@ -131,13 +121,19 @@ export default function Add({ navigation }) {
           </View>
         )}
 
+        <View style={styles.hr} />
+
         <View style={styles.inputBox}>
-          <Text style={styles.label}>상품명</Text>
+          <View style={styles.labelBox}>
+            <Text style={styles.label}>상품명</Text>
+          </View>
           <TextInput returnKeyType="done" style={styles.input} />
         </View>
 
         <View style={styles.inputBox}>
-          <Text style={styles.label}>가격</Text>
+          <View style={styles.labelBox}>
+            <Text style={styles.label}>가격</Text>
+          </View>
           <TextInput
             keyboardType="number-pad"
             returnKeyType="done"
@@ -146,18 +142,24 @@ export default function Add({ navigation }) {
         </View>
 
         <View style={styles.inputBox}>
-          <Text style={styles.label}>상태</Text>
+          <View style={styles.labelBox}>
+            <Text style={styles.label}>상태</Text>
+          </View>
           <BouncyCheckboxGroup data={condition} style={styles.checkbox} />
         </View>
 
         <View style={styles.inputBox}>
-          <Text style={styles.label}>사이즈</Text>
+          <View style={styles.labelBox}>
+            <Text style={styles.label}>사이즈</Text>
+          </View>
           <BouncyCheckboxGroup data={size} style={styles.checkbox} />
         </View>
 
         {/*키보드가 input을 가리는 버그 해결 필요!*/}
         <View style={styles.inputAreaBox}>
-          <Text style={styles.label}>상세 설명</Text>
+          <View style={styles.labelBox}>
+            <Text style={styles.label}>상세 설명</Text>
+          </View>
           <TextInput
             multiline={true}
             placeholder="상세 설명을 적어주세요 :D"
@@ -177,6 +179,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+    justifyContent: "space-between",
   },
 
   menuBar: {
@@ -198,54 +201,56 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     alignItems: "center",
-    marginHorizontal: 10,
     marginVertical: 20,
   },
 
   pic: {
+    position: "relative", // 사진 삭제 버튼 겹치게 하기 위함
     justifyContent: "center",
     alignItems: "center",
     borderColor: "black",
     borderWidth: 1,
     borderRadius: 15,
-    marginBottom: 20,
-    width: 200,
+    width: 200, // 항상 고정된 크기
     height: 200,
   },
 
   deletePic: {
+    position: "absolute", // 부모 컴포넌트 내에서 절대적 위치 지정
     backgroundColor: "#91B391",
     borderColor: "#91B391",
     borderWidth: 1,
     position: "absolute",
     borderRadius: 20,
     padding: 5,
-    top: "80%",
-    left: "50%",
+    bottom: -10,
+    right: -10,
   },
 
   inputBox: {
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 15,
+    marginHorizontal: 10,
     marginVertical: 12,
   },
 
-  label: {
-    width: "30%",
+  labelBox: {
+    alignItems: "center",
+    width: 70,
   },
 
   input: {
+    flex: 1,
     borderColor: "white",
     borderBottomColor: "black",
     borderWidth: 1,
-    width: "70%",
+    marginRight: 15,
   },
 
   inputAreaBox: {
     flex: 1,
     flexDirection: "row",
-    marginHorizontal: 15,
+    marginHorizontal: 10,
     marginVertical: 12,
   },
 
@@ -254,11 +259,14 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 1,
     borderRadius: 10,
+    marginRight: 10,
     padding: 5,
   },
 
   checkbox: {
-    width: "70%",
+    flex: 1,
+    justifyContent: "space-evenly",
+    alignItems: "center",
     flexWrap: "wrap",
   },
 
@@ -270,4 +278,8 @@ const styles = StyleSheet.create({
     paddingBottom: 35,
     paddingTop: 15,
   },
+
+  hr: {
+    marginVertical: 10,
+  }
 });
