@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.js": "/VinPong/static/js/main.b62e3662.js",
+    "static/js/596.bcb6206a.js": "/VinPong/static/js/596.bcb6206a.js",
+    "static/media/Ionicons.ttf": "/VinPong/static/media/Ionicons.3517aeaa34b2f8cd8eef.ttf",
+    "static/media/FontAwesome.ttf": "/VinPong/static/media/FontAwesome.1e59d2330b4c6deb84b3.ttf",
+    "static/media/AntDesign.ttf": "/VinPong/static/media/AntDesign.163adab9dbd7cb1ed12a.ttf",
+    "static/media/Feather.ttf": "/VinPong/static/media/Feather.0f5d9cede2e831f3fc80.ttf",
+    "favicon.ico": "/VinPong/favicon.ico",
+    "index.html": "/VinPong/index.html",
+    "favicon-32.png": "/VinPong/favicon-32.png",
+    "favicon-16.png": "/VinPong/favicon-16.png",
+    "serve.json": "/VinPong/serve.json",
+    "manifest.json": "/VinPong/manifest.json",
+    "main.b62e3662.js.map": "/VinPong/static/js/main.b62e3662.js.map",
+    "596.bcb6206a.js.map": "/VinPong/static/js/596.bcb6206a.js.map"
+  },
+  "entrypoints": [
+    "static/js/596.bcb6206a.js",
+    "static/js/main.b62e3662.js"
+  ]
+}
