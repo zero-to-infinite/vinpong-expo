@@ -7,13 +7,42 @@ import {
   StyleSheet,
   TextInput,
 } from "react-native";
-import { FIRESTORE_DB } from "../firebaseConfig";
-import { addDoc, collection } from "firebase/firestore";
-import { Feather } from "@expo/vector-icons";
+import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function SignUp({ navigation }) {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
+
+  const signIn = async () => {
+    if (email == "") {
+      alert("이메일은 필수 입력입니다!");
+    } else if (pw == "") {
+      alert("비밀번호는 필수 입력입니다!");
+    } else {
+      try {
+        const curUser = await signInWithEmailAndPassword(
+          FIREBASE_AUTH,
+          email,
+          pw
+        );
+        if (curUser) {
+          alert("로그인 성공!");
+          navigation.navigate("Home");
+        }
+      } catch (err) {
+        if (
+          err.code == "auth/invalid-email" ||
+          err.code == "auth/wrong-password"
+        ) {
+          alert("이메일 혹은 패스워드가 일치하지 않습니다.");
+        } else {
+          alert("로그인 실패...");
+        }
+        console.log(err);
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -52,10 +81,7 @@ export default function SignUp({ navigation }) {
         </View>
       </View>
 
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Home")}
-        style={styles.signUpBtn}
-      >
+      <TouchableOpacity onPress={signIn} style={styles.signUpBtn}>
         <Text>로그인</Text>
       </TouchableOpacity>
     </View>
