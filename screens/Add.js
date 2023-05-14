@@ -220,7 +220,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#91B391",
     borderColor: "#91B391",
     borderWidth: 1,
-    position: "absolute",
     borderRadius: 20,
     padding: 5,
     bottom: -10,
@@ -228,15 +227,16 @@ const styles = StyleSheet.create({
   },
 
   inputBox: {
+    width: "95%",
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 10,
+    //marginHorizontal: 10,
     marginVertical: 12,
   },
 
   labelBox: {
     alignItems: "center",
-    width: 70,
+    width: 65,
   },
 
   input: {
@@ -248,9 +248,10 @@ const styles = StyleSheet.create({
   },
 
   inputAreaBox: {
-    flex: 1,
+    flex: 1, // 세로로 flexible
+    width: "95%",
     flexDirection: "row",
-    marginHorizontal: 10,
+    //marginHorizontal: 10,
     marginVertical: 12,
   },
 
