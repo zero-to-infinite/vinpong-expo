@@ -22,7 +22,7 @@ export default function Loading({ navigation }) {
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.login}
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => navigation.navigate("SignIn")}
         >
           <Text style={styles.loginText}>로그인</Text>
         </TouchableOpacity>
