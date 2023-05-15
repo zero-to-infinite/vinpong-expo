@@ -1,4 +1,8 @@
 import React, { useEffect } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { FlatList, Image } from "react-native";
+import io from "socket.io-client";
 import {
   StyleSheet,
   Text,
@@ -58,13 +62,20 @@ export default function ChatRoom({ navigation }) {
   /** 채팅 기능 구현 부분 */
   useEffect(() => {
     // 소켓 연결 설정
-    const socket = io("YOUR_BACKEND_SERVER_URL");
-
+    const socket = io('http://localhost:3000'); // 실제 백엔드 서버 주소로 변경해야 함
+  
     // 메시지 수신 이벤트 핸들러
-    socket.on("chatMessage", (message) => {
-      console.log("Received message:", message);
-      // TODO: 받은 메시지를 적절히 처리하는 로직을 구현
-    });
+   // 메시지 수신 이벤트 핸들러
+socket.on("message", (data) => {
+  console.log("Received message:", data);
+  // TODO: 메시지를 적절히 처리하고 화면에 표시하는 로직을 구현합니다.
+});
+
+// 메시지 전송 함수
+const sendMessage = (message) => {
+  socket.emit("message", message);
+};
+
 
     // 컴포넌트 언마운트 시 소켓 연결 해제
     return () => {
