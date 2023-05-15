@@ -13,6 +13,8 @@ import Chat from "./screens/Chat";
 import SignUp from "./screens/SignUp";
 import SignIn from "./screens/SignIn";
 
+//브랜치 테스트
+
 export default function App() {
   const Stack = createStackNavigator();
 
