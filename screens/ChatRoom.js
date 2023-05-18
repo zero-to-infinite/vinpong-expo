@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { FlatList, Image } from "react-native";
+
 import io from "socket.io-client";
 import {
   StyleSheet,
@@ -11,7 +10,7 @@ import {
   FlatList,
   Image,
 } from "react-native";
-import io from "socket.io-client";
+
 import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
 
