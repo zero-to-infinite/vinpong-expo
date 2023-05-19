@@ -6,17 +6,25 @@ export default function TopBar({ navigation }) {
   return (
     <View style={styles.topBar}>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Search")}
-        style={styles.topIcon}
+        onPress={() => navigation.goBack()}
+        style={styles.topBarLeft}
       >
-        <Icon name="search" size={26} color="#91B391" />
+        <Icon name="angle-left" size={36} color="#91B391" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.topIcon}>
-        <Icon name="bell" size={26} color="#91B391" />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.topIcon}>
-        <Icon name="shopping-basket" size={26} color="#91B391" />
-      </TouchableOpacity>
+      <View style={styles.topBarRight}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Search")}
+          style={styles.topIcon}
+        >
+          <Icon name="search" size={26} color="#91B391" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.topIcon}>
+          <Icon name="bell" size={26} color="#91B391" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.topIcon}>
+          <Icon name="shopping-basket" size={26} color="#91B391" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -24,12 +32,21 @@ export default function TopBar({ navigation }) {
 const styles = StyleSheet.create({
   topBar: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginTop: 50,
-    marginRight: 10,
+    marginHorizontal: 15,
+  },
+
+  topBarLeft: {
+    marginLeft: 5,
+  },
+
+  topBarRight: {
+    flexDirection: "row",
   },
 
   topIcon: {
-    padding: 3,
+    padding: 4,
   },
 });

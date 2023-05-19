@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     marginHorizontal: 10,
-    marginVertical: 20,
+    marginVertical: 12,
   },
 
   bodyText: {

@@ -96,7 +96,10 @@ export default function Add({ navigation }) {
       <StatusBar style="auto" />
 
       <View style={styles.menuBar}>
-        <TouchableOpacity style={styles.menuIcon}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.menuIcon}
+        >
           <AntDesign name="close" size={28} color="black" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.menuIcon}>
@@ -187,7 +190,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: 50,
-    marginHorizontal: 15,
+    marginHorizontal: 20,
   },
 
   menuIcon: {
@@ -282,5 +285,5 @@ const styles = StyleSheet.create({
 
   hr: {
     marginVertical: 10,
-  }
+  },
 });

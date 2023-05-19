@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
 
   infoBox: {
     flexDirection: "row",
-    marginTop: 15,
+    marginTop: 12,
     marginBottom: 10,
   },
 
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 17,
     marginBottom: 30,
   },
 

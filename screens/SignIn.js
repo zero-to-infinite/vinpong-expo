@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function SignUp({ navigation }) {
   const [email, setEmail] = useState("");
@@ -49,6 +50,9 @@ export default function SignUp({ navigation }) {
       <StatusBar style="auto" />
 
       <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="angle-left" size={34} color="white" />
+        </TouchableOpacity>
         <Text style={styles.headerText}>Sign In</Text>
       </View>
 
@@ -97,18 +101,21 @@ const styles = StyleSheet.create({
   },
 
   header: {
+    flexDirection: "row",
     backgroundColor: "#91B391",
     height: 100,
     width: "100%",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    paddingHorizontal: 20,
+    paddingBottom: 10,
   },
 
   headerText: {
     color: "white",
     fontSize: 22,
     fontWeight: "bold",
-    marginLeft: 20,
-    marginBottom: 15,
+    marginBottom:2,
   },
 
   body: {

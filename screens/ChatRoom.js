@@ -132,10 +132,8 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    alignItems: "flex-end",
     borderBottomWidth: 1,
     borderBottomColor: "lightgray",
-    marginHorizontal: 10,
     paddingBottom: 12,
   },
 

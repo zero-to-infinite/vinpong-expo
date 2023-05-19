@@ -1,23 +1,22 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import {
-  ScrollView,
-  Dimensions,
-} from "react-native";
+import { ScrollView, Dimensions } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-
 
 export default function Loading({ navigation }) {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
 
-      <View style={styles.title}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Home")}
+        style={styles.title}
+      >
         <Text style={styles.titleText}>Vintage Ping Pong</Text>
-      </View>
+      </TouchableOpacity>
 
       <View style={styles.footer}>
         <TouchableOpacity
