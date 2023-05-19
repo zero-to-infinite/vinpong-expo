@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import io from "socket.io-client";
+
+const socket = io("http://localhost:3000");
 
 const Chat = () => {
   const [messages, setMessages] = useState([]); // 채팅 메시지 배열
