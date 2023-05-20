@@ -1,5 +1,5 @@
 import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
-import { addDoc, collection } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -24,25 +24,29 @@ export async function signUp(
   } else if (name == "") {
     alert("닉네임은 필수 입력입니다!");
   } else {
-    try {
+    try { // 새로운 유저 정보 생성 후 Authentication에 저장
       const createdUser = await createUserWithEmailAndPassword(
         FIREBASE_AUTH,
         email,
         pw
       );
-
-      await addDoc(collection(FIRESTORE_DB, "User"), {
-        email: { email },
-        pw: { pw },
-        name: { name },
-        phone: { phone },
-        address: { address },
+      createdUser.user.displayName = name; // 가입한 유저의 이름 설정
+      
+      // firestore의 User 컬렉션에 uid를 문서 이름으로 하는 유저 정보 삽입
+      await setDoc(doc(FIRESTORE_DB, "User", createdUser.user.uid), {
+        email: email,
+        pw: pw,
+        name: name,
+        phone: phone,
+        address: address,
       });
 
       alert(
         `가입을 축하드립니다!\n이메일: ${email}\n비밀번호: ${pw}\n닉네임: ${name}`
       );
-      navigation.navigate("Home");
+
+      navigation.navigate("Home"); // 가입 후 Home 화면으로 이동
+
     } catch (err) {
       //console.log(err);
       switch (err.code) {
@@ -89,4 +93,9 @@ export async function signIn(email, pw, navigation) {
       console.log(err);
     }
   }
+}
+// 로그아웃
+export function signOut(navigation) {
+  FIREBASE_AUTH.signOut();
+  navigation.navigate("Loading");
 }

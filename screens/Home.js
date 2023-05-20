@@ -8,10 +8,10 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
-import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
 import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
 import { AntDesign } from "@expo/vector-icons";
+import { signOut } from "../services/auth";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -34,11 +34,6 @@ export default function Home({ navigation }) {
     "상점 5",
   ]);
 
-  const signOut = () => {
-    FIREBASE_AUTH.signOut();
-    navigation.navigate("Loading");
-  };
-
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -46,7 +41,7 @@ export default function Home({ navigation }) {
       <TopBar navigation={navigation} />
 
       <View style={styles.body}>
-        <TouchableOpacity onPress={signOut} style={styles.banner}>
+        <TouchableOpacity onPress={() => signOut(navigation)} style={styles.banner}>
           <Text>배너</Text>
         </TouchableOpacity>
 

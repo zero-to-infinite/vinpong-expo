@@ -16,10 +16,16 @@ import BouncyCheckboxGroup, {
 import BottomNav from "../components/BottomNav";
 import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { addProduct } from "../services/productFirestore";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function Add({ navigation }) {
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState(0);
+  const [condition, setCondition] = useState("");
+  const [size, setSize] = useState("");
+  const [detail, setDetail] = useState("");
   const [image, setImage] = useState(null);
 
   const checkboxStyles = {
@@ -30,7 +36,7 @@ export default function Add({ navigation }) {
     },
   };
 
-  const condition = [
+  const conditionCheckboxGroup = [
     {
       id: 0,
       text: "최상",
@@ -53,7 +59,7 @@ export default function Add({ navigation }) {
     },
   ];
 
-  const size = [
+  const sizeCheckboxGroup = [
     {
       id: 0,
       text: "L",
@@ -91,6 +97,10 @@ export default function Add({ navigation }) {
     }
   };
 
+  const complete = () => {
+    addProduct(name, price, condition, size, detail, navigation);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -104,7 +114,9 @@ export default function Add({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity style={styles.menuIcon}>
           {/*완료 누르면 내 상점으로 이동하도록 추후 변경*/}
-          <Text style={styles.menuText}>완료</Text>
+          <Text onPress={complete} style={styles.menuText}>
+            완료
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -130,7 +142,12 @@ export default function Add({ navigation }) {
           <View style={styles.labelBox}>
             <Text style={styles.label}>상품명</Text>
           </View>
-          <TextInput returnKeyType="done" style={styles.input} />
+          <TextInput
+            onChangeText={setName}
+            value={name}
+            returnKeyType="done"
+            style={styles.input}
+          />
         </View>
 
         <View style={styles.inputBox}>
@@ -138,6 +155,8 @@ export default function Add({ navigation }) {
             <Text style={styles.label}>가격</Text>
           </View>
           <TextInput
+            onChangeText={setPrice}
+            value={price}
             keyboardType="number-pad"
             returnKeyType="done"
             style={styles.input}
@@ -148,14 +167,26 @@ export default function Add({ navigation }) {
           <View style={styles.labelBox}>
             <Text style={styles.label}>상태</Text>
           </View>
-          <BouncyCheckboxGroup data={condition} style={styles.checkbox} />
+          <BouncyCheckboxGroup
+            onChange={(ICheckboxButton) => {
+              setCondition(ICheckboxButton.text);
+            }}
+            data={conditionCheckboxGroup}
+            style={styles.checkbox}
+          />
         </View>
 
         <View style={styles.inputBox}>
           <View style={styles.labelBox}>
             <Text style={styles.label}>사이즈</Text>
           </View>
-          <BouncyCheckboxGroup data={size} style={styles.checkbox} />
+          <BouncyCheckboxGroup
+            onChange={(ICheckboxButton) => {
+              setSize(ICheckboxButton.text);
+            }}
+            data={sizeCheckboxGroup}
+            style={styles.checkbox}
+          />
         </View>
 
         {/*키보드가 input을 가리는 버그 해결 필요!*/}
@@ -164,6 +195,8 @@ export default function Add({ navigation }) {
             <Text style={styles.label}>상세 설명</Text>
           </View>
           <TextInput
+            onChangeText={setDetail}
+            value={detail}
             multiline={true}
             placeholder="상세 설명을 적어주세요 :D"
             returnKeyType="done"
