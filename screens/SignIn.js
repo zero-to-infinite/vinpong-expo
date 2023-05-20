@@ -4,45 +4,19 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   TextInput,
 } from "react-native";
-import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { signIn } from "../services/auth";
+import styles from "../styles/SignInStyles";
 
 export default function SignUp({ navigation }) {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
 
-  const signIn = async () => {
-    if (email == "") {
-      alert("이메일은 필수 입력입니다!");
-    } else if (pw == "") {
-      alert("비밀번호는 필수 입력입니다!");
-    } else {
-      try {
-        const curUser = await signInWithEmailAndPassword(
-          FIREBASE_AUTH,
-          email,
-          pw
-        );
-        if (curUser) {
-          alert("로그인 성공!");
-          navigation.navigate("Home");
-        }
-      } catch (err) {
-        if (
-          err.code == "auth/invalid-email" ||
-          err.code == "auth/wrong-password"
-        ) {
-          alert("이메일 혹은 패스워드가 일치하지 않습니다.");
-        } else {
-          alert("로그인 실패...");
-        }
-        console.log(err);
-      }
-    }
+  // 로그인 버튼 누를 시 동작하는 함수
+  const handleSignIn = () => {
+    signIn(email, pw, navigation);
   };
 
   return (
@@ -85,73 +59,9 @@ export default function SignUp({ navigation }) {
         </View>
       </View>
 
-      <TouchableOpacity onPress={signIn} style={styles.signUpBtn}>
+      <TouchableOpacity onPress={handleSignIn} style={styles.signUpBtn}>
         <Text>로그인</Text>
       </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "white",
-  },
-
-  header: {
-    flexDirection: "row",
-    backgroundColor: "#91B391",
-    height: 100,
-    width: "100%",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
-    paddingHorizontal: 20,
-    paddingBottom: 10,
-  },
-
-  headerText: {
-    color: "white",
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom:2,
-  },
-
-  body: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  form: {
-    width: "90%",
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
-    marginVertical: 5,
-  },
-
-  input: {
-    flex: 1,
-    borderRadius: 10,
-    borderColor: "#91B391",
-    borderWidth: 1,
-    padding: 10,
-    marginHorizontal: 6,
-  },
-
-  textContainer: {
-    width: 50,
-    alignItems: "center",
-  },
-
-  signUpBtn: {
-    backgroundColor: "#91B391",
-    borderColor: "#91B391",
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 50,
-  },
-});

@@ -49,15 +49,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
   },
 
-  btn: {
-    backgroundColor: "#91B391",
-    borderRadius: 20,
-    padding: 10,
-    marginHorizontal: 3,
-  },
-
   textContainer: {
-    width: 40,
+    width: 50,
     alignItems: "center",
   },
 
@@ -68,17 +61,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 12,
     marginBottom: 50,
-  },
-
-  icon: {
-    marginLeft: 5,
-  },
-
-  hr: {
-    width: "90%",
-    borderBottomColor: "#bbb",
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginVertical: 10,
   },
 });
 

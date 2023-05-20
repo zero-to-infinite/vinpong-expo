@@ -1,9 +1,20 @@
 import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
-// Firebase에 유저 정보를 삽입 (회원가입)
-export async function signUp (email, pw, pwCheck, name, phone, address, navigation) {
+// 회원가입 (Firebase에 유저 정보를 삽입)
+export async function signUp(
+  email,
+  pw,
+  pwCheck,
+  name,
+  phone,
+  address,
+  navigation
+) {
   if (email == "") {
     alert("이메일은 필수 입력입니다!");
   } else if (pw == "") {
@@ -47,4 +58,35 @@ export async function signUp (email, pw, pwCheck, name, phone, address, navigati
       }
     }
   }
-};
+}
+
+// 로그인 (기존에 가입되어 있는 유저인지 확인)
+export async function signIn(email, pw, navigation) {
+  if (email == "") {
+    alert("이메일은 필수 입력입니다!");
+  } else if (pw == "") {
+    alert("비밀번호는 필수 입력입니다!");
+  } else {
+    try {
+      const curUser = await signInWithEmailAndPassword(
+        FIREBASE_AUTH,
+        email,
+        pw
+      );
+      if (curUser) {
+        alert("로그인 성공!");
+        navigation.navigate("Home");
+      }
+    } catch (err) {
+      if (
+        err.code == "auth/invalid-email" ||
+        err.code == "auth/wrong-password"
+      ) {
+        alert("이메일 혹은 패스워드가 일치하지 않습니다.");
+      } else {
+        alert("로그인 실패...");
+      }
+      console.log(err);
+    }
+  }
+}
