@@ -4,14 +4,12 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   TextInput,
 } from "react-native";
-import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
-import { addDoc, collection } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Feather } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { signUp } from "../services/auth";
+import styles from "../styles/SignUpStyles";
 
 export default function SignUp({ navigation }) {
   const [email, setEmail] = useState("");
@@ -20,60 +18,10 @@ export default function SignUp({ navigation }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-
-  /*
-  const [emailMessage, setEmailMessage] = useState("");
-  const [pwMessage, setPwMessage] = useState("");
-  const [pwCheckMessage, setPwCheckMessage] = useState("");
-  const [nameMessage, setNameMessage] = useState("");
-  */
-
-  // 회원가입 버튼을 누르면 동작하는 함수
-  // Firebase에 유저 정보를 삽입
-  const signUp = async () => {
-    if (email == "") {
-      alert("이메일은 필수 입력입니다!");
-    } else if (pw == "") {
-      alert("비밀번호는 필수 입력입니다!");
-    } else if (pw !== pwCheck) {
-      alert("비밀번호가 일치하지 않습니다.");
-    } else if (name == "") {
-      alert("닉네임은 필수 입력입니다!");
-    } else {
-      try {
-        const createdUser = await createUserWithEmailAndPassword(
-          FIREBASE_AUTH,
-          email,
-          pw
-        );
-
-        await addDoc(collection(FIRESTORE_DB, "User"), {
-          email: { email },
-          pw: { pw },
-          name: { name },
-          phone: { phone },
-          address: { address },
-        });
-
-        alert(
-          `가입을 축하드립니다!\n이메일: ${email}\n비밀번호: ${pw}\n닉네임: ${name}`
-        );
-        navigation.navigate("Home");
-      } catch (err) {
-        //console.log(err);
-        switch (err.code) {
-          case "auth/weak-password":
-            alert("비밀번호는 6자리 이상이어야 합니다.");
-            break;
-          case "auth/invalid-email":
-            alert("잘못된 이메일 주소 형식입니다.");
-            break;
-          case "auth/email-already-in-use":
-            alert("이미 가입된 이메일입니다.");
-            break;
-        }
-      }
-    }
+  
+  // 회원가입 버튼 누를 시 동작하는 함수
+  const handleSignUp = () => {
+    signUp(email, pw, pwCheck, name, phone, address, navigation);
   };
 
   return (
@@ -188,91 +136,9 @@ export default function SignUp({ navigation }) {
         </View>
       </View>
 
-      <TouchableOpacity onPress={signUp} style={styles.signUpBtn}>
+      <TouchableOpacity onPress={handleSignUp} style={styles.signUpBtn}>
         <Text>회원가입</Text>
       </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "white",
-  },
-
-  header: {
-    flexDirection: "row",
-    backgroundColor: "#91B391",
-    height: 100,
-    width: "100%",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
-    paddingHorizontal: 20,
-    paddingBottom: 10,
-  },
-
-  headerText: {
-    color: "white",
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom:2,
-  },
-
-  body: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  form: {
-    width: "90%",
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
-    marginVertical: 5,
-  },
-
-  input: {
-    flex: 1,
-    borderRadius: 10,
-    borderColor: "#91B391",
-    borderWidth: 1,
-    padding: 10,
-    marginHorizontal: 6,
-  },
-
-  btn: {
-    backgroundColor: "#91B391",
-    borderRadius: 20,
-    padding: 10,
-    marginHorizontal: 3,
-  },
-
-  textContainer: {
-    width: 40,
-    alignItems: "center",
-  },
-
-  signUpBtn: {
-    backgroundColor: "#91B391",
-    borderColor: "#91B391",
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 50,
-  },
-
-  icon: {
-    marginLeft: 5,
-  },
-
-  hr: {
-    width: "90%",
-    borderBottomColor: "#bbb",
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginVertical: 10,
-  },
-});
