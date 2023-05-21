@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Image,
 } from "react-native";
 import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
@@ -16,6 +17,12 @@ import { signOut } from "../services/auth";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function Home({ navigation }) {
+  /*useEffect(() => {
+    setImage(getImage);
+  }, [image]);*/
+
+  const [image, setImage] = useState(null);
+
   // 임시 상품 데이터
   const [products, setProducts] = useState([
     "상품 1",
@@ -64,7 +71,7 @@ export default function Home({ navigation }) {
           <ScrollView pagingEnabled horizontal>
             {stores.map((value, key) => (
               <TouchableOpacity style={styles.product} key={key}>
-                <Text>{value}</Text>
+                {image && <Image source={{ uri: image }} />}
               </TouchableOpacity>
             ))}
           </ScrollView>

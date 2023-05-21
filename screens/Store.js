@@ -8,6 +8,7 @@ import {
   ScrollView,
   Dimensions,
   TextInput,
+  Image,
 } from "react-native";
 import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
@@ -17,6 +18,8 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 export default function Store({ navigation }) {
   // true이면 판매 중, false이면 판매 완료인 상품
   const [isSelling, setIsSelling] = useState(true);
+
+  const [image, setImage] = useState(null);
 
   // 판매 중인 상품 데이터
   const [sellingItem, setSellingItem] = useState([

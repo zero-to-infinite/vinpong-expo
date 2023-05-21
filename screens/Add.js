@@ -22,7 +22,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function Add({ navigation }) {
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState("");
   const [condition, setCondition] = useState("");
   const [size, setSize] = useState("");
   const [detail, setDetail] = useState("");
@@ -98,7 +98,7 @@ export default function Add({ navigation }) {
   };
 
   const complete = () => {
-    addProduct(name, price, condition, size, detail, navigation);
+    addProduct(name, price, condition, size, detail, image, navigation);
   };
 
   return (

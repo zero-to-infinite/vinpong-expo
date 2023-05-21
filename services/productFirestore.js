@@ -1,14 +1,21 @@
-import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
+import {
+  FIRESTORE_DB,
+  FIREBASE_AUTH,
+} from "../firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
+import { uploadImage } from "./storage";
 
+// firestore에 상품 판매 정보 추가
 export async function addProduct(
   name,
   price,
   condition,
   size,
   detail,
+  image,
   navigation
 ) {
+
   if (name == "") {
     alert("상품명을 입력해주세요!");
   } else if (price == 0) {
@@ -19,7 +26,10 @@ export async function addProduct(
     alert("사이즈를 체크해주세요!");
   } else {
     try {
+      const downloadURL = await uploadImage(image, name, date);
+
       const numericPrice = parseInt(price);
+      const date = new Date();
 
       await addDoc(collection(FIRESTORE_DB, "Product"), {
         name: name,
@@ -27,8 +37,10 @@ export async function addProduct(
         condition: condition,
         size: size,
         detail: detail,
-        date: new Date(), // 작성한 날짜와 시각
+        date: date, // 작성한 날짜와 시각
+        image: downloadURL
       });
+
       alert(`${name}\n판매글이 성공적으로 게시되었습니다!`);
       navigation.navigate("Store");
     } catch (err) {
