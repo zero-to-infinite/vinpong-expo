@@ -58,29 +58,29 @@ const DATA = [
 ];
 
 export default function ChatRoom({ navigation }) {
-  /** 채팅 기능 구현 부분 */
   useEffect(() => {
-    // 소켓 연결 설정
-    const socket = io('http://localhost:3000'); // 실제 백엔드 서버 주소로 변경해야 함
-  
-    // 메시지 수신 이벤트 핸들러
-   // 메시지 수신 이벤트 핸들러
-socket.on("message", (data) => {
-  console.log("Received message:", data);
-  // TODO: 메시지를 적절히 처리하고 화면에 표시하는 로직을 구현합니다.
-});
+    const socket = io('http://192.168.35.157:3000'); // 실제 백엔드 서버 주소로 변경해야 함
 
-// 메시지 전송 함수
-const sendMessage = (message) => {
-  socket.emit("message", message);
-};
+    // 메시지 수신 이벤트 핸들러 수정
+    socket.on("receivedMessage", (data) => {
+      console.log("Received message:", data);
+      // TODO: 메시지를 적절히 처리하고 화면에 표시하는 로직을 구현합니다.
+      // 예를 들어, 받은 메시지를 상태에 추가하거나 화면에 표시하는 함수를 호출합니다.
+    });
 
+    // 메시지 전송 함수 수정
+    const sendMessage = (message) => {
+      socket.emit("sendMessage", message);
+    };
 
-    // 컴포넌트 언마운트 시 소켓 연결 해제
+    // Clean up 함수
     return () => {
+      // 컴포넌트가 언마운트될 때 소켓 연결을 해제합니다.
       socket.disconnect();
     };
   }, []);
+
+   
   /** 지원 담당 */
 
   // 채팅 목록을 보여주는 함수
