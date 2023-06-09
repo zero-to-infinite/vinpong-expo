@@ -12,7 +12,8 @@ import {
 } from "react-native";
 import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
-import { getUserInfo } from "../services/auth";
+import { getImages } from "../services/storage";
+import { getUserInfo, getUserUid } from "../services/auth";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -20,7 +21,10 @@ export default function Store({ navigation }) {
   // true이면 판매 중, false이면 판매 완료인 상품
   const [isSelling, setIsSelling] = useState(true);
   const [name, setName] = useState(null);
-  const [image, setImage] = useState(null);
+  // 판매 중인 상품 데이터
+  const [sellingItem, setSellingItem] = useState([]);
+  // 판매 완료한 상품 데이터
+  const [soldItem, setSoldItem] = useState([]);
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -35,33 +39,19 @@ export default function Store({ navigation }) {
     fetchUserName();
   }, []);
 
-  // 판매 중인 상품 데이터
-  const [sellingItem, setSellingItem] = useState([
-    "판매 중 1",
-    "판매 중 2",
-    "판매 중 3",
-    "판매 중 4",
-    "판매 중 5",
-    "판매 중 6",
-    "판매 중 7",
-    "판매 중 8",
-    "판매 중 9",
-    "판매 중 10",
-  ]);
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const uid = await getUserUid();
+        const imagesList = await getImages(uid);
+        setSellingItem(imagesList);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  // 판매 완료한 상품 데이터
-  const [soldItem, setSoldItem] = useState([
-    "판매 완료 1",
-    "판매 완료 2",
-    "판매 완료 3",
-    "판매 완료 4",
-    "판매 완료 5",
-    "판매 완료 6",
-    "판매 완료 7",
-    "판매 완료 8",
-    "판매 완료 9",
-    "판매 완료 10",
-  ]);
+    fetchImages();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -134,7 +124,7 @@ export default function Store({ navigation }) {
             {isSelling == true
               ? sellingItem.map((value, index) => (
                   <TouchableOpacity key={index} style={styles.item}>
-                    <Text>{value}</Text>
+                    <Image style={styles.item} source={{ uri: value }} />
                   </TouchableOpacity>
                 ))
               : soldItem.map((value, index) => (
@@ -265,10 +255,10 @@ const styles = StyleSheet.create({
   item: {
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "white",
-    borderBottomColor: "black",
-    borderRightColor: "black",
+    //borderWidth: 1,
+    //borderColor: "white",
+    //borderBottomColor: "black",
+    //borderRightColor: "black",
     width: (SCREEN_WIDTH * 1) / 3,
     height: (SCREEN_WIDTH * 1) / 3,
   },

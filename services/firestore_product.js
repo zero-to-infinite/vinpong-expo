@@ -24,11 +24,11 @@ export async function addProduct(
     alert("사이즈를 체크해주세요!");
   } else {
     try {
-      const date = new Date();
-      const downloadURL = await uploadImage(image, name, date);
-
       const uid = await getUserUid();
       const numericPrice = parseInt(price);
+
+      const date = new Date();
+      const downloadURL = await uploadImage(uid, image, name, date);
 
       await addDoc(collection(FIRESTORE_DB, "Product"), {
         uid: uid,

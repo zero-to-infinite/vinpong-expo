@@ -19,7 +19,7 @@ import { getUserInfo } from "../services/auth";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function Home({ navigation }) {
-  const [images, setImages] = useState(["없음", "X"]);
+  const [images, setImages] = useState([]);
   const [name, setName] = useState(null);
 
   useEffect(() => {
@@ -33,6 +33,19 @@ export default function Home({ navigation }) {
     };
 
     fetchUserName();
+  }, []);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const imagesList = await getAllImages();
+        setImages(imagesList);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchImages();
   }, []);
   /*
   useEffect(() => {
@@ -85,7 +98,7 @@ export default function Home({ navigation }) {
           <ScrollView pagingEnabled horizontal>
             {images.map((value, key) => (
               <TouchableOpacity style={styles.product} key={key}>
-                <Text>{value}</Text>
+                <Image style={styles.product} source={{ uri: value }} />
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -160,7 +173,7 @@ const styles = StyleSheet.create({
   product: {
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "black",
+    borderColor: "white",
     borderWidth: 1,
     borderRadius: 15,
     width: (SCREEN_WIDTH - 38) * 0.3,
