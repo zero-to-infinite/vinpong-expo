@@ -14,7 +14,7 @@ import TopBar from "../components/TopBar";
 import { AntDesign } from "@expo/vector-icons";
 import { signOut } from "../services/auth";
 import { getAllImages } from "../services/storage";
-import { getUserName } from "../services/auth";
+import { getUserInfo } from "../services/auth";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -25,9 +25,8 @@ export default function Home({ navigation }) {
   useEffect(() => {
     const fetchUserName = async () => {
       try {
-        const userName = await getUserName();
-        setName(userName);
-        console.log("이름은", userName);
+        const userInfo = await getUserInfo();
+        setName(userInfo.name);
       } catch (error) {
         console.log(error);
       }

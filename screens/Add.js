@@ -123,7 +123,7 @@ export default function Add({ navigation }) {
   };
 
   const complete = () => {
-    addProduct(name, price, condition, size, detail, image, navigation);
+    addProduct(name, price, condition, size, selectedStyles, detail, image, navigation);
   };
 
   // 스타일 태그 눌렀을 때 동작하는 함수

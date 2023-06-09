@@ -99,17 +99,33 @@ export function signOut(navigation) {
   FIREBASE_AUTH.signOut();
   navigation.navigate("Loading");
 }
-// 로그인한 유저의 이름 가져오기
-export async function getUserName() {
+
+// 로그인한 유저의 uid 가져오기
+export async function getUserUid() {
+  return new Promise((resolve, reject) => {
+    onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      if (user) {
+        try {
+          resolve(user.uid);
+        } catch (error) {
+          reject(error);
+        }
+      }
+    });
+  });
+}
+
+// 로그인한 유저의 정보 가져오기
+export async function getUserInfo() {
   return new Promise((resolve, reject) => {
     onAuthStateChanged(FIREBASE_AUTH, async (user) => {
       if (user) {
         try {
           // 현재 로그인한 유저의 uid와 이름이 동일한 문서를 가져옴
           const userData = await getDoc(doc(FIRESTORE_DB, "User", user.uid));
-          // 가져온 문서에서 이름을 읽음
-          const userName = userData.data().name;
-          resolve(userName);
+          // 가져온 문서에서 유저 정보를 읽음
+          const userInfo = userData.data();
+          resolve(userInfo);
         } catch (error) {
           reject(error);
         }
