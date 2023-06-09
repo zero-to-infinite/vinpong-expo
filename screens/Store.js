@@ -14,6 +14,7 @@ import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
 import { getImages } from "../services/storage";
 import { getUserInfo, getUserUid } from "../services/auth";
+import { FontAwesome } from "@expo/vector-icons";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -63,6 +64,14 @@ export default function Store({ navigation }) {
         <View style={styles.infoBox}>
           <View style={styles.userInfo}>
             <View style={styles.userImage}></View>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Info");
+              }}
+              style={styles.gearIcon}
+            >
+              <FontAwesome name="gear" size={16} color="darkgray" />
+            </TouchableOpacity>
             <Text>{name}</Text>
           </View>
 
@@ -177,7 +186,14 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
 
+  gearIcon: {
+    position: "absolute",
+    top: "10%",
+    right: 30,
+  },
+
   userInfo: {
+    //backgroundColor: "pink",
     width: "50%",
     justifyContent: "center",
     alignItems: "center",
