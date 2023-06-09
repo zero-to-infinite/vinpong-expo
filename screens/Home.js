@@ -13,15 +13,41 @@ import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
 import { AntDesign } from "@expo/vector-icons";
 import { signOut } from "../services/auth";
+import { getAllImages } from "../services/storage";
+import { getUserName } from "../services/auth";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function Home({ navigation }) {
-  /*useEffect(() => {
-    setImage(getImage);
-  }, [image]);*/
+  const [images, setImages] = useState(["없음", "X"]);
+  const [name, setName] = useState(null);
 
-  const [image, setImage] = useState(null);
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        const userName = await getUserName();
+        setName(userName);
+        console.log("이름은", userName);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUserName();
+  }, []);
+  /*
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const imageURLs = await getAllImages();
+        setImages(imageURLs);
+      } catch (error) {
+        console.log('Error fetching images:', error);
+      }
+    };
+
+    fetchImages();
+  }, []);*/
 
   // 임시 상품 데이터
   const [products, setProducts] = useState([
@@ -48,14 +74,17 @@ export default function Home({ navigation }) {
       <TopBar navigation={navigation} />
 
       <View style={styles.body}>
-        <TouchableOpacity onPress={() => signOut(navigation)} style={styles.banner}>
-          <Text>배너</Text>
+        <TouchableOpacity
+          onPress={() => signOut(navigation)}
+          style={styles.banner}
+        >
+          <Text>{name}님 환영합니다!</Text>
         </TouchableOpacity>
 
         <Text style={styles.bodyText}>추천 상품</Text>
         <View style={styles.productContainer}>
           <ScrollView pagingEnabled horizontal>
-            {products.map((value, key) => (
+            {images.map((value, key) => (
               <TouchableOpacity style={styles.product} key={key}>
                 <Text>{value}</Text>
               </TouchableOpacity>
@@ -71,7 +100,7 @@ export default function Home({ navigation }) {
           <ScrollView pagingEnabled horizontal>
             {stores.map((value, key) => (
               <TouchableOpacity style={styles.product} key={key}>
-                {image && <Image source={{ uri: image }} />}
+                <Text>{value}</Text>
               </TouchableOpacity>
             ))}
           </ScrollView>

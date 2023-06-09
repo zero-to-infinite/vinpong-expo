@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,14 +12,29 @@ import {
 } from "react-native";
 import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
+import { getUserName } from "../services/auth";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function Store({ navigation }) {
   // true이면 판매 중, false이면 판매 완료인 상품
   const [isSelling, setIsSelling] = useState(true);
-
+  const [name, setName] = useState(null);
   const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        const userName = await getUserName();
+        setName(userName);
+        console.log("이름은", userName);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUserName();
+  }, []);
 
   // 판매 중인 상품 데이터
   const [sellingItem, setSellingItem] = useState([
@@ -59,7 +74,7 @@ export default function Store({ navigation }) {
         <View style={styles.infoBox}>
           <View style={styles.userInfo}>
             <View style={styles.userImage}></View>
-            <Text>닉네임</Text>
+            <Text>{name}</Text>
           </View>
 
           <View style={styles.storeInfo}>

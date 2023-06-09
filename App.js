@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -15,6 +15,15 @@ import SignIn from "./screens/SignIn";
 
 export default function App() {
   const Stack = createStackNavigator();
+  /*
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      //setUser(user.displayName);
+    });
+  }, []);
+  */
 
   return (
     <NavigationContainer>

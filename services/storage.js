@@ -17,3 +17,19 @@ export async function uploadImage(file, name, date) {
     console.log("이미지 업로드에 실패하였습니다 :(");
   }
 }
+
+export async function getAllImages() {
+  try {
+    const imagesSnapshot = await FIREBASE_STORAGE.listAll();
+    const imageURLs = await Promise.all(
+      imagesSnapshot.items.map(async (item) => {
+        const downloadURL = await item.getDownloadURL();
+        return downloadURL;
+      })
+    );
+
+    return imageURLs;
+  } catch (err) {
+    console.log(err);
+  }
+}
