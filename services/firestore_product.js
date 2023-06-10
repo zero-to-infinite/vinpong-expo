@@ -63,6 +63,7 @@ export async function getProduct(src) {
     const productPromises = querySnapshot.docs.map((doc) => {
       const product = doc.data();
       const productInfo = {
+        uid: product.uid, // 판매자의 uid
         name: product.name,
         price: product.price,
         condition: product.condition,

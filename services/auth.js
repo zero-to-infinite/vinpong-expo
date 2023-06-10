@@ -133,3 +133,15 @@ export async function getUserInfo() {
     });
   });
 }
+
+// 특정 유저의 정보 가져오기
+export async function getUserInfoByUid(uid) {
+  try {
+    const userData = await getDoc(doc(FIRESTORE_DB, "User", uid));
+    // 가져온 문서에서 유저 정보를 읽음
+    const userInfo = userData.data();
+    return userInfo;
+  } catch (error) {
+    console.log(err);
+  }
+}

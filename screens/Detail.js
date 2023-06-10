@@ -18,7 +18,8 @@ import BouncyCheckboxGroup, {
 import BottomNav from "../components/BottomNav";
 import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import { addProduct, getProduct } from "../services/firestore_product";
+import { getProduct } from "../services/firestore_product";
+import { addChatRoom } from "../services/firestore_chat";
 import styles from "../styles/AddStyles";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -31,6 +32,7 @@ export default function Detail({ navigation, route }) {
   const [category, setCategory] = useState([]);
   const [detail, setDetail] = useState("");
   const [image, setImage] = useState(null);
+  const [seller, setSeller] = useState("");
 
   const checkboxStyles = {
     fillColor: "#91B391",
@@ -85,7 +87,7 @@ export default function Detail({ navigation, route }) {
     const fetchProductInfo = async () => {
       try {
         const productInfo = await getProduct(route.params.src);
-        console.log(productInfo);
+        setSeller(productInfo.uid);
         setName(productInfo.name);
         setPrice(productInfo.price);
         const conNum = conditionCheckboxGroup.find(
@@ -232,7 +234,10 @@ export default function Detail({ navigation, route }) {
           <Text style={styles.priceText}>{price} ￦</Text>
         </View>
 
-        <TouchableOpacity style={styles.chatBtn}>
+        <TouchableOpacity
+          onPress={() => addChatRoom(route.params.src, name, seller)}
+          style={styles.chatBtn}
+        >
           <Text style={styles.chatText}>채팅 보내기</Text>
         </TouchableOpacity>
       </View>

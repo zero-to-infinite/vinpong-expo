@@ -1,150 +1,149 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-import io from "socket.io-client";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
-const socket = io("http://localhost:3000");
-
-const Chat = () => {
-  const [messages, setMessages] = useState([]); // 채팅 메시지 배열
-  const [inputText, setInputText] = useState(''); // 입력 필드의 텍스트
-  const navigation = useNavigation();
-
-  // 메시지 전송 함수
-  const sendMessage = () => {
-    if (inputText.trim() === '') return; // 빈 메시지는 전송하지 않음
-
-    const message = {
-      id: Date.now().toString(), // 메시지 고유 ID 생성
-      content: inputText,
-      sender: 'user', // 사용자 구분 값
-    };
-
-    setMessages((prevMessages) => [...prevMessages, message]); // 메시지 배열에 새 메시지 추가
-    setInputText(''); // 입력 필드 초기화
-  };
-
-  // 메시지 아이템 렌더링 함수
-  const renderMessageItem = ({ item }) => {
-    return (
-      <View style={styles.messageItem}>
-        <Text style={item.sender === 'user' ? styles.userMessageText : styles.otherMessageText}>
-          {item.content}
-        </Text>
-      </View>
-    );
-  };
-
-  // 뒤로가기 버튼 핸들러
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
+export default function Chat({ navigation, route }) {
+  const [messages, setMessages] = useState(["안녕!", "응 안녕?"]); // 채팅 메시지 리스트
+  const [inputText, setInputText] = useState(""); // 입력란의 텍스트
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        
-        <Text style={styles.headerText}>상대방 이름 </Text>
-        <TouchableOpacity style={styles.goBackButton} onPress={handleGoBack}>
-          <Ionicons name="arrow-back" size={24} color="#fff" />
+        <TouchableOpacity
+          style={styles.goBackBtn}
+          onPress={() => navigation.goBack()}
+        >
+          <Icon name="angle-left" size={36} color="white" />
         </TouchableOpacity>
+        <Text style={styles.headerText}>{route.params.other}</Text>
       </View>
-      <View style={styles.messageListContainer}>
-        <FlatList
-          data={messages}
-          renderItem={renderMessageItem}
-          keyExtractor={(item) => item.id}
-          style={styles.messageList}
-        />
+
+      {/* 대화 내역이 보이는 공간 */}
+      <View style={styles.messageContainer}>
+        {messages.map((value, key) => (
+          <View key={key} style={styles.message}>
+            <Text style={styles.myMessageText}>{value}</Text>
+          </View>
+        ))}
       </View>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          value={inputText}
-          onChangeText={setInputText}
-          placeholder="메시지를 입력하세요..."
-        />
-        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-          <Text style={styles.sendButtonText}>전송</Text>
-        </TouchableOpacity>
-      </View>
+
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            value={inputText}
+            returnKeyType="done"
+            onChangeText={setInputText}
+            placeholder="메시지를 입력하세요."
+          />
+
+          <TouchableOpacity style={styles.sendBtn}>
+            <Text style={styles.sendBtnText}>전송</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+      <View style={styles.hr}></View>
     </View>
   );
-};
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
-  
-  goBackButton: {
-  
-  },
+
   goBackButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  header: {
-    height: 60,
-    backgroundColor: '#91B391',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between', // 공간을 균등하게 분배
-    paddingHorizontal: 16,
-    marginTop: 30,
-  },
-  headerText: {
-    color: '#fff',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
+  },
+
+  header: {
+    backgroundColor: "#91B391",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingTop: 53,
+    paddingBottom: 10,
+    paddingHorizontal: 15,
+  },
+
+  headerText: {
     flex: 1, // 이름 부분이 가운데로 정렬되도록 flex 속성 추가
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
   },
-  messageListContainer: {
+
+  messageContainer: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 16,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    alignItems: "flex-end",
   },
-  messageItem: {
-    backgroundColor: '#eee',
-    padding: 8,
-    borderRadius: 4,
-    marginBottom: 8,
+
+  message: {
+    backgroundColor: "#91B391",
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    marginBottom: 10,
   },
-  userMessageText: {
-    color: '#000',
+
+  myMessageText: {
+    fontWeight: "600",
+    color: "white",
   },
+
   otherMessageText: {
-    color: '#333',
+    fontWeight: "bold",
+    color: "black",
   },
+
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderTopWidth: 1,
-    borderTopColor: '#ccc',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
+
   input: {
     flex: 1,
     height: 40,
-    borderColor: '#ccc',
+    borderColor: "#91B391",
     borderWidth: 1,
-    borderRadius: 4,
+    borderRadius: 8,
     paddingHorizontal: 8,
+    marginRight: 10,
   },
-  sendButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+
+  sendBtnText: {
+    color: "#fff",
+    fontWeight: "600",
+    fontSize: 16,
   },
-  sendButton: {
-    backgroundColor: '#91B391',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 4,
+
+  sendBtn: {
+    backgroundColor: "#91B391",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+  },
+
+  hr: {
+    height: 30,
   },
 });
-
-export default Chat;
