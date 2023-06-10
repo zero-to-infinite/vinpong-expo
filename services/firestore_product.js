@@ -1,5 +1,5 @@
 import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { uploadImage } from "./storage";
 import { getUserUid } from "../services/auth";
 
@@ -51,5 +51,31 @@ export async function addProduct(
       navigation.navigate("Loading");
       console.log(err);
     }
+  }
+}
+
+// firestore에서 특정한 상품 정보 가져오기
+export async function getProduct(src) {
+  const productRef = collection(FIRESTORE_DB, "Product");
+  const q = query(productRef, where("image", "==", src));
+  try {
+    const querySnapshot = await getDocs(q);
+    const productPromises = querySnapshot.docs.map((doc) => {
+      const product = doc.data();
+      const productInfo = {
+        name: product.name,
+        price: product.price,
+        condition: product.condition,
+        size: product.size,
+        category: product.selectedCategories,
+        style: product.selectedStyles,
+        detail: product.detail,
+      };
+      return productInfo;
+    });
+    const products = await Promise.all(productPromises);
+    return products[0];
+  } catch (err) {
+    console.log(err);
   }
 }
