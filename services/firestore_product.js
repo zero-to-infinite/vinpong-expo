@@ -9,6 +9,7 @@ export async function addProduct(
   price,
   condition,
   size,
+  selectedCategories,
   selectedStyles,
   detail,
   image,
@@ -36,6 +37,7 @@ export async function addProduct(
         price: numericPrice,
         condition: condition,
         size: size,
+        selectedCategories: selectedCategories,
         selectedStyles: selectedStyles,
         detail: detail,
         date: date, // 작성한 날짜와 시각
