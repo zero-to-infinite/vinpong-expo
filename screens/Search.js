@@ -37,7 +37,6 @@ export default function Search({ navigation }) {
   ];
   //카테고리 태그
   const categoryList = [
-    "전체",
     "상의",
     "바지",
     "원피스/치마",

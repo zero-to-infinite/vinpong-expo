@@ -132,12 +132,24 @@ export default function Store({ navigation }) {
           <View style={styles.itemBox}>
             {isSelling == true
               ? sellingItem.map((value, index) => (
-                  <TouchableOpacity key={index} style={styles.item}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("Detail", { src: value })
+                    }
+                    key={index}
+                    style={styles.item}
+                  >
                     <Image style={styles.item} source={{ uri: value }} />
                   </TouchableOpacity>
                 ))
               : soldItem.map((value, index) => (
-                  <TouchableOpacity key={index} style={styles.item}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("Detail", { src: value })
+                    }
+                    key={index}
+                    style={styles.item}
+                  >
                     <Text>{value}</Text>
                   </TouchableOpacity>
                 ))}

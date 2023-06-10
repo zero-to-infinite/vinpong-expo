@@ -141,10 +141,6 @@ export default function Detail({ navigation, route }) {
         >
           <AntDesign name="close" size={28} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuIcon}>
-          {/*완료 말고 다른 텍스트로 바꿔야겠다*/}
-          <Text style={styles.menuText}>완료</Text>
-        </TouchableOpacity>
       </View>
 
       <ScrollView style={styles.body}>
