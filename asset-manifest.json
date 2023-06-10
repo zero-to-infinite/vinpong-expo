@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/VinPong/static/js/main.c4faa2df.js",
-    "static/js/876.4e0fdd1e.js": "/VinPong/static/js/876.4e0fdd1e.js",
+    "main.js": "/VinPong/static/js/main.3709e0b0.js",
+    "static/js/876.8ee8b10a.js": "/VinPong/static/js/876.8ee8b10a.js",
     "static/media/Ionicons.ttf": "/VinPong/static/media/Ionicons.3517aeaa34b2f8cd8eef.ttf",
     "static/media/FontAwesome.ttf": "/VinPong/static/media/FontAwesome.1e59d2330b4c6deb84b3.ttf",
     "static/media/AntDesign.ttf": "/VinPong/static/media/AntDesign.163adab9dbd7cb1ed12a.ttf",
@@ -12,11 +12,11 @@
     "favicon-16.png": "/VinPong/favicon-16.png",
     "serve.json": "/VinPong/serve.json",
     "manifest.json": "/VinPong/manifest.json",
-    "main.c4faa2df.js.map": "/VinPong/static/js/main.c4faa2df.js.map",
-    "876.4e0fdd1e.js.map": "/VinPong/static/js/876.4e0fdd1e.js.map"
+    "main.3709e0b0.js.map": "/VinPong/static/js/main.3709e0b0.js.map",
+    "876.8ee8b10a.js.map": "/VinPong/static/js/876.8ee8b10a.js.map"
   },
   "entrypoints": [
-    "static/js/876.4e0fdd1e.js",
-    "static/js/main.c4faa2df.js"
+    "static/js/876.8ee8b10a.js",
+    "static/js/main.3709e0b0.js"
   ]
 }
