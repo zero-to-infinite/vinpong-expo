@@ -9,6 +9,7 @@ import {
   TextInput,
   ScrollView,
   Modal,
+  Alert,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import BouncyCheckboxGroup, {
@@ -19,6 +20,7 @@ import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { addProduct, getProduct } from "../services/firestore_product";
 import styles from "../styles/AddStyles";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function Detail({ navigation, route }) {
   const [name, setName] = useState("");
@@ -198,7 +200,6 @@ export default function Detail({ navigation, route }) {
           <View>{renderSelectedStyles()}</View>
         </View>
 
-        {/*키보드가 input을 가리는 버그 해결 필요!*/}
         <View style={styles.inputAreaBox}>
           <View style={styles.labelBox}>
             <Text style={styles.label}>상세 설명</Text>
@@ -213,7 +214,28 @@ export default function Detail({ navigation, route }) {
         </View>
       </ScrollView>
 
-      <BottomNav navigation={navigation} />
+      <View style={styles.footer}>
+        <View style={styles.footerLeft}>
+          <TouchableOpacity style={styles.detailIcon}>
+            <Icon name="heart" size={26} color="white" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => alert("상품이 카트에 담겼습니다.")}
+            style={styles.detailIcon}
+          >
+            <Icon name="shopping-basket" size={26} color="white" />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.priceBox}>
+          <Text style={styles.priceText}>{price} ￦</Text>
+        </View>
+
+        <TouchableOpacity style={styles.chatBtn}>
+          <Text style={styles.chatText}>채팅 보내기</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
