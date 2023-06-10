@@ -31,8 +31,12 @@ export default function Add({ navigation }) {
   const [image, setImage] = useState(null);
   // 선택된 스타일 태그들
   const [selectedStyles, setSelectedStyles] = useState([]);
-  // 모달이 보이는지 여부
-  const [modalVisible, setModalVisible] = useState(false);
+  // 선택된 카테고리 태그들
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  // 스타일 모달이 보이는지 여부
+  const [styleModalVisible, setStyleModalVisible] = useState(false);
+  // 카테고리 모달이 보이는지 여부
+  const [categoryModalVisible, setCategoryModalVisible] = useState(false);
 
   // 스타일 태그
   const stylesList = [
@@ -51,6 +55,19 @@ export default function Add({ navigation }) {
     "Tomboy",
     "Rocker",
     "Safari",
+  ];
+  // 카테고리 태그
+  const categoryList = [
+    "상의",
+    "바지",
+    "원피스/치마",
+    "신발",
+    "악세사리",
+    "아우터",
+    "언더웨어",
+    "스포츠/레저",
+    "라이프",
+    "뷰티",
   ];
 
   const checkboxStyles = {
@@ -125,7 +142,7 @@ export default function Add({ navigation }) {
   const complete = () => {
     addProduct(name, price, condition, size, selectedStyles, detail, image, navigation);
   };
-
+  // 수정시작!
   // 스타일 태그 눌렀을 때 동작하는 함수
   const handleStyleTagPress = (style) => {
     if (selectedStyles.includes(style)) {
@@ -136,6 +153,20 @@ export default function Add({ navigation }) {
     } else {
       // 클릭되지 않은 스타일이었으면 selectedStyles 리스트에 추가
       setSelectedStyles([...selectedStyles, style]);
+    }
+  };
+  // 카테고리 태그 눌렀을 때 동작하는 함수
+  const handleCategoryTagPress = (category) => {
+    if (selectedCategories.includes(category)) {
+      // 이미 클릭된 카테고리였으면 selectedCategories 리스트에서 제거
+      setSelectedCategories(
+        selectedCategories.filter(
+          (selectedCategory) => selectedCategory !== category
+        )
+      );
+    } else {
+      // 클릭되지 않은 카테고리였으면 selectedCategories 리스트에 추가
+      setSelectedCategories([...selectedCategories, category]);
     }
   };
 
@@ -149,6 +180,25 @@ export default function Add({ navigation }) {
             <TouchableOpacity
               onPress={() => {
                 handleStyleTagPress(item);
+              }}
+            >
+              <Feather name="x" size={16} color="white" style={styles.icon} />
+            </TouchableOpacity>
+          </View>
+        ))}
+      </ScrollView>
+    );
+  };
+  // 선택된 카테고리 태그를 나타냄
+  const renderSelectedCategories = () => {
+    return (
+      <ScrollView horizontal style={styles.selectedItemsContainer}>
+        {selectedCategories.map((item, index) => (
+          <View key={index} style={styles.selectedItem}>
+            <Text style={styles.selectedItemText}>{item}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                handleCategoryTagPress(item);
               }}
             >
               <Feather name="x" size={16} color="white" style={styles.icon} />
@@ -173,6 +223,26 @@ export default function Add({ navigation }) {
             ]}
           >
             <Text>{style}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    );
+  };
+
+  // 모달 내에서 카테고리 태그들을 보여줄 함수
+  const renderCategoryTagButtons = () => {
+    return (
+      <View style={styles.modalItemContainer}>
+        {categoryList.map((category) => (
+          <TouchableOpacity
+            onPress={() => handleCategoryTagPress(category)}
+            key={category}
+            style={[
+              styles.modalItem,
+              selectedCategories.includes(category) ? styles.selectedModalItem : null, // 선택됐으면 옵션 색깔 변경
+            ]}
+          >
+            <Text>{category}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -269,11 +339,58 @@ export default function Add({ navigation }) {
 
         <View style={styles.inputBox}>
           <View style={styles.labelBox}>
+            <Text style={styles.label}>카테고리</Text>
+          </View>
+
+          <TouchableOpacity
+            onPress={() => setCategoryModalVisible(true)}
+            style={styles.addTagBtn}
+          >
+            <AntDesign name="plus" size={16} color="white" />
+          </TouchableOpacity>
+          {/* 선택한 카테고리 태그들을 나열해서 보여줌 */}
+          <View>{renderSelectedCategories()}</View>
+          {/* 카테고리 태그 선택하는 모달 */}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={categoryModalVisible}
+            onRequestClose={() => setCategoryModalVisible(false)}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalInner}>
+                <View style={styles.modalHeader}>
+                  <Text>카테고리 태그</Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (selectedCategories.length <= 2) setCategoryModalVisible(false);
+                    }}
+                  >
+                    <Text style={styles.closeModalButtonText}>완료</Text>
+                  </TouchableOpacity>
+                </View>
+                {renderCategoryTagButtons()}
+                {selectedCategories.length > 2 ? (
+                  <Text style={styles.maxSelectionText}>
+                    최대 2개의 카테고리 태그를 선택할 수 있습니다!
+                  </Text>
+                ) : (
+                  <Text style={styles.selectionText}>
+                    상품의 카테고리 태그를 선택해주세요!
+                  </Text>
+                )}
+              </View>
+            </View>
+          </Modal>
+        </View>
+
+        <View style={styles.inputBox}>
+          <View style={styles.labelBox}>
             <Text style={styles.label}>스타일</Text>
           </View>
 
           <TouchableOpacity
-            onPress={() => setModalVisible(true)}
+            onPress={() => setStyleModalVisible(true)}
             style={styles.addTagBtn}
           >
             <AntDesign name="plus" size={16} color="white" />
@@ -284,8 +401,8 @@ export default function Add({ navigation }) {
           <Modal
             animationType="slide"
             transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => setModalVisible(false)}
+            visible={styleModalVisible}
+            onRequestClose={() => setStyleModalVisible(false)}
           >
             <View style={styles.modalContainer}>
               <View style={styles.modalInner}>
@@ -293,7 +410,7 @@ export default function Add({ navigation }) {
                   <Text>스타일 태그</Text>
                   <TouchableOpacity
                     onPress={() => {
-                      if (selectedStyles.length <= 3) setModalVisible(false);
+                      if (selectedStyles.length <= 3) setStyleModalVisible(false);
                     }}
                   >
                     <Text style={styles.closeModalButtonText}>완료</Text>
