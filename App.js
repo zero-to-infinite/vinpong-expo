@@ -16,15 +16,6 @@ import Info from "./screens/Info";
 
 export default function App() {
   const Stack = createStackNavigator();
-  /*
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    onAuthStateChanged(FIREBASE_AUTH, (user) => {
-      //setUser(user.displayName);
-    });
-  }, []);
-  */
 
   return (
     <NavigationContainer>

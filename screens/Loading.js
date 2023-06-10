@@ -1,21 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
+import styles from "../styles/LoadingStyles";
 
 export default function Loading({ navigation }) {
-  /*
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
-
-  function onAuthStateChanged(user) {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
-  }, []); */
 
   return (
     <View style={styles.container}>
@@ -43,47 +31,3 @@ export default function Loading({ navigation }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  title: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  titleText: {
-    color: "#91B391",
-    fontSize: 40,
-    fontWeight: "600",
-  },
-
-  footer: {
-    marginBottom: 30,
-    alignItems: "center",
-  },
-
-  login: {
-    backgroundColor: "#91B391",
-    paddingHorizontal: 35,
-    paddingVertical: 15,
-    borderRadius: 25,
-  },
-
-  loginText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-
-  signUpText: {
-    textDecorationLine: "underline",
-    marginTop: 10,
-  },
-});
