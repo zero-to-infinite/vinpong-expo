@@ -47,19 +47,6 @@ export default function Home({ navigation }) {
 
     fetchImages();
   }, []);
-  /*
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const imageURLs = await getAllImages();
-        setImages(imageURLs);
-      } catch (error) {
-        console.log('Error fetching images:', error);
-      }
-    };
-
-    fetchImages();
-  }, []);*/
 
   // 임시 상품 데이터
   const [products, setProducts] = useState([
@@ -97,7 +84,11 @@ export default function Home({ navigation }) {
         <View style={styles.productContainer}>
           <ScrollView pagingEnabled horizontal>
             {images.map((value, key) => (
-              <TouchableOpacity style={styles.product} key={key}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Detail", { src: value })}
+                style={styles.product}
+                key={key}
+              >
                 <Image style={styles.product} source={{ uri: value }} />
               </TouchableOpacity>
             ))}
