@@ -162,7 +162,6 @@ export default function Info({ navigation }) {
     );
   };
 
-
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -233,52 +232,52 @@ export default function Info({ navigation }) {
         </View>
 
         <View style={styles.inputBox}>
-            <View style={styles.labelBox}>
-              <Text style={styles.label}>스타일</Text>
-            </View>
-
-            <TouchableOpacity
-              onPress={() => setStyleModalVisible(true)}
-              style={styles.addTagBtn}
-            >
-              <AntDesign name="plus" size={16} color="white" />
-            </TouchableOpacity>
-            {/* 선택한 스타일 태그들을 나열해서 보여줌 */}
-            <View>{renderSelectedStyles()}</View>
-            {/* 스타일 태그 선택하는 모달 */}
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={styleModalVisible}
-              onRequestClose={() => setStyleModalVisible(false)}
-            >
-              <View style={styles.modalContainer}>
-                <View style={styles.modalInner}>
-                  <View style={styles.modalHeader}>
-                    <Text>스타일 태그</Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (selectedStyles.length <= 3)
-                          setStyleModalVisible(false);
-                      }}
-                    >
-                      <Text style={styles.closeModalButtonText}>완료</Text>
-                    </TouchableOpacity>
-                  </View>
-                  {renderStyleTagButtons()}
-                  {selectedStyles.length > 3 ? (
-                    <Text style={styles.maxSelectionText}>
-                      최대 3개의 스타일 태그를 선택할 수 있습니다!
-                    </Text>
-                  ) : (
-                    <Text style={styles.selectionText}>
-                      상품의 스타일 태그를 선택해주세요!
-                    </Text>
-                  )}
-                </View>
-              </View>
-            </Modal>
+          <View style={styles.labelBox}>
+            <Text style={styles.label}>스타일</Text>
           </View>
+
+          <TouchableOpacity
+            onPress={() => setStyleModalVisible(true)}
+            style={styles.addTagBtn}
+          >
+            <AntDesign name="plus" size={16} color="white" />
+          </TouchableOpacity>
+          {/* 선택한 스타일 태그들을 나열해서 보여줌 */}
+          <View>{renderSelectedStyles()}</View>
+          {/* 스타일 태그 선택하는 모달 */}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={styleModalVisible}
+            onRequestClose={() => setStyleModalVisible(false)}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalInner}>
+                <View style={styles.modalHeader}>
+                  <Text>스타일 태그</Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (selectedStyles.length <= 3)
+                        setStyleModalVisible(false);
+                    }}
+                  >
+                    <Text style={styles.closeModalButtonText}>완료</Text>
+                  </TouchableOpacity>
+                </View>
+                {renderStyleTagButtons()}
+                {selectedStyles.length > 3 ? (
+                  <Text style={styles.maxSelectionText}>
+                    최대 3개의 스타일 태그를 선택할 수 있습니다!
+                  </Text>
+                ) : (
+                  <Text style={styles.selectionText}>
+                    상품의 스타일 태그를 선택해주세요!
+                  </Text>
+                )}
+              </View>
+            </View>
+          </Modal>
+        </View>
       </ScrollView>
 
       <BottomNav navigation={navigation} />
@@ -421,6 +420,18 @@ const styles = StyleSheet.create({
     width: 65,
   },
 
+  inputBox: {
+    width: "95%",
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 12,
+  },
+
+  labelBox: {
+    alignItems: "center",
+    width: 65,
+  },
+
   input: {
     flex: 1,
     borderColor: "white",
@@ -438,14 +449,13 @@ const styles = StyleSheet.create({
 
   inputArea: {
     flex: 1,
-    height: 100,
+    height: 180,
     borderColor: "black",
     borderWidth: 1,
     borderRadius: 10,
     marginRight: 10,
     padding: 5,
   },
-
   addTagBtn: {
     backgroundColor: "#669066",
     borderRadius: 15,
@@ -549,4 +559,3 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 });
-
