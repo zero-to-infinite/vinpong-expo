@@ -134,6 +134,7 @@ export default function Detail({ navigation, route }) {
     if (seller == myUid) alert("자신에게는 채팅을 보낼 수 없습니다.");
     else {
       addChatRoom(route.params.src, name, seller);
+      navigation.navigate("ChatRoom");
     }
   };
 

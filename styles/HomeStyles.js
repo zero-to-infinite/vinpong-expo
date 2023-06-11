@@ -34,10 +34,10 @@ const styles = StyleSheet.create({
   
     banner: {
       alignItems: "center",
-      borderColor: "black",
+      borderColor: "#669066",
       borderWidth: 1,
       borderRadius: 25,
-      paddingVertical: 60,
+      paddingVertical: 100,
     },
   
     productContainer: {
