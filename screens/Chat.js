@@ -37,7 +37,9 @@ export default function Chat({ navigation, route }) {
     );
   };
 
-  getMsg();
+  useEffect(() => {
+    getMsg();
+  }, []);
 
   // 메시지 전송 함수
   const send = async () => {
