@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -19,6 +19,7 @@ import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 export default function Chat({ navigation, route }) {
   const [messages, setMessages] = useState([]); // 채팅 메시지 리스트
   const [inputText, setInputText] = useState(""); // 입력란의 텍스트
+  const scrollViewRef = useRef(null);
 
   // DB에서 메시지 가져오기
   const getMsg = () => {
@@ -47,9 +48,10 @@ export default function Chat({ navigation, route }) {
   // 메시지 전송 함수
   const send = async () => {
     try {
-      await sendMsg(route.params.roomId, inputText);
       Keyboard.dismiss();
       setInputText("");
+      scrollViewRef.current.scrollToEnd({ animated: true });
+      await sendMsg(route.params.roomId, inputText);
     } catch (err) {
       console.log(err);
     }
@@ -68,7 +70,12 @@ export default function Chat({ navigation, route }) {
       </View>
 
       {/* 대화 내역이 보이는 공간 */}
-      <ScrollView>
+      <ScrollView
+        ref={scrollViewRef}
+        onContentSizeChange={() =>
+          scrollViewRef.current.scrollToEnd({ animated: true })
+        }
+      >
         <View style={styles.chatInfo}>
           <Image
             style={styles.chatImage}
