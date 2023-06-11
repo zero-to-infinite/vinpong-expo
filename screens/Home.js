@@ -93,7 +93,10 @@ export default function Home({ navigation }) {
               </TouchableOpacity>
             ))}
           </ScrollView>
-          <TouchableOpacity style={styles.scrollIcon}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ProductList")}
+            style={styles.scrollIcon}
+          >
             <AntDesign name="rightcircle" size={24} color="#91B391" />
           </TouchableOpacity>
         </View>

@@ -19,6 +19,11 @@ const styles = StyleSheet.create({
       fontSize: 40,
       fontWeight: "600",
     },
+
+    titleImg: {
+      height: 120,
+      width: 300,
+    },
   
     footer: {
       marginBottom: 30,
