@@ -5,21 +5,16 @@ import {
   View,
   TouchableOpacity,
   Image,
-  Dimensions,
   TextInput,
   ScrollView,
-  Modal,
-  Alert,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker";
 import BouncyCheckboxGroup, {
   ICheckboxButton,
 } from "react-native-bouncy-checkbox-group";
-import BottomNav from "../components/BottomNav";
-import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { getProduct } from "../services/firestore_product";
 import { addChatRoom } from "../services/firestore_chat";
+import { getUserUid } from "../services/auth";
 import styles from "../styles/AddStyles";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -134,6 +129,14 @@ export default function Detail({ navigation, route }) {
     );
   };
 
+  const pressChatBtn = async () => {
+    const myUid = await getUserUid();
+    if (seller == myUid) alert("자신에게는 채팅을 보낼 수 없습니다.");
+    else {
+      addChatRoom(route.params.src, name, seller);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -234,10 +237,7 @@ export default function Detail({ navigation, route }) {
           <Text style={styles.priceText}>{price} ￦</Text>
         </View>
 
-        <TouchableOpacity
-          onPress={() => addChatRoom(route.params.src, name, seller)}
-          style={styles.chatBtn}
-        >
+        <TouchableOpacity onPress={pressChatBtn} style={styles.chatBtn}>
           <Text style={styles.chatText}>채팅 보내기</Text>
         </TouchableOpacity>
       </View>

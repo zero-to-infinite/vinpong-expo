@@ -7,12 +7,14 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  Image,
+  Keyboard,
 } from "react-native";
 import { sendMsg } from "../services/firestore_chat";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { ScrollView } from "react-native-gesture-handler";
 import { FIRESTORE_DB } from "../firebaseConfig";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 
 export default function Chat({ navigation, route }) {
   const [messages, setMessages] = useState([]); // 채팅 메시지 리스트
@@ -24,8 +26,9 @@ export default function Chat({ navigation, route }) {
       FIRESTORE_DB,
       `ChatRoom/${route.params.roomId}/Message`
     );
+    const q = query(messageRef, orderBy("date"));
     const unsubscribe = onSnapshot(
-      messageRef,
+      q,
       (querySnapshot) => {
         const msgs = [];
         querySnapshot.forEach((doc) => msgs.push(doc.data()));
@@ -45,6 +48,7 @@ export default function Chat({ navigation, route }) {
   const send = async () => {
     try {
       await sendMsg(route.params.roomId, inputText);
+      Keyboard.dismiss();
       setInputText("");
     } catch (err) {
       console.log(err);
@@ -65,6 +69,14 @@ export default function Chat({ navigation, route }) {
 
       {/* 대화 내역이 보이는 공간 */}
       <ScrollView>
+        <View style={styles.chatInfo}>
+          <Image
+            style={styles.chatImage}
+            source={{ uri: route.params.productImage }}
+          />
+          <Text style={styles.chatText}>{route.params.productName}</Text>
+        </View>
+
         <View style={styles.messageContainer}>
           {messages.map((value, key) => (
             <View
@@ -99,7 +111,8 @@ export default function Chat({ navigation, route }) {
             returnKeyType="done"
             onChangeText={setInputText}
             placeholder="메시지를 입력하세요."
-            blurOnSubmit={false}
+            blurOnSubmit={true}
+            onSubmitEditing={send}
           />
 
           <TouchableOpacity onPress={send} style={styles.sendBtn}>
@@ -209,6 +222,25 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 20,
+  },
+
+  chatInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 20,
+  },
+
+  chatImage: {
+    backgroundColor: "#91B391", // 이미지 위치 확인 위해 임시로 배경색 지정
+    width: 60,
+    height: 60,
+    borderRadius: 15,
+    marginLeft: 25,
+    marginRight: 20,
+  },
+
+  chatText: {
+    fontWeight: "bold",
   },
 
   hr: {

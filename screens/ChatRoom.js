@@ -50,7 +50,9 @@ export default function ChatRoom({ navigation }) {
         onPress={() =>
           navigation.navigate("Chat", {
             other: getOtherName(item.participantName),
-            roomId: item.id
+            roomId: item.id,
+            productImage: item.productImage,
+            productName: item.productName
           })
         }
       >
