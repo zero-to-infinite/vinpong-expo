@@ -50,6 +50,7 @@ export default function ChatRoom({ navigation }) {
         onPress={() =>
           navigation.navigate("Chat", {
             other: getOtherName(item.participantName),
+            roomId: item.id
           })
         }
       >
@@ -89,7 +90,7 @@ export default function ChatRoom({ navigation }) {
         <FlatList
           data={chatRooms}
           renderItem={renderItem}
-          keyExtractor={(item) => item.date}
+          keyExtractor={(item) => item.id}
         />
       </View>
 

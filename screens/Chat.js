@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,11 +8,46 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import { sendMsg } from "../services/firestore_chat";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { ScrollView } from "react-native-gesture-handler";
+import { FIRESTORE_DB } from "../firebaseConfig";
+import { collection, onSnapshot } from "firebase/firestore";
 
 export default function Chat({ navigation, route }) {
-  const [messages, setMessages] = useState(["안녕!", "응 안녕?"]); // 채팅 메시지 리스트
+  const [messages, setMessages] = useState([]); // 채팅 메시지 리스트
   const [inputText, setInputText] = useState(""); // 입력란의 텍스트
+
+  // DB에서 메시지 가져오기
+  const getMsg = () => {
+    const messageRef = collection(
+      FIRESTORE_DB,
+      `ChatRoom/${route.params.roomId}/Message`
+    );
+    const unsubscribe = onSnapshot(
+      messageRef,
+      (querySnapshot) => {
+        const msgs = [];
+        querySnapshot.forEach((doc) => msgs.push(doc.data()));
+        setMessages(msgs);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  };
+
+  getMsg();
+
+  // 메시지 전송 함수
+  const send = async () => {
+    try {
+      await sendMsg(route.params.roomId, inputText);
+      setInputText("");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -27,13 +62,30 @@ export default function Chat({ navigation, route }) {
       </View>
 
       {/* 대화 내역이 보이는 공간 */}
-      <View style={styles.messageContainer}>
-        {messages.map((value, key) => (
-          <View key={key} style={styles.message}>
-            <Text style={styles.myMessageText}>{value}</Text>
-          </View>
-        ))}
-      </View>
+      <ScrollView>
+        <View style={styles.messageContainer}>
+          {messages.map((value, key) => (
+            <View
+              key={key}
+              style={
+                value.fromName !== route.params.other
+                  ? styles.myMessage
+                  : styles.otherMessage
+              }
+            >
+              <Text
+                style={
+                  value.fromName !== route.params.other
+                    ? styles.myMessageText
+                    : styles.otherMessageText
+                }
+              >
+                {value.content}
+              </Text>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
 
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -45,9 +97,10 @@ export default function Chat({ navigation, route }) {
             returnKeyType="done"
             onChangeText={setInputText}
             placeholder="메시지를 입력하세요."
+            blurOnSubmit={false}
           />
 
-          <TouchableOpacity style={styles.sendBtn}>
+          <TouchableOpacity onPress={send} style={styles.sendBtn}>
             <Text style={styles.sendBtnText}>전송</Text>
           </TouchableOpacity>
         </View>
@@ -90,15 +143,28 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingTop: 20,
-    alignItems: "flex-end",
+    //alignItems: "flex-end",
   },
 
-  message: {
+  myMessage: {
     backgroundColor: "#91B391",
     paddingVertical: 12,
     paddingHorizontal: 15,
     borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#91B391",
     marginBottom: 10,
+    alignSelf: "flex-end",
+  },
+
+  otherMessage: {
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    borderColor: "#91B391",
+    borderWidth: 1,
+    marginBottom: 10,
+    alignSelf: "flex-start",
   },
 
   myMessageText: {
@@ -107,8 +173,8 @@ const styles = StyleSheet.create({
   },
 
   otherMessageText: {
-    fontWeight: "bold",
-    color: "black",
+    fontWeight: "600",
+    color: "#91B391",
   },
 
   inputContainer: {

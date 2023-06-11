@@ -1,6 +1,11 @@
-import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
-import { uploadImage } from "./storage";
+import { FIRESTORE_DB } from "../firebaseConfig";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { getUserUid, getUserInfo, getUserInfoByUid } from "../services/auth";
 
 // 채팅방을 생성하여 DB에 저장
@@ -35,11 +40,41 @@ export async function getChatRoom() {
   try {
     const querySnapshot = await getDocs(q);
     const chatRoomList = querySnapshot.docs.map((doc) => {
-      const chatRoomData = doc.data();
+      const chatRoom = doc.data();
+      //console.log(chatRoom)
+
+      const chatRoomData = {
+        id: doc.id,
+        date: chatRoom.date,
+        participant: chatRoom.participant,
+        participantName: chatRoom.participantName,
+        productImage: chatRoom.productImage,
+        productName: chatRoom.productName,
+      };
+
       return chatRoomData;
     });
 
     return chatRoomList;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+// 메시지를 DB로 전송
+export async function sendMsg(roomId, content) {
+  const uid = await getUserUid();
+  const userInfo = await getUserInfo();
+  const userName = userInfo.name;
+
+  const messageRef = collection(FIRESTORE_DB, `ChatRoom/${roomId}/Message`);
+  try {
+    await addDoc(messageRef, {
+      date: new Date(),
+      fromId: uid,
+      fromName: userName,
+      content: content,
+    });
   } catch (err) {
     console.log(err);
   }
