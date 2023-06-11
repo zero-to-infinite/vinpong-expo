@@ -27,6 +27,41 @@ export default function Info({ navigation }) {
   const [detail, setDetail] = useState("");
   const [image, setImage] = useState(null);
 
+  // 선택된 스타일 태그들
+  const [selectedStyles, setSelectedStyles] = useState([]);
+  // 선택된 카테고리 태그들
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  // 스타일 모달이 보이는지 여부
+  const [styleModalVisible, setStyleModalVisible] = useState(false);
+  // 카테고리 모달이 보이는지 여부
+  const [categoryModalVisible, setCategoryModalVisible] = useState(false);
+
+  // 스타일 태그
+  const stylesList = [
+    "Casual",
+    "Formal",
+    "Sports",
+    "Vintage",
+    "Sportswear",
+    "Classic",
+    "Travel",
+    "Bohemian",
+    "Streetwear",
+    "Preppy",
+    "Chic",
+    "Minimalist",
+    "Tomboy",
+    "Rocker",
+    "Safari",
+  ];
+  const checkboxStyles = {
+    fillColor: "#91B391",
+    unfillColor: "white",
+    textStyle: {
+      textDecorationLine: "none",
+    },
+  };
+
   // 이미지 추가하는 함수
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -59,6 +94,74 @@ export default function Info({ navigation }) {
       navigation
     );
   };
+
+  // 스타일 태그 눌렀을 때 동작하는 함수
+  const handleStyleTagPress = (style) => {
+    if (selectedStyles.includes(style)) {
+      // 이미 클릭된 스타일이었으면 selectedStyles 리스트에서 제거
+      setSelectedStyles(
+        selectedStyles.filter((selectedStyle) => selectedStyle !== style)
+      );
+    } else {
+      // 클릭되지 않은 스타일이었으면 selectedStyles 리스트에 추가
+      setSelectedStyles([...selectedStyles, style]);
+    }
+  };
+  // 카테고리 태그 눌렀을 때 동작하는 함수
+  const handleCategoryTagPress = (category) => {
+    if (selectedCategories.includes(category)) {
+      // 이미 클릭된 카테고리였으면 selectedCategories 리스트에서 제거
+      setSelectedCategories(
+        selectedCategories.filter(
+          (selectedCategory) => selectedCategory !== category
+        )
+      );
+    } else {
+      // 클릭되지 않은 카테고리였으면 selectedCategories 리스트에 추가
+      setSelectedCategories([...selectedCategories, category]);
+    }
+  };
+
+  // 선택된 스타일 태그를 나타냄
+  const renderSelectedStyles = () => {
+    return (
+      <ScrollView horizontal style={styles.selectedItemsContainer}>
+        {selectedStyles.map((item, index) => (
+          <View key={index} style={styles.selectedItem}>
+            <Text style={styles.selectedItemText}>{item}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                handleStyleTagPress(item);
+              }}
+            >
+              <Feather name="x" size={16} color="white" style={styles.icon} />
+            </TouchableOpacity>
+          </View>
+        ))}
+      </ScrollView>
+    );
+  };
+
+  // 모달 내에서 스타일 태그들을 보여줄 함수
+  const renderStyleTagButtons = () => {
+    return (
+      <View style={styles.modalItemContainer}>
+        {stylesList.map((style) => (
+          <TouchableOpacity
+            onPress={() => handleStyleTagPress(style)}
+            key={style}
+            style={[
+              styles.modalItem,
+              selectedStyles.includes(style) ? styles.selectedModalItem : null, // 선택됐으면 옵션 색깔 변경
+            ]}
+          >
+            <Text>{style}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    );
+  };
+
 
   return (
     <View style={styles.container}>
@@ -128,6 +231,54 @@ export default function Info({ navigation }) {
             style={styles.inputArea}
           />
         </View>
+
+        <View style={styles.inputBox}>
+            <View style={styles.labelBox}>
+              <Text style={styles.label}>스타일</Text>
+            </View>
+
+            <TouchableOpacity
+              onPress={() => setStyleModalVisible(true)}
+              style={styles.addTagBtn}
+            >
+              <AntDesign name="plus" size={16} color="white" />
+            </TouchableOpacity>
+            {/* 선택한 스타일 태그들을 나열해서 보여줌 */}
+            <View>{renderSelectedStyles()}</View>
+            {/* 스타일 태그 선택하는 모달 */}
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={styleModalVisible}
+              onRequestClose={() => setStyleModalVisible(false)}
+            >
+              <View style={styles.modalContainer}>
+                <View style={styles.modalInner}>
+                  <View style={styles.modalHeader}>
+                    <Text>스타일 태그</Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        if (selectedStyles.length <= 3)
+                          setStyleModalVisible(false);
+                      }}
+                    >
+                      <Text style={styles.closeModalButtonText}>완료</Text>
+                    </TouchableOpacity>
+                  </View>
+                  {renderStyleTagButtons()}
+                  {selectedStyles.length > 3 ? (
+                    <Text style={styles.maxSelectionText}>
+                      최대 3개의 스타일 태그를 선택할 수 있습니다!
+                    </Text>
+                  ) : (
+                    <Text style={styles.selectionText}>
+                      상품의 스타일 태그를 선택해주세요!
+                    </Text>
+                  )}
+                </View>
+              </View>
+            </Modal>
+          </View>
       </ScrollView>
 
       <BottomNav navigation={navigation} />
@@ -293,6 +444,109 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginRight: 10,
     padding: 5,
+  },
+
+  addTagBtn: {
+    backgroundColor: "#669066",
+    borderRadius: 15,
+    paddingHorizontal: 20,
+    paddingVertical: 6,
+  },
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+
+  modalInner: {
+    borderColor: "#91B391",
+    borderWidth: 1,
+    borderRadius: 20,
+    backgroundColor: "white",
+    width: 340,
+  },
+
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#91B391",
+    padding: 15,
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
+  },
+
+  selectedItemsContainer: {
+    marginLeft: 5,
+  },
+
+  selectedItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 15,
+    backgroundColor: "#91B391",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginHorizontal: 5,
+  },
+
+  selectedItemText: {
+    color: "black",
+  },
+
+  footer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-evenly",
+    backgroundColor: "#91B391",
+    paddingBottom: 35,
+    paddingTop: 15,
+  },
+
+  hr: {
+    marginVertical: 10,
+  },
+
+  icon: {
+    marginLeft: 5,
+  },
+
+  // 모달 안에 있는 태그들에 관한 스타일
+  modalItemContainer: {
+    padding: 30,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
+
+  modalItem: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: "#777",
+    margin: 5,
+  },
+
+  selectedModalItem: {
+    backgroundColor: "#91B391",
+    borderColor: "#91B391",
+  },
+
+  selectionText: {
+    color: "black",
+    alignSelf: "center",
+    marginBottom: 20,
+  },
+
+  maxSelectionText: {
+    color: "red",
+    alignSelf: "center",
+    marginBottom: 20,
   },
 });
 
