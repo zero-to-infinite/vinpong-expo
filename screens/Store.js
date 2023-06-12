@@ -12,7 +12,7 @@ import {
 import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
 import { getImages } from "../services/storage";
-import { getUserInfo, getUserUid } from "../services/auth";
+import { getUserInfo, getUserUid } from "../services/firestore_user";
 import styles from "../styles/StoreStyles";
 import { FontAwesome } from "@expo/vector-icons";
 

@@ -4,7 +4,7 @@ import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
 import styles from "../styles/ChatRoomStyles";
 import { getChatRoom } from "../services/firestore_chat";
-import { getUserInfo } from "../services/auth";
+import { getUserInfo } from "../services/firestore_user";
 
 export default function ChatRoom({ navigation }) {
   const [chatRooms, setChatRooms] = useState([]);

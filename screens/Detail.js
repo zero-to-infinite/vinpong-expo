@@ -14,7 +14,7 @@ import BouncyCheckboxGroup, {
 import { AntDesign } from "@expo/vector-icons";
 import { getProduct } from "../services/firestore_product";
 import { addChatRoom } from "../services/firestore_chat";
-import { getUserUid } from "../services/auth";
+import { getUserUid } from "../services/firestore_user";
 import styles from "../styles/AddStyles";
 import Icon from "react-native-vector-icons/FontAwesome";
 

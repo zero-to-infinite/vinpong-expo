@@ -6,7 +6,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { getUserUid, getUserInfo, getUserInfoByUid } from "../services/auth";
+import { getUserUid, getUserInfo, getUserInfoByUid } from "../services/firestore_user";
 
 // 채팅방을 생성하여 DB에 저장
 export async function addChatRoom(src, name, seller) {
