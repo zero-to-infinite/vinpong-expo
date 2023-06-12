@@ -278,6 +278,10 @@ export default function Info({ navigation }) {
             </View>
           </Modal>
         </View>
+
+        <TouchableOpacity style={styles.btnlogout}>
+            <Text>로그아웃</Text>
+          </TouchableOpacity>
       </ScrollView>
 
       <BottomNav navigation={navigation} />
@@ -403,6 +407,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     marginHorizontal: 6,
+  },
+  btnlogout:{
+    flex: 1,
+    borderRadius: 10,
+    //borderColor: "#91B391",
+    borderWidth: 1,
+    padding: 10,
+    marginHorizontal: 6,
+
   },
 
   btn: {
