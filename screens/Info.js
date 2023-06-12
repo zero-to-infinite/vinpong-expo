@@ -97,9 +97,11 @@ export default function Info({ navigation }) {
         text: "네!",
         style: "default",
         onPress: async () => {
-          setIsLoading(true);
-          await updateUserInfo(image, name, selectedStyles, bio);
-          setIsLoading(false);
+          if (!isLoading) {
+            setIsLoading(true);
+            await updateUserInfo(image, name, selectedStyles, bio);
+            setTimeout(() => setIsLoading(false), 1000);
+          }
         },
       },
     ]);

@@ -28,6 +28,7 @@ export default function Detail({ navigation, route }) {
   const [detail, setDetail] = useState("");
   const [image, setImage] = useState(null);
   const [seller, setSeller] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const checkboxStyles = {
     fillColor: "#91B391",
@@ -130,10 +131,14 @@ export default function Detail({ navigation, route }) {
   };
 
   const pressChatBtn = async () => {
-    const myUid = await getUserUid();
-    if (seller == myUid) alert("자신에게는 채팅을 보낼 수 없습니다.");
-    else {
-      addChatRoom(route.params.src, name, seller, navigation);
+    if (!isLoading) {
+      const myUid = await getUserUid();
+      if (seller == myUid) alert("자신에게는 채팅을 보낼 수 없습니다.");
+      else {
+        setIsLoading(true);
+        await addChatRoom(route.params.src, name, seller, navigation);
+        setTimeout(() => setIsLoading(false), 1000);
+      }
     }
   };
 

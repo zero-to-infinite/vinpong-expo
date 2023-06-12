@@ -144,19 +144,21 @@ export default function Add({ navigation }) {
   };
 
   const complete = async () => {
-    setIsLoading(true);
-    await addProduct(
-      name,
-      price,
-      condition,
-      size,
-      selectedCategories,
-      selectedStyles,
-      detail,
-      image,
-      navigation
-    );
-    setIsLoading(false);
+    if (!isLoading) {
+      setIsLoading(true);
+      await addProduct(
+        name,
+        price,
+        condition,
+        size,
+        selectedCategories,
+        selectedStyles,
+        detail,
+        image,
+        navigation
+      );
+      setTimeout(() => setIsLoading(false), 1000);
+    }
   };
 
   // 스타일 태그 눌렀을 때 동작하는 함수
