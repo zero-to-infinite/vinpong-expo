@@ -97,6 +97,7 @@ export async function signIn(email, pw, navigation) {
 // 로그아웃
 export function signOut(navigation) {
   FIREBASE_AUTH.signOut();
+  alert("로그아웃 되었습니다!");
   navigation.navigate("Loading");
 }
 

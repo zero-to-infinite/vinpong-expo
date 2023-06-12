@@ -11,7 +11,6 @@ import {
 import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
 import { AntDesign } from "@expo/vector-icons";
-import { signOut } from "../services/auth";
 import { getAllImages } from "../services/storage";
 import { getUserInfo } from "../services/auth";
 import styles from "../styles/HomeStyles";
