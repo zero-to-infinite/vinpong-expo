@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
 
   selectedItemsContainer: {
-    marginLeft: 5,
+    //marginLeft: 5,
     marginBottom: 10,
   },
 
