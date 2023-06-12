@@ -1,10 +1,7 @@
 import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
-import { doc, setDoc, getDoc } from "firebase/firestore";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-} from "firebase/auth";
+import { doc, setDoc, getDoc, collection, updateDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { uploadImage } from "./storage";
 
 // 로그인한 유저의 uid 가져오기
 export async function getUserUid() {
@@ -53,3 +50,33 @@ export async function getUserInfoByUid(uid) {
 }
 
 // 내 프로필 정보 DB에 업데이트
+export async function updateUserInfo(image, name, style, bio) {
+  try {
+    const uid = await getUserUid();
+    const userRef = doc(FIRESTORE_DB, "User", uid);
+
+    if (image) {
+      const date = new Date();
+
+      const downloadURL = await uploadImage("User", image, uid, "image");
+      console.log("유저 이미지 저장 성공!");
+
+      await updateDoc(userRef, {
+        image: downloadURL,
+        name: name,
+        style: style,
+        bio: bio,
+      });
+    } else {
+      await updateDoc(userRef, {
+        image: null,
+        name: name,
+        style: style,
+        bio: bio,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+  alert("프로필이 성공적으로 변경되었습니다!");
+}
