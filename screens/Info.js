@@ -11,6 +11,7 @@ import {
   Modal,
   Alert,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as ImagePicker from "expo-image-picker";
@@ -91,33 +92,45 @@ export default function Info({ navigation }) {
   };
 
   const complete = async () => {
-    Alert.alert("Update", "프로필을 변경하시겠습니까?", [
-      { text: "아니옹..." },
-      {
-        text: "네!",
-        style: "default",
-        onPress: async () => {
-          if (!isLoading) {
-            setIsLoading(true);
-            await updateUserInfo(image, name, selectedStyles, bio);
-            setTimeout(() => setIsLoading(false), 1000);
-          }
+    if (Platform.OS == "web") {
+      if (!isLoading) {
+        setIsLoading(true);
+        await updateUserInfo(image, name, selectedStyles, bio);
+        setTimeout(() => setIsLoading(false), 1000);
+      }
+    } else {
+      Alert.alert("Update", "프로필을 변경하시겠습니까?", [
+        { text: "아니옹..." },
+        {
+          text: "네!",
+          style: "default",
+          onPress: async () => {
+            if (!isLoading) {
+              setIsLoading(true);
+              await updateUserInfo(image, name, selectedStyles, bio);
+              setTimeout(() => setIsLoading(false), 1000);
+            }
+          },
         },
-      },
-    ]);
+      ]);
+    }
   };
 
   const close = () => {
-    Alert.alert("Close", "저장하지 않은 변경 내용은 모두 사라집니다.", [
-      { text: "취소" },
-      {
-        text: "네 괜찮아요!",
-        style: "default",
-        onPress: () => {
-          navigation.goBack();
+    if (Platform.OS == "web") {
+      navigation.goBack();
+    } else {
+      Alert.alert("Close", "저장하지 않은 변경 내용은 모두 사라집니다.", [
+        { text: "취소" },
+        {
+          text: "네 괜찮아요!",
+          style: "default",
+          onPress: () => {
+            navigation.goBack();
+          },
         },
-      },
-    ]);
+      ]);
+    }
   };
 
   // 스타일 태그 눌렀을 때 동작하는 함수
