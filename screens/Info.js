@@ -105,6 +105,19 @@ export default function Info({ navigation }) {
     ]);
   };
 
+  const close = () => {
+    Alert.alert("Close", "저장하지 않은 변경 내용은 모두 사라집니다.", [
+      { text: "취소" },
+      {
+        text: "네 괜찮아요!",
+        style: "default",
+        onPress: () => {
+          navigation.goBack();
+        },
+      },
+    ]);
+  };
+
   // 스타일 태그 눌렀을 때 동작하는 함수
   const handleStyleTagPress = (style) => {
     if (selectedStyles.includes(style)) {
@@ -164,10 +177,7 @@ export default function Info({ navigation }) {
 
       {/*상단바*/}
       <View style={styles.menuBar}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.menuIcon}
-        >
+        <TouchableOpacity onPress={close} style={styles.menuIcon}>
           <AntDesign name="close" size={28} color="black" />
         </TouchableOpacity>
 

@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
 
   userImage: {
-    borderColor: "black",
+    borderColor: "white",
     borderWidth: 1,
     borderRadius: 80,
     width: 100,
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
 
   userInfo: {
     //backgroundColor: "pink",
+    flex: 1,
     width: "50%",
     justifyContent: "center",
     alignItems: "center",
@@ -56,27 +57,47 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  storeRating: {
-    flexDirection: "row",
+  selectedItemsContainer: {
+    marginLeft: 5,
+    marginBottom: 10,
   },
 
-  bioInput: {
-    borderColor: "white",
-    borderBottomColor: "black",
+  selectedItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 15,
+    backgroundColor: "#91B391",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginHorizontal: 5,
+  },
+
+  selectedItemText: {
+    color: "black",
+  },
+
+  bioBox: {
+    height: 45,
+    borderColor: "#91B391",
     borderWidth: 1,
+    borderRadius: 15,
+    padding: 12,
     marginRight: 15,
   },
 
   storeText: {
-    padding: 2,
+    color: "black",
+    fontWeight: "bold",
+    paddingBottom: 10,
   },
 
   followBox: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
-    marginTop: 17,
-    marginBottom: 30,
+    marginTop: 10,
+    marginBottom: 28,
   },
 
   follow: {

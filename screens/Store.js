@@ -21,7 +21,12 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 export default function Store({ navigation }) {
   // true이면 판매 중, false이면 판매 완료인 상품
   const [isSelling, setIsSelling] = useState(true);
-  const [name, setName] = useState(null);
+
+  const [name, setName] = useState(null); // 닉네임
+  const [image, setImage] = useState(null); // 유저 이미지
+  const [style, setStyle] = useState([]); // 유저 스타일
+  const [bio, setBio] = useState(null); // 유저 소개
+
   // 판매 중인 상품 데이터
   const [sellingItem, setSellingItem] = useState([]);
   // 판매 완료한 상품 데이터
@@ -32,6 +37,9 @@ export default function Store({ navigation }) {
       try {
         const userInfo = await getUserInfo();
         setName(userInfo.name);
+        setBio(userInfo.bio);
+        setImage(userInfo.image);
+        setStyle(userInfo.style);
       } catch (error) {
         console.log(error);
       }
@@ -54,6 +62,19 @@ export default function Store({ navigation }) {
     fetchImages();
   }, []);
 
+  // 스타일 태그를 나타냄
+  const renderSelectedStyles = () => {
+    return (
+      <ScrollView horizontal style={styles.selectedItemsContainer}>
+        {style.map((item, index) => (
+          <View key={index} style={styles.selectedItem}>
+            <Text style={styles.selectedItemText}>{item}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -63,7 +84,12 @@ export default function Store({ navigation }) {
       <ScrollView style={styles.body}>
         <View style={styles.infoBox}>
           <View style={styles.userInfo}>
-            <View style={styles.userImage}></View>
+            {image == null ? (
+              <View style={styles.userImage}></View>
+            ) : (
+              <Image style={styles.userImage} source={{ uri: image }} />
+            )}
+
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("Info");
@@ -72,23 +98,26 @@ export default function Store({ navigation }) {
             >
               <FontAwesome name="gear" size={16} color="darkgray" />
             </TouchableOpacity>
-            <Text>{name}</Text>
+            <Text style={styles.storeText}>{name}</Text>
           </View>
 
           <View style={styles.storeInfo}>
-            <View style={styles.storeRating}>
-              <Text style={styles.storeText}>평점</Text>
-              <Text style={styles.storeText}>★★★★★</Text>
-            </View>
-
             <View>
               <Text style={styles.storeText}>스타일</Text>
-              <Text style={styles.storeText}>#빈티지 #유니크</Text>
+              <View>{renderSelectedStyles()}</View>
             </View>
 
             <View>
               <Text style={styles.storeText}>소개</Text>
-              <TextInput style={styles.bioInput} />
+              <TextInput
+                editable={false}
+                placeholder="상점 소개가 없습니다 :("
+                multiline={true}
+                numberOfLines={3}
+                ellipsizeMode="tail"
+                value={bio}
+                style={styles.bioBox}
+              />
             </View>
           </View>
         </View>
