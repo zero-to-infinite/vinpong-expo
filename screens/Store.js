@@ -25,7 +25,7 @@ export default function Store({ navigation }) {
 
   const [name, setName] = useState(null); // 닉네임
   const [image, setImage] = useState(null); // 유저 이미지
-  const [style, setStyle] = useState(["없음"]); // 유저 스타일
+  const [style, setStyle] = useState([]); // 유저 스타일
   const [bio, setBio] = useState(null); // 유저 소개
 
   // 판매 중인 상품 데이터
@@ -41,7 +41,7 @@ export default function Store({ navigation }) {
           setName(userInfo.name);
           setBio(userInfo.bio);
           setImage(userInfo.image);
-          setStyle(userInfo.style);
+          if (userInfo.style) setStyle(userInfo.style);
         } catch (error) {
           console.log(error);
         }
