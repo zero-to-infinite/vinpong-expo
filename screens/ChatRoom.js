@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View, FlatList, Image } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
 import styles from "../styles/ChatRoomStyles";
@@ -23,14 +24,16 @@ export default function ChatRoom({ navigation }) {
     fetchUserName();
   }, []);
 
-  useEffect(() => {
-    const fetchChatRoomData = async () => {
-      const chatRoomData = await getChatRoom();
-      setChatRooms(chatRoomData);
-    };
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchChatRoomData = async () => {
+        const chatRoomData = await getChatRoom();
+        setChatRooms(chatRoomData);
+      };
 
-    fetchChatRoomData();
-  }, []);
+      fetchChatRoomData();
+    }, [])
+  );
 
   // 판매자 이름을 가져오는 함수
   const getOtherName = (userList) => {
@@ -52,7 +55,7 @@ export default function ChatRoom({ navigation }) {
             other: getOtherName(item.participantName),
             roomId: item.id,
             productImage: item.productImage,
-            productName: item.productName
+            productName: item.productName,
           })
         }
       >

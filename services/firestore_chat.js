@@ -9,7 +9,7 @@ import {
 import { getUserUid, getUserInfo, getUserInfoByUid } from "../services/firestore_user";
 
 // 채팅방을 생성하여 DB에 저장
-export async function addChatRoom(src, name, seller) {
+export async function addChatRoom(src, name, seller, navigation) {
   const uid = await getUserUid();
   const myInfo = await getUserInfo();
   const sellerInfo = await getUserInfoByUid(seller);
@@ -24,6 +24,7 @@ export async function addChatRoom(src, name, seller) {
 
   try {
     await addDoc(collection(FIRESTORE_DB, "ChatRoom"), chatRoomData);
+    navigation.navigate("ChatRoom");
   } catch (err) {
     console.log(err);
   }

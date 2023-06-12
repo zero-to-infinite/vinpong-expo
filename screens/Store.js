@@ -9,6 +9,7 @@ import {
   TextInput,
   Image,
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
 import { getImages } from "../services/storage";
@@ -32,35 +33,39 @@ export default function Store({ navigation }) {
   // 판매 완료한 상품 데이터
   const [soldItem, setSoldItem] = useState([]);
 
-  useEffect(() => {
-    const fetchUserName = async () => {
-      try {
-        const userInfo = await getUserInfo();
-        setName(userInfo.name);
-        setBio(userInfo.bio);
-        setImage(userInfo.image);
-        //setStyle(userInfo.style);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchUserName = async () => {
+        try {
+          const userInfo = await getUserInfo();
+          setName(userInfo.name);
+          setBio(userInfo.bio);
+          setImage(userInfo.image);
+          setStyle(userInfo.style);
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
-    fetchUserName();
-  }, []);
+      fetchUserName();
+    }, [])
+  );
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const uid = await getUserUid();
-        const imagesList = await getImages(uid);
-        setSellingItem(imagesList);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchImages = async () => {
+        try {
+          const uid = await getUserUid();
+          const imagesList = await getImages(uid);
+          setSellingItem(imagesList);
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
-    fetchImages();
-  }, []);
+      fetchImages();
+    }, [])
+  );
 
   // 스타일 태그를 나타냄
   const renderSelectedStyles = () => {

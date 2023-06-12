@@ -9,6 +9,7 @@ import {
   TextInput,
   ScrollView,
   Modal,
+  ActivityIndicator,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import BouncyCheckboxGroup, {
@@ -38,6 +39,8 @@ export default function Add({ navigation }) {
   const [styleModalVisible, setStyleModalVisible] = useState(false);
   // 카테고리 모달이 보이는지 여부
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false); // 상품 추가시 로딩 여부
 
   // 스타일 태그
   const stylesList = [
@@ -140,8 +143,9 @@ export default function Add({ navigation }) {
     }
   };
 
-  const complete = () => {
-    addProduct(
+  const complete = async () => {
+    setIsLoading(true);
+    await addProduct(
       name,
       price,
       condition,
@@ -152,8 +156,9 @@ export default function Add({ navigation }) {
       image,
       navigation
     );
+    setIsLoading(false);
   };
-  // 수정시작!
+
   // 스타일 태그 눌렀을 때 동작하는 함수
   const handleStyleTagPress = (style) => {
     if (selectedStyles.includes(style)) {
@@ -281,189 +286,196 @@ export default function Add({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <KeyboardAwareScrollView>
-        <ScrollView style={styles.body}>
-          {image == null ? (
-            <View style={styles.pic}>
-              <TouchableOpacity onPress={pickImage}>
-                <Feather name="camera" size={18} color="black" />
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View style={styles.pic}>
-              {image && <Image source={{ uri: image }} style={styles.pic} />}
-              <TouchableOpacity onPress={deleteImage} style={styles.deletePic}>
-                <AntDesign name="close" size={18} color="white" />
-              </TouchableOpacity>
-            </View>
-          )}
-
-          <View style={styles.hr} />
-
-          <View style={styles.inputBox}>
-            <View style={styles.labelBox}>
-              <Text style={styles.label}>상품명</Text>
-            </View>
-            <TextInput
-              onChangeText={setName}
-              value={name}
-              returnKeyType="done"
-              style={styles.input}
-            />
-          </View>
-
-          <View style={styles.inputBox}>
-            <View style={styles.labelBox}>
-              <Text style={styles.label}>가격</Text>
-            </View>
-            <TextInput
-              onChangeText={setPrice}
-              value={price}
-              keyboardType="number-pad"
-              returnKeyType="done"
-              style={styles.input}
-            />
-          </View>
-
-          <View style={styles.inputBox}>
-            <View style={styles.labelBox}>
-              <Text style={styles.label}>상태</Text>
-            </View>
-            <BouncyCheckboxGroup
-              onChange={(ICheckboxButton) => {
-                setCondition(ICheckboxButton.text);
-              }}
-              data={conditionCheckboxGroup}
-              style={styles.checkbox}
-            />
-          </View>
-
-          <View style={styles.inputBox}>
-            <View style={styles.labelBox}>
-              <Text style={styles.label}>사이즈</Text>
-            </View>
-            <BouncyCheckboxGroup
-              onChange={(ICheckboxButton) => {
-                setSize(ICheckboxButton.text);
-              }}
-              data={sizeCheckboxGroup}
-              style={styles.checkbox}
-            />
-          </View>
-
-          <View style={styles.inputBox}>
-            <View style={styles.labelBox}>
-              <Text style={styles.label}>카테고리</Text>
-            </View>
-
-            <TouchableOpacity
-              onPress={() => setCategoryModalVisible(true)}
-              style={styles.addTagBtn}
-            >
-              <AntDesign name="plus" size={16} color="white" />
-            </TouchableOpacity>
-            {/* 선택한 카테고리 태그들을 나열해서 보여줌 */}
-            <View>{renderSelectedCategories()}</View>
-            {/* 카테고리 태그 선택하는 모달 */}
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={categoryModalVisible}
-              onRequestClose={() => setCategoryModalVisible(false)}
-            >
-              <View style={styles.modalContainer}>
-                <View style={styles.modalInner}>
-                  <View style={styles.modalHeader}>
-                    <Text>카테고리 태그</Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (selectedCategories.length <= 2)
-                          setCategoryModalVisible(false);
-                      }}
-                    >
-                      <Text style={styles.closeModalButtonText}>완료</Text>
-                    </TouchableOpacity>
-                  </View>
-                  {renderCategoryTagButtons()}
-                  {selectedCategories.length > 2 ? (
-                    <Text style={styles.maxSelectionText}>
-                      최대 2개의 카테고리 태그를 선택할 수 있습니다!
-                    </Text>
-                  ) : (
-                    <Text style={styles.selectionText}>
-                      상품의 카테고리 태그를 선택해주세요!
-                    </Text>
-                  )}
-                </View>
+      {isLoading ? (
+        <ActivityIndicator color="black" size="large" />
+      ) : (
+        <KeyboardAwareScrollView>
+          <ScrollView style={styles.body}>
+            {image == null ? (
+              <View style={styles.pic}>
+                <TouchableOpacity onPress={pickImage}>
+                  <Feather name="camera" size={18} color="black" />
+                </TouchableOpacity>
               </View>
-            </Modal>
-          </View>
-
-          <View style={styles.inputBox}>
-            <View style={styles.labelBox}>
-              <Text style={styles.label}>스타일</Text>
-            </View>
-
-            <TouchableOpacity
-              onPress={() => setStyleModalVisible(true)}
-              style={styles.addTagBtn}
-            >
-              <AntDesign name="plus" size={16} color="white" />
-            </TouchableOpacity>
-            {/* 선택한 스타일 태그들을 나열해서 보여줌 */}
-            <View>{renderSelectedStyles()}</View>
-            {/* 스타일 태그 선택하는 모달 */}
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={styleModalVisible}
-              onRequestClose={() => setStyleModalVisible(false)}
-            >
-              <View style={styles.modalContainer}>
-                <View style={styles.modalInner}>
-                  <View style={styles.modalHeader}>
-                    <Text>스타일 태그</Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (selectedStyles.length <= 3)
-                          setStyleModalVisible(false);
-                      }}
-                    >
-                      <Text style={styles.closeModalButtonText}>완료</Text>
-                    </TouchableOpacity>
-                  </View>
-                  {renderStyleTagButtons()}
-                  {selectedStyles.length > 3 ? (
-                    <Text style={styles.maxSelectionText}>
-                      최대 3개의 스타일 태그를 선택할 수 있습니다!
-                    </Text>
-                  ) : (
-                    <Text style={styles.selectionText}>
-                      상품의 스타일 태그를 선택해주세요!
-                    </Text>
-                  )}
-                </View>
+            ) : (
+              <View style={styles.pic}>
+                {image && <Image source={{ uri: image }} style={styles.pic} />}
+                <TouchableOpacity
+                  onPress={deleteImage}
+                  style={styles.deletePic}
+                >
+                  <AntDesign name="close" size={18} color="white" />
+                </TouchableOpacity>
               </View>
-            </Modal>
-          </View>
+            )}
 
-          {/*키보드가 input을 가리는 버그 해결 필요!*/}
-          <View style={styles.inputAreaBox}>
-            <View style={styles.labelBox}>
-              <Text style={styles.label}>상세 설명</Text>
+            <View style={styles.hr} />
+
+            <View style={styles.inputBox}>
+              <View style={styles.labelBox}>
+                <Text style={styles.label}>상품명</Text>
+              </View>
+              <TextInput
+                onChangeText={setName}
+                value={name}
+                returnKeyType="done"
+                style={styles.input}
+              />
             </View>
-            <TextInput
-              onChangeText={setDetail}
-              value={detail}
-              multiline={true}
-              placeholder="상세 설명을 적어주세요 :D"
-              returnKeyType="done"
-              blurOnSubmit={true}
-              style={styles.inputArea}
-            />
-          </View>
-        </ScrollView>
-      </KeyboardAwareScrollView>
+
+            <View style={styles.inputBox}>
+              <View style={styles.labelBox}>
+                <Text style={styles.label}>가격</Text>
+              </View>
+              <TextInput
+                onChangeText={setPrice}
+                value={price}
+                keyboardType="number-pad"
+                returnKeyType="done"
+                style={styles.input}
+              />
+            </View>
+
+            <View style={styles.inputBox}>
+              <View style={styles.labelBox}>
+                <Text style={styles.label}>상태</Text>
+              </View>
+              <BouncyCheckboxGroup
+                onChange={(ICheckboxButton) => {
+                  setCondition(ICheckboxButton.text);
+                }}
+                data={conditionCheckboxGroup}
+                style={styles.checkbox}
+              />
+            </View>
+
+            <View style={styles.inputBox}>
+              <View style={styles.labelBox}>
+                <Text style={styles.label}>사이즈</Text>
+              </View>
+              <BouncyCheckboxGroup
+                onChange={(ICheckboxButton) => {
+                  setSize(ICheckboxButton.text);
+                }}
+                data={sizeCheckboxGroup}
+                style={styles.checkbox}
+              />
+            </View>
+
+            <View style={styles.inputBox}>
+              <View style={styles.labelBox}>
+                <Text style={styles.label}>카테고리</Text>
+              </View>
+
+              <TouchableOpacity
+                onPress={() => setCategoryModalVisible(true)}
+                style={styles.addTagBtn}
+              >
+                <AntDesign name="plus" size={16} color="white" />
+              </TouchableOpacity>
+              {/* 선택한 카테고리 태그들을 나열해서 보여줌 */}
+              <View>{renderSelectedCategories()}</View>
+              {/* 카테고리 태그 선택하는 모달 */}
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={categoryModalVisible}
+                onRequestClose={() => setCategoryModalVisible(false)}
+              >
+                <View style={styles.modalContainer}>
+                  <View style={styles.modalInner}>
+                    <View style={styles.modalHeader}>
+                      <Text>카테고리 태그</Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          if (selectedCategories.length <= 2)
+                            setCategoryModalVisible(false);
+                        }}
+                      >
+                        <Text style={styles.closeModalButtonText}>완료</Text>
+                      </TouchableOpacity>
+                    </View>
+                    {renderCategoryTagButtons()}
+                    {selectedCategories.length > 2 ? (
+                      <Text style={styles.maxSelectionText}>
+                        최대 2개의 카테고리 태그를 선택할 수 있습니다!
+                      </Text>
+                    ) : (
+                      <Text style={styles.selectionText}>
+                        상품의 카테고리 태그를 선택해주세요!
+                      </Text>
+                    )}
+                  </View>
+                </View>
+              </Modal>
+            </View>
+
+            <View style={styles.inputBox}>
+              <View style={styles.labelBox}>
+                <Text style={styles.label}>스타일</Text>
+              </View>
+
+              <TouchableOpacity
+                onPress={() => setStyleModalVisible(true)}
+                style={styles.addTagBtn}
+              >
+                <AntDesign name="plus" size={16} color="white" />
+              </TouchableOpacity>
+              {/* 선택한 스타일 태그들을 나열해서 보여줌 */}
+              <View>{renderSelectedStyles()}</View>
+              {/* 스타일 태그 선택하는 모달 */}
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={styleModalVisible}
+                onRequestClose={() => setStyleModalVisible(false)}
+              >
+                <View style={styles.modalContainer}>
+                  <View style={styles.modalInner}>
+                    <View style={styles.modalHeader}>
+                      <Text>스타일 태그</Text>
+                      <TouchableOpacity
+                        onPress={() => {
+                          if (selectedStyles.length <= 3)
+                            setStyleModalVisible(false);
+                        }}
+                      >
+                        <Text style={styles.closeModalButtonText}>완료</Text>
+                      </TouchableOpacity>
+                    </View>
+                    {renderStyleTagButtons()}
+                    {selectedStyles.length > 3 ? (
+                      <Text style={styles.maxSelectionText}>
+                        최대 3개의 스타일 태그를 선택할 수 있습니다!
+                      </Text>
+                    ) : (
+                      <Text style={styles.selectionText}>
+                        상품의 스타일 태그를 선택해주세요!
+                      </Text>
+                    )}
+                  </View>
+                </View>
+              </Modal>
+            </View>
+
+            {/*키보드가 input을 가리는 버그 해결 필요!*/}
+            <View style={styles.inputAreaBox}>
+              <View style={styles.labelBox}>
+                <Text style={styles.label}>상세 설명</Text>
+              </View>
+              <TextInput
+                onChangeText={setDetail}
+                value={detail}
+                multiline={true}
+                placeholder="상세 설명을 적어주세요 :D"
+                returnKeyType="done"
+                blurOnSubmit={true}
+                style={styles.inputArea}
+              />
+            </View>
+          </ScrollView>
+        </KeyboardAwareScrollView>
+      )}
 
       <BottomNav navigation={navigation} />
     </View>

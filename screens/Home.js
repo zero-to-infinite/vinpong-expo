@@ -8,6 +8,7 @@ import {
   Dimensions,
   Image,
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
 import { AntDesign } from "@expo/vector-icons";
@@ -34,18 +35,20 @@ export default function Home({ navigation }) {
     fetchUserName();
   }, []);
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const imagesList = await getAllImages();
-        setImages(imagesList);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchImages = async () => {
+        try {
+          const imagesList = await getAllImages();
+          setImages(imagesList);
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
-    fetchImages();
-  }, []);
+      fetchImages();
+    }, [])
+  );
 
   // 임시 상품 데이터
   const [products, setProducts] = useState([
