@@ -12,14 +12,15 @@ import { useFocusEffect } from "@react-navigation/native";
 import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
 import { AntDesign } from "@expo/vector-icons";
-import { getAllImages } from "../services/storage";
+import { getAllImages, getAllUserImages } from "../services/storage";
 import { getUserInfo } from "../services/firestore_user";
 import styles from "../styles/HomeStyles";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function Home({ navigation }) {
-  const [images, setImages] = useState([]);
+  const [productImages, setProductImages] = useState([]);
+  const [storeImages, setStoreImages] = useState([]);
   const [name, setName] = useState(null);
 
   useEffect(() => {
@@ -39,8 +40,10 @@ export default function Home({ navigation }) {
     React.useCallback(() => {
       const fetchImages = async () => {
         try {
-          const imagesList = await getAllImages();
-          setImages(imagesList);
+          const productImagesList = await getAllImages();
+          const storeImageList = await getAllUserImages();
+          setProductImages(productImagesList);
+          setStoreImages(storeImageList);
         } catch (error) {
           console.log(error);
         }
@@ -49,24 +52,6 @@ export default function Home({ navigation }) {
       fetchImages();
     }, [])
   );
-
-  // 임시 상품 데이터
-  const [products, setProducts] = useState([
-    "상품 1",
-    "상품 2",
-    "상품 3",
-    "상품 4",
-    "상품 5",
-  ]);
-
-  // 임시 상점 데이터
-  const [stores, setStores] = useState([
-    "상점 1",
-    "상점 2",
-    "상점 3",
-    "상점 4",
-    "상점 5",
-  ]);
 
   return (
     <View style={styles.container}>
@@ -85,7 +70,7 @@ export default function Home({ navigation }) {
         <Text style={styles.bodyText}>추천 상품</Text>
         <View style={styles.productContainer}>
           <ScrollView pagingEnabled horizontal>
-            {images.map((value, key) => (
+            {productImages.map((value, key) => (
               <TouchableOpacity
                 onPress={() => navigation.navigate("Detail", { src: value })}
                 style={styles.product}
@@ -96,7 +81,7 @@ export default function Home({ navigation }) {
             ))}
           </ScrollView>
           <TouchableOpacity
-            onPress={() => navigation.navigate("ProductList")}
+            //onPress={() => navigation.navigate("ProductList")}
             style={styles.scrollIcon}
           >
             <AntDesign name="rightcircle" size={24} color="#91B391" />
@@ -106,9 +91,13 @@ export default function Home({ navigation }) {
         <Text style={styles.bodyText}>인기 상점</Text>
         <View style={styles.productContainer}>
           <ScrollView pagingEnabled horizontal>
-            {stores.map((value, key) => (
-              <TouchableOpacity style={styles.product} key={key}>
-                <Text>{value}</Text>
+            {storeImages.map((value, key) => (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Store", { src: value })}
+                style={styles.product}
+                key={key}
+              >
+                <Image style={styles.product} source={{ uri: value }} />
               </TouchableOpacity>
             ))}
           </ScrollView>

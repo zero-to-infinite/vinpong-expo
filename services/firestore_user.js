@@ -1,5 +1,14 @@
 import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
-import { doc, setDoc, getDoc, collection, updateDoc } from "firebase/firestore";
+import {
+  doc,
+  getDocs,
+  setDoc,
+  getDoc,
+  collection,
+  updateDoc,
+  query,
+  where,
+} from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { uploadImage } from "./storage";
 
@@ -79,4 +88,27 @@ export async function updateUserInfo(image, name, style, bio) {
     console.log(err);
   }
   alert("프로필이 성공적으로 변경되었습니다!");
+}
+
+// 이미지를 클릭하면 특정 유저의 정보 가져옴
+export async function getUserByImg(src) {
+  const userRef = collection(FIRESTORE_DB, "User");
+  const q = query(userRef, where("image", "==", src));
+  try {
+    const querySnapshot = await getDocs(q);
+    const userPromises = querySnapshot.docs.map((doc) => {
+      const user = doc.data();
+      const userInfo = {
+        uid: doc.id, // 판매자의 uid
+        name: user.name,
+        bio: user.bio,
+        style: user.style,
+      };
+      return userInfo;
+    });
+    const users = await Promise.all(userPromises);
+    return users[0];
+  } catch (err) {
+    console.log(err);
+  }
 }

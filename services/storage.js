@@ -54,3 +54,14 @@ export async function getImages(uid) {
     return [];
   }
 }
+
+// storage에서 모든 유저의 이미지 가져오는 함수
+export async function getAllUserImages() {
+  const docSnap = await getDocs(collection(FIRESTORE_DB, "User"));
+  const imagesList = [];
+  docSnap.forEach((doc) => {
+    if (doc.data().image) imagesList.push(doc.data().image);
+  });
+
+  return imagesList;
+}

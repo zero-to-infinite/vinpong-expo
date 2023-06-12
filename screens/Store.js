@@ -13,20 +13,28 @@ import { useFocusEffect } from "@react-navigation/native";
 import BottomNav from "../components/BottomNav";
 import TopBar from "../components/TopBar";
 import { getImages } from "../services/storage";
-import { getUserInfo, getUserUid } from "../services/firestore_user";
+import {
+  getUserInfo,
+  getUserUid,
+  getUserByImg,
+} from "../services/firestore_user";
 import styles from "../styles/StoreStyles";
 import { FontAwesome } from "@expo/vector-icons";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
-export default function Store({ navigation }) {
-  // true이면 판매 중, false이면 판매 완료인 상품
+export default function Store({ navigation, route }) {
+  // true이면 판매 중, false이면 판매 완료인 상품 보여줌
   const [isSelling, setIsSelling] = useState(true);
 
-  const [name, setName] = useState(null); // 닉네임
-  const [image, setImage] = useState(null); // 유저 이미지
-  const [style, setStyle] = useState([]); // 유저 스타일
-  const [bio, setBio] = useState(null); // 유저 소개
+  const [uid, setUid] = useState(null); // "현재 로그인"한 유저의 uid
+  const [isMyStore, setIsMyStore] = useState(false); // 내 상점인지 여부
+
+  const [sellerUid, setSellerUid] = useState(null); // "판매자"의 uid
+  const [sellerName, setSellerName] = useState(""); // "판매자"의 닉네임
+  const [sellerImage, setSellerImage] = useState(null); // "판매자"의 이미지
+  const [sellerStyle, setSellerStyle] = useState([]); // "판매자"의 스타일
+  const [sellerBio, setSellerBio] = useState(null); // "판매자"의 소개
 
   // 판매 중인 상품 데이터
   const [sellingItem, setSellingItem] = useState([]);
@@ -35,35 +43,45 @@ export default function Store({ navigation }) {
 
   useFocusEffect(
     React.useCallback(() => {
-      const fetchUserName = async () => {
+      const fetchUserInfo = async () => {
         try {
-          const userInfo = await getUserInfo();
-          setName(userInfo.name);
-          setBio(userInfo.bio);
-          setImage(userInfo.image);
-          if (userInfo.style) setStyle(userInfo.style);
+          const myUid = await getUserUid(); // 현재 로그인한 유저의 uid 가져옴
+          setUid(myUid);
+
+          console.log(route?.params?.src);
+
+          if (route?.params?.src) {
+            // 다른 사람 상점이면
+            const userInfo = await getUserByImg(route?.params?.src);
+
+            setSellerUid(userInfo.uid);
+            setSellerName(userInfo.name);
+            setSellerBio(userInfo.bio);
+            setSellerImage(route?.params?.src);
+            if (userInfo.style) setSellerStyle(userInfo.style);
+
+            const imagesList = await getImages(userInfo.uid);
+            setSellingItem(imagesList);
+          } else {
+            // 내 상점이면
+            const myInfo = await getUserInfo();
+            setIsMyStore(true);
+
+            setSellerUid(uid);
+            setSellerName(myInfo.name);
+            setSellerBio(myInfo.bio);
+            setSellerImage(myInfo.image);
+            if (myInfo.style) setSellerStyle(myInfo.style);
+
+            const imagesList = await getImages(myUid);
+            setSellingItem(imagesList);
+          }
         } catch (error) {
           console.log(error);
         }
       };
 
-      fetchUserName();
-    }, [])
-  );
-
-  useFocusEffect(
-    React.useCallback(() => {
-      const fetchImages = async () => {
-        try {
-          const uid = await getUserUid();
-          const imagesList = await getImages(uid);
-          setSellingItem(imagesList);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      fetchImages();
+      fetchUserInfo();
     }, [])
   );
 
@@ -71,7 +89,7 @@ export default function Store({ navigation }) {
   const renderSelectedStyles = () => {
     return (
       <ScrollView horizontal style={styles.selectedItemsContainer}>
-        {style.map((item, index) => (
+        {sellerStyle.map((item, index) => (
           <View key={index} style={styles.selectedItem}>
             <Text style={styles.selectedItemText}>{item}</Text>
           </View>
@@ -89,21 +107,24 @@ export default function Store({ navigation }) {
       <ScrollView style={styles.body}>
         <View style={styles.infoBox}>
           <View style={styles.userInfo}>
-            {image == null ? (
+            {sellerImage == null ? (
               <View style={styles.userImage}></View>
             ) : (
-              <Image style={styles.userImage} source={{ uri: image }} />
+              <Image style={styles.userImage} source={{ uri: sellerImage }} />
             )}
 
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("Info");
-              }}
-              style={styles.gearIcon}
-            >
-              <FontAwesome name="gear" size={16} color="darkgray" />
-            </TouchableOpacity>
-            <Text style={styles.storeText}>{name}</Text>
+            {isMyStore ? (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Info");
+                }}
+                style={styles.gearIcon}
+              >
+                <FontAwesome name="gear" size={16} color="darkgray" />
+              </TouchableOpacity>
+            ) : null}
+
+            <Text style={styles.storeText}>{sellerName}</Text>
           </View>
 
           <View style={styles.storeInfo}>
@@ -120,7 +141,7 @@ export default function Store({ navigation }) {
                 multiline={true}
                 numberOfLines={3}
                 ellipsizeMode="tail"
-                value={bio}
+                value={sellerBio}
                 style={styles.bioBox}
               />
             </View>
