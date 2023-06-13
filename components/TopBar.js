@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -18,10 +18,16 @@ export default function TopBar({ navigation }) {
         >
           <Icon name="search" size={26} color="#91B391" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.topIcon}>
+        <TouchableOpacity
+          onPress={() => alert("알림 기능은 준비 중입니다!")}
+          style={styles.topIcon}
+        >
           <Icon name="bell" size={26} color="#91B391" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.topIcon}>
+        <TouchableOpacity
+          onPress={() => alert("카트 기능은 준비 중입니다!")}
+          style={styles.topIcon}
+        >
           <Icon name="shopping-basket" size={26} color="#91B391" />
         </TouchableOpacity>
       </View>

@@ -14,6 +14,7 @@ import SignUp from "./screens/SignUp";
 import SignIn from "./screens/SignIn";
 import Info from "./screens/Info";
 import Detail from "./screens/Detail";
+import Products from "./screens/Products";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -30,6 +31,7 @@ export default function App() {
         <Stack.Screen name="Chat" component={Chat} />
         <Stack.Screen name="Store" component={Store} />
         <Stack.Screen name="Info" component={Info} />
+        <Stack.Screen name="Products" component={Products} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="SignIn" component={SignIn} />
       </Stack.Navigator>

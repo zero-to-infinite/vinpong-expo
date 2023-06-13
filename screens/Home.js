@@ -21,20 +21,6 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 export default function Home({ navigation }) {
   const [productImages, setProductImages] = useState([]);
   const [storeImages, setStoreImages] = useState([]);
-  const [name, setName] = useState(null);
-
-  useEffect(() => {
-    const fetchUserName = async () => {
-      try {
-        const userInfo = await getUserInfo();
-        setName(userInfo.name);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchUserName();
-  }, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -80,9 +66,7 @@ export default function Home({ navigation }) {
               </TouchableOpacity>
             ))}
           </ScrollView>
-          <TouchableOpacity
-            style={styles.scrollIcon}
-          >
+          <TouchableOpacity style={styles.scrollIcon}>
             <AntDesign name="rightcircle" size={24} color="#91B391" />
           </TouchableOpacity>
         </View>

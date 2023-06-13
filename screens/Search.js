@@ -12,19 +12,21 @@ import styles from "../styles/SearchStyles";
 import { Feather } from "@expo/vector-icons";
 
 export default function Search({ navigation }) {
+  const [keyword, setKeyword] = useState("");
   const [isStyleOpen, setIsStyleOpen] = useState(true); // 스타일 버튼이 선택된 상태로 시작
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [selectedStyles, setSelectedStyles] = useState([]); // 선택된 스타일 목록
   const [selectedCategories, setSelectedCategories] = useState([]); // 선택된 카테고리 목록
-  
+
+  /* -----------------------------------태그, 인기 검색어 상수--------------------------------------- */
   // 스타일 태그
   const stylesList = [
     "Casual",
     "Formal",
     "Sports",
     "Vintage",
-    "Sportswear",
-    "Classic",
+    "Romantic",
+    "Unique",
     "Travel",
     "Bohemian",
     "Streetwear",
@@ -56,6 +58,8 @@ export default function Search({ navigation }) {
     { id: 4, name: "나이키" },
     { id: 5, name: "아디다스" },
   ];
+
+  /* -----------------------------------태그 모달 관련 함수--------------------------------------- */
   // 스타일 탭 눌렀을 때 동작하는 함수
   const handleStylePress = () => {
     setIsStyleOpen(true);
@@ -144,7 +148,9 @@ export default function Search({ navigation }) {
             key={index}
             style={[
               styles.option,
-              selectedCategories.includes(category) ? styles.selectedOption : null, // 선택됐으면 옵션 색깔 변경
+              selectedCategories.includes(category)
+                ? styles.selectedOption
+                : null, // 선택됐으면 옵션 색깔 변경
             ]}
             onPress={() => handleCategoryOptionPress(category)}
           >
@@ -154,7 +160,16 @@ export default function Search({ navigation }) {
       </View>
     );
   };
+  /* -----------------------------------검색하는 함수--------------------------------------- */
+  const search = () => {
+    navigation.navigate("Products", {
+      keyword: keyword,
+      style: selectedStyles,
+      category: selectedCategories,
+    });
+  };
 
+  /* -----------------------------------여기서 컴포넌트 구현 시작--------------------------------------- */
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="auto" />
@@ -162,10 +177,14 @@ export default function Search({ navigation }) {
       {/* 검색창 */}
       <View style={styles.searchContainer}>
         <TextInput
+          value={keyword}
+          onChangeText={setKeyword}
+          returnKeyType="done"
           style={styles.searchInput}
           placeholder="검색어를 입력하세요"
+          blurOnSubmit={true}
         />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={search}>
           <Feather name="search" size={24} color="white" style={styles.icon} />
         </TouchableOpacity>
       </View>

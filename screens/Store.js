@@ -48,8 +48,6 @@ export default function Store({ navigation, route }) {
           const myUid = await getUserUid(); // 현재 로그인한 유저의 uid 가져옴
           setUid(myUid);
 
-          console.log(route?.params?.src);
-
           if (route?.params?.src) {
             // 다른 사람 상점이면
             const userInfo = await getUserByImg(route?.params?.src);
