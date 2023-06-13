@@ -1,4 +1,4 @@
-import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
+import { FIRESTORE_DB } from "../firebaseConfig";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { uploadImage } from "./storage";
 import { getUserUid } from "../services/firestore_user";

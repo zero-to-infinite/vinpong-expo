@@ -1,9 +1,8 @@
 import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
 } from "firebase/auth";
 
 // 회원가입 (Firebase에 유저 정보를 삽입)

@@ -2,7 +2,6 @@ import { FIRESTORE_DB, FIREBASE_AUTH } from "../firebaseConfig";
 import {
   doc,
   getDocs,
-  setDoc,
   getDoc,
   collection,
   updateDoc,

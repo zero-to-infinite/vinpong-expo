@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -14,7 +14,6 @@ import SignUp from "./screens/SignUp";
 import SignIn from "./screens/SignIn";
 import Info from "./screens/Info";
 import Detail from "./screens/Detail";
-import ProductList from "./screens/ProductList";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -31,7 +30,6 @@ export default function App() {
         <Stack.Screen name="Chat" component={Chat} />
         <Stack.Screen name="Store" component={Store} />
         <Stack.Screen name="Info" component={Info} />
-        <Stack.Screen name="ProductList" component={ProductList} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="SignIn" component={SignIn} />
       </Stack.Navigator>
