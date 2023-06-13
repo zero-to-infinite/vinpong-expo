@@ -147,12 +147,18 @@ export default function Store({ navigation, route }) {
         </View>
 
         <View style={styles.followBox}>
-          <TouchableOpacity style={styles.follow}>
+          <TouchableOpacity
+            onPress={() => alert("팔로우 기능은 준비 중입니다.")}
+            style={styles.follow}
+          >
             <Text style={styles.followText}>Followers</Text>
             <Text>10</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.follow}>
+          <TouchableOpacity
+            onPress={() => alert("팔로우 기능은 준비 중입니다.")}
+            style={styles.follow}
+          >
             <Text style={styles.followText}>Following</Text>
             <Text>15</Text>
           </TouchableOpacity>

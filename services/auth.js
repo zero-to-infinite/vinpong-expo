@@ -42,7 +42,7 @@ export async function signUp(
       });
       //console.log("디비에 유저 정보 넣는것도 성공");
       alert(
-        `가입을 축하드립니다!\n이메일: ${email}\n비밀번호: ${pw}\n닉네임: ${name}`
+        `가입을 축하드립니다!`
       );
 
       navigation.navigate("Home"); // 가입 후 Home 화면으로 이동

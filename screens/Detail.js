@@ -226,12 +226,15 @@ export default function Detail({ navigation, route }) {
 
       <View style={styles.footer}>
         <View style={styles.footerLeft}>
-          <TouchableOpacity style={styles.detailIcon}>
+          <TouchableOpacity
+            onPress={() => alert("찜 기능은 추후 구현 예정입니다 :)")}
+            style={styles.detailIcon}
+          >
             <Icon name="heart" size={26} color="white" />
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => alert("상품이 카트에 담겼습니다.")}
+            onPress={() => alert("카트 기능은 추후 구현 예정입니다 :)")}
             style={styles.detailIcon}
           >
             <Icon name="shopping-basket" size={26} color="white" />
