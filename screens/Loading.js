@@ -9,7 +9,7 @@ export default function Loading({ navigation }) {
       <StatusBar style="auto" />
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("Home")}
+        //onPress={() => navigation.navigate("Home")}
         style={styles.title}
       >
         <Image

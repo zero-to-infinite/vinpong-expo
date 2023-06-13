@@ -1,11 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { signUp } from "../services/auth";
@@ -18,7 +13,7 @@ export default function SignUp({ navigation }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  
+
   // 회원가입 버튼 누를 시 동작하는 함수
   const handleSignUp = () => {
     signUp(email, pw, pwCheck, name, phone, address, navigation);
@@ -47,11 +42,14 @@ export default function SignUp({ navigation }) {
             value={email}
             style={styles.input}
           />
+          {/**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~아직 구현 못해서 임시로 버튼 다 없앨게요~~~~~~~~~~~~~~~~~~~~~~~~~~
           <TouchableOpacity style={styles.btn}>
             <Text>인증 요청</Text>
           </TouchableOpacity>
+          */}
         </View>
-        {/* 이메일 인증 코드 입력창 */}
+
+        {/* 이메일 인증 코드 입력창
         <View style={styles.form}>
           <TextInput style={styles.input} />
           <View style={styles.textContainer}>
@@ -61,6 +59,7 @@ export default function SignUp({ navigation }) {
             <Text>인증 확인</Text>
           </TouchableOpacity>
         </View>
+        */}
 
         <View style={styles.hr} />
 
@@ -100,9 +99,11 @@ export default function SignUp({ navigation }) {
             value={name}
             style={styles.input}
           />
+          {/*
           <TouchableOpacity style={styles.btn}>
             <Text>중복 확인</Text>
           </TouchableOpacity>
+          */}
         </View>
 
         {/* 연락처 입력창 */}
@@ -116,9 +117,11 @@ export default function SignUp({ navigation }) {
             value={phone}
             style={styles.input}
           />
+          {/*
           <TouchableOpacity style={styles.btn}>
             <Text>인증 요청</Text>
           </TouchableOpacity>
+          */}
         </View>
 
         {/* 주소 입력창 */}
@@ -132,7 +135,7 @@ export default function SignUp({ navigation }) {
             value={address}
             style={styles.input}
           />
-          <Feather name="search" size={24} color="#bbb" style={styles.icon} />
+          {/*<Feather name="search" size={24} color="#bbb" style={styles.icon} />*/}
         </View>
       </View>
 
