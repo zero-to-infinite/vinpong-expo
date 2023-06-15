@@ -8,6 +8,7 @@ import {
   Dimensions,
   Image,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import BottomNav from "../components/BottomNav";
@@ -149,18 +150,17 @@ export default function Home({ navigation }) {
           }}
           style={styles.banner}
         />
-
-        <View
-          style={styles.weatherBox}
-        >
-          {temp === "" ? (
-            <View>
-              <ActivityIndicator color="black" size="large" />
-            </View>
-          ) : (
-            <View>{recommendDress(Math.round(temp), weather)}</View>
-          )}
-        </View>
+        {Platform.OS !== "web" ? (
+          <View style={styles.weatherBox}>
+            {temp === "" ? (
+              <View>
+                <ActivityIndicator color="black" size="large" />
+              </View>
+            ) : (
+              <View>{recommendDress(Math.round(temp), weather)}</View>
+            )}
+          </View>
+        ) : null}
 
         <Text style={styles.bodyText}>추천 상품</Text>
         <View style={styles.productContainer}>

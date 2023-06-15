@@ -181,7 +181,9 @@ export default function Search({ navigation }) {
           onChangeText={setKeyword}
           returnKeyType="done"
           style={styles.searchInput}
-          placeholder="검색어를 입력하세요"
+          placeholder="원하는 스타일/카테고리를 선택하여 검색"
+          placeholderTextColor={'white'}
+          editable={false}
           blurOnSubmit={true}
         />
         <TouchableOpacity onPress={search}>

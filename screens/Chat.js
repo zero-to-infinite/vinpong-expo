@@ -47,13 +47,15 @@ export default function Chat({ navigation, route }) {
 
   // 메시지 전송 함수
   const send = async () => {
-    try {
-      Keyboard.dismiss();
-      setInputText("");
-      scrollViewRef.current.scrollToEnd({ animated: true });
-      await sendMsg(route.params.roomId, inputText);
-    } catch (err) {
-      console.log(err);
+    if (inputText) {
+      try {
+        Keyboard.dismiss();
+        setInputText("");
+        scrollViewRef.current.scrollToEnd({ animated: true });
+        await sendMsg(route.params.roomId, inputText);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
