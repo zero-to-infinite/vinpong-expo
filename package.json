@@ -2,7 +2,7 @@
   "name": "vinpong",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
-  "homepage": "https://zero-to-infinite.github.io/VinPong/",
+  "homepage": "https://zero-to-infinite.github.io/vinpong-expo/",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
