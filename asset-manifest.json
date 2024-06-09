@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.js": "/VinPong/static/js/main.33ecc00a.js",
-    "static/js/17.52c74735.js": "/VinPong/static/js/17.52c74735.js",
-    "static/media/FontAwesome.ttf": "/VinPong/static/media/FontAwesome.1e59d2330b4c6deb84b3.ttf",
-    "static/media/AntDesign.ttf": "/VinPong/static/media/AntDesign.163adab9dbd7cb1ed12a.ttf",
-    "static/media/Feather.ttf": "/VinPong/static/media/Feather.0f5d9cede2e831f3fc80.ttf",
-    "favicon.ico": "/VinPong/favicon.ico",
-    "index.html": "/VinPong/index.html",
-    "favicon-32.png": "/VinPong/favicon-32.png",
-    "favicon-16.png": "/VinPong/favicon-16.png",
-    "serve.json": "/VinPong/serve.json",
-    "manifest.json": "/VinPong/manifest.json",
-    "main.33ecc00a.js.map": "/VinPong/static/js/main.33ecc00a.js.map",
-    "17.52c74735.js.map": "/VinPong/static/js/17.52c74735.js.map"
+    "main.js": "/vinpong-expo/static/js/main.60a1bc41.js",
+    "static/js/17.2693bb02.js": "/vinpong-expo/static/js/17.2693bb02.js",
+    "static/media/FontAwesome.ttf": "/vinpong-expo/static/media/FontAwesome.1e59d2330b4c6deb84b3.ttf",
+    "static/media/AntDesign.ttf": "/vinpong-expo/static/media/AntDesign.163adab9dbd7cb1ed12a.ttf",
+    "static/media/Feather.ttf": "/vinpong-expo/static/media/Feather.0f5d9cede2e831f3fc80.ttf",
+    "favicon.ico": "/vinpong-expo/favicon.ico",
+    "index.html": "/vinpong-expo/index.html",
+    "favicon-32.png": "/vinpong-expo/favicon-32.png",
+    "favicon-16.png": "/vinpong-expo/favicon-16.png",
+    "serve.json": "/vinpong-expo/serve.json",
+    "manifest.json": "/vinpong-expo/manifest.json",
+    "main.60a1bc41.js.map": "/vinpong-expo/static/js/main.60a1bc41.js.map",
+    "17.2693bb02.js.map": "/vinpong-expo/static/js/17.2693bb02.js.map"
   },
   "entrypoints": [
-    "static/js/17.52c74735.js",
-    "static/js/main.33ecc00a.js"
+    "static/js/17.2693bb02.js",
+    "static/js/main.60a1bc41.js"
   ]
 }
