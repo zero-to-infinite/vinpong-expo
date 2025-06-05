@@ -4,8 +4,8 @@ Vintage Ping-Pong은 원하는 스타일의 옷을 쉽게 찾고 SNS와 채팅 �
 # 👥 담당 역할
 |이름|역할|
 |--|--|
-|[김서로](https://github.com/okxooxoo)|아이디어 기획 및 디자인, UI/UX 설계 및 구현, 데이터베이스 통신|
-|[박지원](https://github.com/okxooxoo)|아이디어 기획 및 더미 데이터 구축|
+|[김서로](https://github.com/okxooxoo)|아이디어 기획, UI/UX 설계 및 디자인, 프론트엔드 개발, Firebase 기반 CRUD 기능 개발|
+|[박지원](https://github.com/okxooxoo)|아이디어 기획, 더미 데이터 구축|
 
 # 📚 기술 스택
 - React Native
